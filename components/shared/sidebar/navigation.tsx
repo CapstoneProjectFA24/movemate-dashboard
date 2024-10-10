@@ -10,13 +10,13 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import { IconType } from "react-icons";
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/components/ui/accordion"; 
+} from "@/components/ui/accordion";
 
 interface Route {
   label: string;
@@ -77,10 +77,10 @@ export const Navigation = () => {
               <Link href={item.href}>
                 <div
                   className={cn(
-                    "flex items-center gap-3 p-2 rounded-md font-semibold transition-all duration-200 hover:bg-[#e9a072] hover:text-white hover:shadow",
+                    "flex items-center gap-3 p-2 rounded-md font-semibold transition-all duration-200 hover:bg-[#FF9E40] hover:text-white hover:shadow",
                     isActive
-                      ? "bg-[#F4721E] text-white shadow"
-                      : "text-neutral-600 dark:text-neutral-400"
+                      ? "bg-[#FF5722] text-white shadow"
+                      : "text-neutral-600 dark:text-neutral-400 hover:bg-[#FF9E40] dark:hover:bg-[#D97706]"
                   )}
                 >
                   <Icon className="w-6 h-6" />
@@ -92,23 +92,23 @@ export const Navigation = () => {
                 <AccordionItem value={item.label}>
                   <AccordionTrigger
                     className={cn(
-                      "flex items-center gap-3 p-3 rounded-md font-semibold transition-all duration-200 hover:bg-[#e9a072] hover:no-underline hover:text-white hover:shadow",
+                      "flex items-center gap-3 p-2 rounded-md font-semibold transition-all duration-200 hover:bg-[#FF9E40] hover:no-underline hover:text-white hover:shadow",
                       isActive
-                        ? "bg-[#F4721E] text-white shadow"
-                        : "text-neutral-600 dark:text-neutral-400"
+                        ? "bg-[#FF5722] text-white shadow"
+                        : "text-neutral-600 dark:text-neutral-400 hover:bg-[#FF9E40] dark:hover:bg-[#D97706]"
                     )}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 ">
                       <Icon className="w-6 h-6" />
                       <span className="text-base">{item.label}</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="ml-6  border-l-2 border-gray-200 pl-4 space-y-2">
+                    <ul className="ml-6 border-l-2 border-gray-200 pl-4 space-y-2 dark:border-gray-600">
                       {item.children?.map((child) => (
                         <li key={child.label}>
                           <Link href={child.href!}>
-                            <div className="flex items-center gap-2.5 p-2 rounded-md font-medium hover:bg-[#e9a072] transition-all text-neutral-600 dark:text-neutral-400 hover:text-white">
+                            <div className="flex items-center gap-2.5 p-2 rounded-md font-medium hover:bg-[#FF9E40] transition-all text-neutral-600 dark:text-neutral-400 hover:text-white">
                               <child.icon className="w-5 h-5" />
                               <span className="text-sm">{child.label}</span>
                             </div>
