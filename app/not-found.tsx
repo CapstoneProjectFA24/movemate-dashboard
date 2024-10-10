@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import gif from "@/public/images/gif/dribbble_1.gif";
 import bg from "@/public/images/gif/bg.jpg";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function NotFound() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4 md:p-8">
-      <Card className="w-full max-w-3xl">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 md:p-8 dark:bg-gray-900">
+      <Card className="w-full max-w-3xl bg-white dark:bg-gray-800">
         <CardHeader>
           <CardTitle className="relative text-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-white/50 z-0"></div>
+              <div className="absolute inset-0 bg-white/50 dark:dark:bg-gray-900 z-0"></div>
               <h1
-                className="text-8xl font-montserrat font-black bg-no-repeat bg-center bg-cover text-transparent bg-clip-text relative z-10"
+                className="text-8xl font-montserrat font-black   bg-no-repeat bg-center bg-cover text-transparent bg-clip-text relative z-10"
                 style={{ backgroundImage: `url(${bg.src})` }}
               >
-                Ôi!! Lỗi 404 
+                Ôi!! Lỗi 404
               </h1>
             </div>
           </CardTitle>
@@ -36,19 +36,21 @@ export default function NotFound() {
                 className="object-cover"
               />
             </div>
-            <h3 className="text-2xl font-black uppercase tracking-tight md:text-3xl">
+            <h3 className="text-2xl font-black uppercase tracking-tight md:text-3xl dark:text-white">
               Trang không tồn tại
             </h3>
-            <p className="text-muted-foreground">Xin lỗi, chúng tôi không thể tìm thấy trang bạn đang tìm kiếm.</p>
+            <p className="text-muted-foreground dark:text-gray-400">
+              Xin lỗi, chúng tôi không thể tìm thấy trang bạn đang tìm kiếm.
+            </p>
           </div>
-          <Button 
-            onClick={() => router.push('/')}
-            className="min-w-[200px]"
+          <Button
+            onClick={() => router.push("/")}
+            className="min-w-[200px] dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
           >
             Về trang chủ
           </Button>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
