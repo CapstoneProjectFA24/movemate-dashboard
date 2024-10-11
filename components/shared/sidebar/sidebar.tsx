@@ -8,7 +8,10 @@ export const Sidebar = () => {
   return (
     <aside className="h-full bg-white dark:bg-gray-800 border-r flex flex-col shadow-sm dark:border-gray-600">
       <div className="p-5">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition">
+        <Link
+          href="/"
+          className="flex items-center gap-2 hover:opacity-75 transition"
+        >
           <Image
             src="/images/icons_favicon/icon.png"
             alt="Logo"
@@ -16,7 +19,9 @@ export const Sidebar = () => {
             height={32}
             className="rounded-md"
           />
-          <h1 className="font-semibold text-xl text-black dark:text-white">Movemate</h1>
+          <h1 className="font-semibold text-xl text-black dark:text-white">
+            Movemate
+          </h1>
         </Link>
       </div>
       <Separator className="my-[7.2px] border-b-2 border-gray-300 dark:border-gray-600" />
@@ -34,8 +39,12 @@ export const Sidebar = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-black dark:text-white">John Doe</span>
-            <span className="text-xs text-muted-foreground dark:text-gray-300">john@example.com</span>
+            <span className="text-sm font-medium text-black dark:text-white">
+              John Doe
+            </span>
+            <span className="text-xs text-muted-foreground dark:text-gray-300">
+              john@example.com
+            </span>
           </div>
         </div>
       </div>
