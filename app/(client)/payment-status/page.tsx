@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const PaymentStatus = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isMounted, setIsMounted] = useState(false);
   const isSuccess = searchParams.get("isSuccess") === "true";
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div>Loading...</div>;
+  }
 
   const content = {
     success: {
@@ -82,5 +92,6 @@ const PaymentStatus = () => {
     </div>
   );
 };
+
 
 export default PaymentStatus;

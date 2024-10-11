@@ -1,3 +1,4 @@
+import {  Suspense } from "react";
 interface ClientLayoutProps {
   children: React.ReactNode;
 }
@@ -5,7 +6,11 @@ interface ClientLayoutProps {
 const ClientLayout = ({ children }: ClientLayoutProps) => {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
-      {children}
+         <Suspense fallback={<div>Loading payment status...</div>}>
+         {children}
+
+    </Suspense>
+     
     </main>
   );
 };
