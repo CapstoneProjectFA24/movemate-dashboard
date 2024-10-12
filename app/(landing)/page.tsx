@@ -1,3 +1,4 @@
+"use client";
 import { Icons } from "@/components/shared/landing/icons";
 import MaxWidthWrapper from "@/components/shared/landing/max-width-wrapper";
 import Phone from "@/components/shared/landing/phone";
@@ -8,8 +9,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="bg-slate-50 grainy-light dark:bg-gray-800 dark:text-gray-200">
-      {" "}
-      <section>
+      <section className="dark:bg-gray-700">
         <MaxWidthWrapper className="pb-12 lg:grid lg:grid-cols-3 sm:pb-24 lg:gap-x-0  lg:pb-52 dark:bg-gray-700">
           <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
             <div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
@@ -21,14 +21,16 @@ export default function Home() {
                 </span>{" "}
               </h1>
               <p className="mt-8 text-lg lg:pr-10 max-w-prose text-center lg:text-left text-balance">
-                <span className="font-semibold">MoveMate</span> – Dịch vụ chuyển nhà hoàn hảo dành cho bạn. Chúng tôi mang đến trải nghiệm chuyển nhà chuyên nghiệp, an toàn và nhanh chóng, giúp bạn chuyển nhà một cách dễ dàng hơn bao giờ hết.
+                <span className="font-semibold">MoveMate</span> – Dịch vụ chuyển
+                nhà hoàn hảo dành cho bạn. Chúng tôi mang đến trải nghiệm chuyển
+                nhà chuyên nghiệp, an toàn và nhanh chóng, giúp bạn chuyển nhà
+                một cách dễ dàng hơn bao giờ hết.
               </p>
 
               <ul className="mt-8 space-y-2 text-left font-medium flex flex-col items-center sm:items-start">
                 <div className="space-y-2">
                   <li className="flex gap-1.5 items-center text-left">
                     <Check className="h-5 w-5 shrink-0 text-orange-600" />{" "}
-                    {/* Thay đổi màu thành cam */}
                     Chuyển nhà dễ dàng, an tâm từng bước
                   </li>
                   <li className="flex gap-1.5 items-center text-left">
@@ -101,7 +103,7 @@ export default function Home() {
           <div className="col-span-full lg:col-span-1 w-full flex justify-center px-8 sm:px-16 md:px-0 mt-32 lg:mx-0 lg:mt-20 h-fit">
             <div className="relative md:max-w-xl">
               <Image
-                src="/images/landing/farm/veg-cartoon6.png" // Giữ nguyên hình ảnh cũ
+                src="/images/landing/farm/veg-cartoon6.png"
                 alt="Moving cartoon"
                 width={208}
                 height={208}
@@ -114,10 +116,7 @@ export default function Home() {
                 height={80}
                 className="absolute w-20 -left-6 -bottom-6 select-none"
               />
-              <Phone
-                className="w-64"
-                imgSrc="/images/landing/farm/spash.png" // Giữ nguyên hình ảnh cũ
-              />
+              <Phone className="w-64" imgSrc="/images/landing/farm/spash.png" />
             </div>
           </div>
         </MaxWidthWrapper>
@@ -133,7 +132,8 @@ export default function Home() {
             </h2>
           </div>
           <h4 className="font-semibold text-gray-800 dark:text-gray-200 leading-snug">
-            Từ những dịch vụ thiết yếu đến cơ hội gia tăng thu nhập. Tất cả đều có trên một nền tảng.
+            Từ những dịch vụ thiết yếu đến cơ hội gia tăng thu nhập. Tất cả đều
+            có trên một nền tảng.
           </h4>
         </MaxWidthWrapper>
       </section>

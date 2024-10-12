@@ -10,8 +10,8 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { routes } from "@/constants";
 
-import { routes } from "@/constants/sidebar-link";
 
 export const Navigation = () => {
   const pathname = usePathname();
