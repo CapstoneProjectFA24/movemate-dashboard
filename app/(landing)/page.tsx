@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="bg-slate-50 grainy-light dark:bg-gray-800 dark:text-gray-200">
       {" "}
-      <section>
+      <section className="bg-slate-100 grainy-dark dark:bg-gray-700">
         <MaxWidthWrapper className="pb-12 lg:grid lg:grid-cols-3 sm:pb-24 lg:gap-x-0  lg:pb-52 dark:bg-gray-700">
           <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
             <div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
