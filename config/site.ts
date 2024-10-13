@@ -6,6 +6,6 @@ export const siteConfig = {
   url:
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://table.sadmn.com",
-  links: { github: "https://github.com/sadmann7/shadcn-table" },
+      : "https://movemate-dashboard.vercel.app",
+  links: { github: "https://github.com/vinhnt2002/movemate-dashboard" },
 };
