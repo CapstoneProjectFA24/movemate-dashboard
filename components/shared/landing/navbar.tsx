@@ -1,77 +1,51 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import MaxWidthWrapper from "./max-width-wrapper";
 import { ModeToggle } from "../navbar/mode-toggle";
+import { links } from "@/constants/nav-landing-link";
+import NavMobile from "./nav-mobile";
 
 const Navbar = () => {
+  const pathname = usePathname();
+
   return (
-    <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all dark:bg-gray-800 dark:border-gray-600">
+    <nav className="sticky z-[100] h-16 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all dark:bg-gray-800 dark:border-gray-600">
       <MaxWidthWrapper>
-        <div className="flex h-14 items-center justify-between border-b border-zinc-200 dark:border-zinc-700">
-          <Link href="/" className="flex z-40 font-semibold">
-            <a className="text-2xl font-bold text-orange-600 flex items-center">
-              MoveMate
-            </a>
+        <div className="flex h-16 items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2 z-40">
+            <span className="text-2xl font-bold text-orange-600">MoveMate</span>
             <Image
               src="/images/icons_favicon/icon.png"
               alt="Logo"
-              width={56}
-              height={56}
-              className="hidden sm:block lg:hidden xl:block rounded-full"
+              width={40}
+              height={40}
+              className="hidden sm:block rounded-full"
             />
           </Link>
 
-          <div className="h-full flex items-center space-x-8">
-                <div className="flex justify-between h-16">
-                  <div className="hidden md:flex items-center space-x-4">
-                    {/* Navigation menu */}
-                    <Link href="/about" legacyBehavior>
-                      <a className="text-gray-800 dark:text-gray-200 hover:text-orange-600">
-                        Về chúng tôi
-                      </a>
-                    </Link>
-                    <Link href="/services" legacyBehavior>
-                      <a className="text-gray-800 dark:text-gray-200 hover:text-orange-600">
-                        Dịch vụ
-                      </a>
-                    </Link>
-                    <Link href="/pricing" legacyBehavior>
-                      <a className="text-gray-800 dark:text-gray-200 hover:text-orange-600">
-                        Bảng giá
-                      </a>
-                    </Link>
-                    <Link href="/contact" legacyBehavior>
-                      <a className="text-gray-800 dark:text-gray-200 hover:text-orange-600">
-                        Liên hệ
-                      </a>
-                    </Link>
-                  </div>
-                  <div className="flex items-center md:hidden">
-                    {/* Mobile menu button */}
-                    <button
-                      type="button"
-                      className="text-gray-800 dark:text-gray-200 hover:text-orange-600"
-                      aria-expanded="false"
-                    >
-                      {/* Icon for mobile menu */}
-                      <svg
-                        className="h-6 w-6"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M4 6h16M4 12h16m-7 6h7"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+          <div className="hidden lg:flex items-center space-x-6">
+            {links.map((route) => {
+              const isActive = pathname === route.href;
+              return (
+                <Link
+                  key={route.label}
+                  href={route.href || "#"}
+                  className={`flex items-center space-x-1 ${
+                    isActive
+                      ? "text-orange-600"
+                      : "text-gray-800 dark:text-gray-200 hover:text-orange-600"
+                  }`}
+                >
+                  {/* {route.icon && <route.icon className="w-5 h-5" />} */}
+                  <span>{route.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="hidden md:flex items-center space-x-4">
             <span className="text-gray-800 dark:text-gray-200">
               Hotline: 0382703625
             </span>
@@ -82,6 +56,12 @@ const Navbar = () => {
               </button>
             </Link>
           </div>
+
+          <div className="flex items-center space-x-4 md:hidden">
+            <ModeToggle />
+            <NavMobile />
+          </div>
+        </div>
       </MaxWidthWrapper>
     </nav>
   );

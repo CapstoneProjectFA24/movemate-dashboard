@@ -16,7 +16,7 @@ const LoginPage = () => {
     <section
       className="flex items-center justify-center min-h-screen w-full bg-cover bg-center"
       style={{
-        backgroundImage: `url('https://images.pexels.com/photos/209251/pexels-photo-209251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
+        backgroundImage: `url('https://img.freepik.com/free-photo/container-truck-ship-port-ai-generated-image_511042-612.jpg')`,
       }}
     >
       <div className="w-full max-w-4xl bg-gray-800 bg-opacity-60 rounded-3xl shadow-2xl">
@@ -24,7 +24,7 @@ const LoginPage = () => {
           <div className="hidden lg:block">
             <div className="relative w-full h-full p-14">
               <Image
-                src="/images/landing/loginImg.jpg"
+                src="/images/landing/login-small.png"
                 alt="Login Image"
                 layout="fill"
                 objectFit="cover"
