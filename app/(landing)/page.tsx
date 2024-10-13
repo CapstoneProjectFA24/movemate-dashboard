@@ -5,12 +5,13 @@ import Phone from "@/components/shared/landing/phone";
 import { Reviews } from "@/components/shared/landing/reviews";
 import { Check, Star } from "lucide-react";
 import Image from "next/image";
+import Link from 'next/link';
 
 export default function Home() {
   return (
     <div className="bg-slate-50 grainy-light dark:bg-gray-800 dark:text-gray-200">
       <section className="dark:bg-gray-700">
-        <MaxWidthWrapper className="pb-12 lg:grid lg:grid-cols-3 sm:pb-24 lg:gap-x-0  lg:pb-52 dark:bg-gray-700">
+        <MaxWidthWrapper className="pb-12 lg:grid lg:grid-cols-3 sm:pb-24 lg:gap-x-0 dark:bg-gray-700">
           <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
             <div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
               <h1 className="relative w-fit tracking-tight mt-8 font-bold !leading-tight text-gray-900 dark:text-gray-100 text-5xl md:text-6xl lg:text-7xl">
@@ -123,7 +124,19 @@ export default function Home() {
       </section>
       <section className="bg-slate-100 grainy-dark dark:bg-gray-700">
         <MaxWidthWrapper className="flex flex-col items-center">
-          <div className="flex flex-col lg:flex-row items-center gap-4">
+          <section className="bg-orange-600 dark:bg-orange-500 w-full">
+            <div className="max-w-7xl mx-auto">
+              <div className="w-full">
+              <Link href="/download" passHref>
+                <button className="w-full px-4 py-3 text-white bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-center text-lg font-bold">
+                  Tải ứng dụng
+                </button>
+              </Link>
+              </div>
+            </div>
+          </section>
+
+          <div className="flex flex-col lg:flex-row items-center gap-4 mt-16">
             <h2 className="order-1 mt-2 tracking-tight text-center text-balance !leading-tight font-bold text-5xl md:text-6xl text-gray-900 dark:text-gray-100">
               Về MoveMate{" "}
               <span>
