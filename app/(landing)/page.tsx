@@ -5,7 +5,7 @@ import Phone from "@/components/shared/landing/phone";
 import { Reviews } from "@/components/shared/landing/reviews";
 import { Check, Star } from "lucide-react";
 import Image from "next/image";
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -127,11 +127,11 @@ export default function Home() {
           <section className="bg-orange-600 dark:bg-orange-500 w-full">
             <div className="max-w-7xl mx-auto">
               <div className="w-full">
-              <Link href="/download" passHref>
-                <button className="w-full px-4 py-3 text-white bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-center text-lg font-bold">
-                  Tải ứng dụng
-                </button>
-              </Link>
+                <Link href="/download" passHref>
+                  <button className="w-full px-4 py-3 text-white bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-center text-lg font-bold">
+                    Tải ứng dụng
+                  </button>
+                </Link>
               </div>
             </div>
           </section>

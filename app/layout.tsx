@@ -5,7 +5,11 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { siteConfig } from "@/config/site";
 // const font = Open_Sans({ subsets: ["latin"] });
 import { fontMono, fontSans } from "@/lib/fonts";
+
 import { cn } from "@/lib/utils";
+
+import SessionProviders from "@/providers/session-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -55,7 +59,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SessionProviders>
+            {children}
+
+            <Toaster />
+          </SessionProviders>
         </ThemeProvider>
       </body>
     </html>
