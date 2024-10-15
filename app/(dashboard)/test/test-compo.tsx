@@ -3,25 +3,28 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { getHouses } from "@/lib/actions/house";
-import { signOut } from "@/lib/next-auth/auth";
 import { useToast } from "@/hooks/use-toast";
+import { signOut, useSession, } from "next-auth/react";
 
 interface TestCompoProps {
   housePromise: ReturnType<typeof getHouses>;
 }
 
 const TestCompo = ({ housePromise }: TestCompoProps) => {
-  const { toast } = useToast();
-  const { data, pageCount } = React.use(housePromise);
+  const {data: session} = useSession()
+const email = session?.user.email;
+console.log(email)
 
+  const { toast } = useToast();
+  const { data, pageCount, error } = React.use(housePromise);
   React.useEffect(() => {
-    if (data) {
+    if (error) {
       toast({
         title: "Data loaded",
-        description: `Loaded ${data.length} houses`,
+        description: error,
       });
     }
-  }, [data, toast]);
+  }, [error]);
 
   const handleSignOut = async () => {
     try {
@@ -42,7 +45,7 @@ const TestCompo = ({ housePromise }: TestCompoProps) => {
   return (
     <>
       <div>TestCompo call data and see in terminal</div>
-      <Button onClick={handleSignOut}>Sign out</Button>
+      <Button onClick={() => signOut()}>Sign out</Button>
     </>
   );
 };

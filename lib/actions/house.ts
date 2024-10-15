@@ -13,14 +13,9 @@ import {
   fetchListData,
 } from "@/lib/api/api-handler/generic";
 import { SearchParams } from "@/types/table";
+import { IHouse } from "@/types/dashboard";
 
 /////////////////// test ///////////////////
-
-interface IHouse {
-  id: any;
-  name: string;
-  description: string;
-}
 
 export async function getHouses(
   searchParams: SearchParams
@@ -30,12 +25,21 @@ export async function getHouses(
   const result = await fetchListData<IHouse>("/housetypes", searchParams);
   if (!result.success) {
     console.error("Failed to fetch housetypes:", result.error);
-    return { data: [], pageCount: 0 };
+    return { data: [], pageCount: 0, error: result.error };
   }
-
   return result.data;
 }
+// post list
+export async function createHouse(data: {}): Promise<Result<void>> {
+  noStore();
 
+  const result = await apiRequest(() => axiosAuth.post("", data));
+  if (result.success) {
+    revalidatePath("/dashboard/auctions");
+    return { success: true, data: undefined };
+  }
+  return result;
+}
 // export async function updateAuctionDetail(
 //   params: string,
 //   data: IAuctionCreateField
