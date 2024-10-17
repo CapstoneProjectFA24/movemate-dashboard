@@ -81,10 +81,10 @@ const LoginPage = () => {
           <div className="hidden lg:block">
             <div className="relative w-full h-full p-14">
               <Image
-                src="/images/landing/login-small.png"
+                src="/images/landing/loginsmall.jpg"
                 alt="Login Image"
-                layout="fill"
                 objectFit="cover"
+                layout="fill"
               />
             </div>
           </div>
