@@ -12,13 +12,7 @@ export const Navbar = () => {
         <p className="text-muted-foreground dark:text-gray-300">Vinh</p>
       </div>
       <MobileSidebar />
-      <div className="flex justify-between items-center space-x-10">
-        <span className="text-black dark:text-white">button</span>
-        <span className="text-black dark:text-white">button</span>
-        <span className="text-black dark:text-white">button</span>
-        {/* Thêm nút chuyển đổi chế độ ở đây */}
-        <ModeToggle />
-      </div>
+      <ModeToggle />
     </nav>
   );
 };
