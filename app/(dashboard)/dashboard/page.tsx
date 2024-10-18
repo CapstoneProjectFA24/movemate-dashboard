@@ -38,21 +38,21 @@ const Dashboard = () => {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-1">Tổng số người dùng</h2>
           <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
             1,234
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-1">Doanh thu tháng này</h2>
           <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
             $12,345
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-1">Số lượng đơn hàng</h2>
           <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
             567
@@ -60,7 +60,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">
+      <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md mb-4">
         <h2 className="text-lg font-semibold mb-2">Doanh thu theo tháng</h2>
         <div style={{ height: "200px" }}>
           <Bar
@@ -80,7 +80,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+      <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
         <h2 className="text-lg font-semibold mb-2">Danh sách người dùng</h2>
         <table className="min-w-full border-collapse border border-gray-200 dark:border-gray-700">
           <thead>
