@@ -1,82 +1,92 @@
 "use client";
-import React from "react";
-import Footer from "@/components/shared/landing/footer";
-import MaxWidthWrapper from "@/components/shared/landing/max-width-wrapper";
 
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
+import StepsChart from "@/components/shared/chart-dashboard/step-chart";
+import HeartRateChart from "@/components/shared/chart-dashboard/heart-rate-chart";
+import ActivityChart from "@/components/shared/chart-dashboard/activity-chart";
+import ProgressChart from "@/components/shared/chart-dashboard/progress-chart";
+import WalkingDistanceChart from "@/components/shared/chart-dashboard/walking-distance-chart";
+import ActiveEnergyChart from "@/components/shared/chart-dashboard/activity-energy";
+import TimeChart from "@/components/shared/chart-dashboard/time-chart";
+import CircleChart from "@/components/shared/chart-dashboard/circle-chart";
+export const description = "A collection of health charts.";
 const Dashboard = () => {
-  const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-    datasets: [
-      {
-        label: "Doanh thu",
-        data: [120, 150, 180, 130, 220, 300, 250],
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-      },
-    ],
+  const stepsData = [
+    { date: "2024-01-01", steps: 2000 },
+    { date: "2024-01-02", steps: 2100 },
+    { date: "2024-01-03", steps: 2200 },
+    { date: "2024-01-04", steps: 1300 },
+    { date: "2024-01-05", steps: 1400 },
+    { date: "2024-01-06", steps: 2500 },
+    { date: "2024-01-07", steps: 1600 },
+  ];
+
+  const heartRateData = [
+    { date: "2024-01-01", resting: 62 },
+    { date: "2024-01-02", resting: 72 },
+    { date: "2024-01-03", resting: 35 },
+    { date: "2024-01-04", resting: 62 },
+    { date: "2024-01-05", resting: 52 },
+    { date: "2024-01-06", resting: 62 },
+    { date: "2024-01-07", resting: 70 },
+  ];
+
+  const sleepData = [
+    { date: "2024-01-01", time: 8.5 },
+    { date: "2024-01-02", time: 7.2 },
+    { date: "2024-01-03", time: 8.1 },
+    { date: "2024-01-04", time: 6.2 },
+    { date: "2024-01-05", time: 5.2 },
+    { date: "2024-01-06", time: 8.1 },
+    { date: "2024-01-07", time: 7.0 },
+  ];
+
+  const activityData = [
+    {
+      activity: "stand",
+      value: (8 / 12) * 100,
+      label: "8/12 hr",
+      fill: "var(--color-stand)",
+    },
+    {
+      activity: "exercise",
+      value: (46 / 60) * 100,
+      label: "46/60 min",
+      fill: "var(--color-exercise)",
+    },
+    {
+      activity: "move",
+      value: (245 / 360) * 100,
+      label: "245/360 kcal",
+      fill: "var(--color-move)",
+    },
+  ];
+
+  const progressData = {
+    currentYearData: { year: "2024", steps: 12453 },
+    previousYearData: { year: "2023", steps: 10103 },
   };
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-1">Tổng số người dùng</h2>
-          <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-            1,234
-          </p>
+      <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
+        <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">
+          <StepsChart data={stepsData} />
+          <HeartRateChart data={heartRateData} />
         </div>
-
-        <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-1">Doanh thu tháng này</h2>
-          <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-            $12,345
-          </p>
-        </div>
-
-        <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-1">Số lượng đơn hàng</h2>
-          <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-            567
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md mb-4">
-        <h2 className="text-lg font-semibold mb-2">Doanh thu theo tháng</h2>
-        <div style={{ height: "200px" }}>
-          <Bar
-            data={data}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  labels: {
-                    color: "rgb(75, 75, 75)",
-                  },
-                },
-              },
-            }}
+        <div className="grid w-full flex-1 gap-6 lg:max-w-[20rem]">
+          <ProgressChart
+            currentYearData={progressData.currentYearData}
+            previousYearData={progressData.previousYearData}
           />
+
+          <WalkingDistanceChart data={stepsData} averageDistance={12.5} />
+
+          <ActivityChart data={activityData} />
+        </div>
+        <div className="grid w-full flex-1 gap-6">
+          <CircleChart data={activityData} />
+          <ActiveEnergyChart energyData={stepsData} />
+          <TimeChart sleepData={sleepData} />
         </div>
       </div>
 
