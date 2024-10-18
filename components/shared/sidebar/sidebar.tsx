@@ -6,13 +6,6 @@ import { Navigation } from "./navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export const Sidebar = () => {
   return (
@@ -44,19 +37,9 @@ export const Sidebar = () => {
         <Navigation />
       </ScrollArea>
       <div className="p-4 mt-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle>Người dùng </CardTitle>
-            <CardDescription>
-              Unlock all features and get unlimited access to our support team.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button size="sm" className="w-full">
-              Đăng xuất
-            </Button>
-          </CardContent>
-        </Card>
+        <Button size="sm" className="w-full">
+          Đăng xuất
+        </Button>
       </div>
     </aside>
   );

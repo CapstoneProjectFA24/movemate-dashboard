@@ -46,7 +46,7 @@ export const routes: Route[] = [
     href: "/dashboard/settings",
   },
   {
-    label: "Thành viên",
+    label: "Nhân viên",
     icon: User,
     activeIcon: User,
     href: "/member",
