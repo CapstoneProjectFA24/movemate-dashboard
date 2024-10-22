@@ -1,13 +1,13 @@
 "use client";
 
-import StepsChart from "@/components/shared/chart-dashboard/step-chart";
-import HeartRateChart from "@/components/shared/chart-dashboard/heart-rate-chart";
-import ActivityChart from "@/components/shared/chart-dashboard/activity-chart";
-import ProgressChart from "@/components/shared/chart-dashboard/progress-chart";
-import WalkingDistanceChart from "@/components/shared/chart-dashboard/walking-distance-chart";
-import ActiveEnergyChart from "@/components/shared/chart-dashboard/activity-energy";
-import TimeChart from "@/components/shared/chart-dashboard/time-chart";
-import CircleChart from "@/components/shared/chart-dashboard/circle-chart";
+import StepsChart from "@/components/shared/dashboard/chart-dashboard/step-chart";
+import HeartRateChart from "@/components/shared/dashboard/chart-dashboard/heart-rate-chart";
+import ActivityChart from "@/components/shared/dashboard/chart-dashboard/activity-chart";
+import ProgressChart from "@/components/shared/dashboard/chart-dashboard/progress-chart";
+import WalkingDistanceChart from "@/components/shared/dashboard/chart-dashboard/walking-distance-chart";
+import ActiveEnergyChart from "@/components/shared/dashboard/chart-dashboard/activity-energy";
+import TimeChart from "@/components/shared/dashboard/chart-dashboard/time-chart";
+import CircleChart from "@/components/shared/dashboard/chart-dashboard/circle-chart";
 
 const Dashboard = () => {
   const stepsData = [
@@ -67,7 +67,7 @@ const Dashboard = () => {
   };
 
   return (
-    <>
+    <div className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md">
       <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
         <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">
           <StepsChart data={stepsData} />
@@ -116,7 +116,7 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

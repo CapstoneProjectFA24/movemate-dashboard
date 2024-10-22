@@ -1,11 +1,33 @@
+"use client";
+
+import Breadcrumb from "@/components/shared/dashboard/bread-crumb";
+import { breadcrumbTranslations } from "@/constants/bread-crumb-tranlate";
+import { usePathname } from "next/navigation";
+
 interface ContentDashboardLayoutProps {
   children: React.ReactNode;
 }
 
 const ContentDashboardLayout = ({ children }: ContentDashboardLayoutProps) => {
+  const pathName = usePathname();
+
+  const breadcrumbItems = pathName
+    .split("/")
+    .filter(Boolean)
+    .map((segment, index, arr) => {
+      const isLast = index === arr.length - 1;
+      return {
+        label: breadcrumbTranslations[segment] || segment,
+        href: "/" + arr.slice(0, index + 1).join("/"),
+        isLast,
+      };
+    });
   return (
-    <div className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md">
-      {children}
+    <div>
+      <div className="mb-4">
+        <Breadcrumb items={breadcrumbItems} />
+      </div>
+      <div>{children}</div>
     </div>
   );
 };

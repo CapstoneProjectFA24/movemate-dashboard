@@ -20,6 +20,7 @@ interface DataTableToolbarProps<TData> {
   filterableColumns?: DataTableFilterableColumn<TData>[]
   searchableColumns?: DataTableSearchableColumn<TData>[]
   newRowLink?: string
+  columnLabels?: Record<string, string> 
   deleteRowsAction?: React.MouseEventHandler<HTMLButtonElement>
 }
 
@@ -27,6 +28,7 @@ export function DataTableToolbar<TData>({
   table,
   filterableColumns = [],
   searchableColumns = [],
+  columnLabels,
   newRowLink,
   deleteRowsAction,
 }: DataTableToolbarProps<TData>) {
@@ -115,7 +117,7 @@ export function DataTableToolbar<TData>({
             </div>
           </Link>
         ) : null}
-        <DataTableViewOptions table={table} />
+        <DataTableViewOptions table={table} columnLabels= {columnLabels}/>
       </div>
     </div>
   )

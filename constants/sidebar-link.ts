@@ -6,7 +6,8 @@ import {
   GoHome,
   GoHomeFill,
 } from "react-icons/go";
-
+import { MdMiscellaneousServices } from "react-icons/md";
+import { FaRegListAlt } from "react-icons/fa";
 import { Settings, User } from "lucide-react";
 
 interface Route {
@@ -36,6 +37,20 @@ export const routes: Route[] = [
         href: "/admin/create",
         icon: GoCheckCircle,
         activeIcon: GoCheckCircleFill,
+      },
+    ],
+  },
+  {
+    label: "Quản lý dịch vụ",
+    icon: MdMiscellaneousServices,
+    activeIcon: MdMiscellaneousServices,
+    isParent: true,
+    children: [
+      {
+        label: "Danh sách dịch vụ",
+        href: "/dashboard/services",
+        icon: FaRegListAlt,
+        activeIcon: FaRegListAlt,
       },
     ],
   },

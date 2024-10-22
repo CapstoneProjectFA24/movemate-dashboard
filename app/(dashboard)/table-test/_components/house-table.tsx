@@ -37,7 +37,7 @@ export function HouseTable({ housePromise }: HouseTableProps) {
   const filterableColumns: DataTableFilterableColumn<IHouse>[] = [
     {
       id: "name",
-      title: "status",
+      title: "type",
       options: ["WAITING", "COMING", "LIVE", "END"].map((status) => ({
         label: status[0]?.toUpperCase() + status.slice(1),
         value: status,

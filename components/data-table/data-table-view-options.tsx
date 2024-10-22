@@ -15,11 +15,14 @@ import {
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
+  columnLabels?: Record<string, string> 
 }
 
 export function DataTableViewOptions<TData>({
   table,
+  columnLabels = {},  
 }: DataTableViewOptionsProps<TData>) {
+  console.log(columnLabels)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,11 +33,11 @@ export function DataTableViewOptions<TData>({
           className="ml-auto hidden h-8 lg:flex"
         >
           <MixerHorizontalIcon className="mr-2 size-4" />
-          View
+          Chế độ hiển thị
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel>Mở / Đóng cột</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -50,7 +53,7 @@ export function DataTableViewOptions<TData>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {columnLabels[column.id] || column.id}
               </DropdownMenuCheckboxItem>
             )
           })}

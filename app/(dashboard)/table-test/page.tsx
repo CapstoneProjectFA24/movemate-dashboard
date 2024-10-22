@@ -4,7 +4,7 @@ import { getHouses } from "@/lib/actions/house";
 import { SearchParams } from "@/types/table";
 import React from "react";
 import { HouseTable } from "./_components/house-table";
-import { Shell } from "@/components/shared/shell";
+import { Shell } from "@/components/shared/custom-ui/shell";
 export interface IndexPageProps {
   searchParams: SearchParams;
 }
