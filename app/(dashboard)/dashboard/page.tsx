@@ -8,7 +8,7 @@ import WalkingDistanceChart from "@/components/shared/chart-dashboard/walking-di
 import ActiveEnergyChart from "@/components/shared/chart-dashboard/activity-energy";
 import TimeChart from "@/components/shared/chart-dashboard/time-chart";
 import CircleChart from "@/components/shared/chart-dashboard/circle-chart";
-export const description = "A collection of health charts.";
+
 const Dashboard = () => {
   const stepsData = [
     { date: "2024-01-01", steps: 2000 },
