@@ -6,9 +6,14 @@ import MaxWidthWrapper from "./max-width-wrapper";
 import { ModeToggle } from "../navbar/mode-toggle";
 import { links } from "@/constants/nav-landing-link";
 import NavMobile from "./nav-mobile";
+import { signOut, useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import FormPopoverUser from "../form-popover-user/form-popover-user";
+import UserAvatar from "../form-popover-user/user-avatar";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <nav className="sticky z-[100] h-16 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all dark:bg-gray-800 dark:border-gray-600">
@@ -38,7 +43,6 @@ const Navbar = () => {
                       : "text-gray-800 dark:text-gray-200 hover:text-orange-600"
                   }`}
                 >
-                  {/* {route.icon && <route.icon className="w-5 h-5" />} */}
                   <span>{route.label}</span>
                 </Link>
               );
@@ -50,11 +54,25 @@ const Navbar = () => {
               Hotline: 0382703625
             </span>
             <ModeToggle />
-            <Link href="/sign-in">
-              <button className="px-4 py-2 text-white bg-orange-600 rounded-md hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600">
-                Đăng nhập
-              </button>
-            </Link>
+
+            {session ? (
+              <div>
+                <FormPopoverUser align="start" side="bottom" sideOffset={18}>
+                  <Button
+                    size="icon"
+                    className="rounded-full flex justify-center md:block h-auto p-0"
+                  >
+                    <UserAvatar />
+                  </Button>
+                </FormPopoverUser>
+              </div>
+            ) : (
+              <Link href="/sign-in">
+                <button className="px-4 py-2 text-white bg-orange-600 rounded-md hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600">
+                  Đăng nhập
+                </button>
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center space-x-4 md:hidden">
