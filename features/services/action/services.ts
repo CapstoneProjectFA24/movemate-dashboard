@@ -1,7 +1,6 @@
 "use server";
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
-import { axiosAuth } from "@/lib/api/api-interceptor/api";
 
 import {
   Result,
@@ -12,8 +11,8 @@ import {
 } from "@/lib/api/api-handler/generic";
 
 import { SearchParams } from "@/types/table";
-import { IService } from "@/types/dashboard";
-import { SERVICES_URL } from "./action-key";
+import { IService } from "../type/services-type";
+import { SERVICES_URL } from "@/constants/api-constant";
 
 export async function getServices(
   searchParams: SearchParams

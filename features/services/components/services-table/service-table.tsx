@@ -11,11 +11,12 @@ import {
   DataTableSearchableColumn,
 } from "@/types/table";
 import { toast } from "sonner";
-import { IService } from "@/types/dashboard";
-import { getServices } from "@/lib/actions";
-import { fetchServicesTableColumnDefs } from "./service-table-column-def";
-import { ServiceTypeNames } from "@/lib/enums/service-type";
+
+import { ServiceTypeNames } from "@/features/services/enums/service-type";
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
+import { getServices } from "../../action/services";
+import { fetchServicesTableColumnDefs } from "./service-table-column-def";
+import { IService } from "../../type/services-type";
 
 interface ServicesTableProps {
   servicesPromise: ReturnType<typeof getServices>;

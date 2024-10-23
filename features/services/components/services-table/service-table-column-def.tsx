@@ -19,7 +19,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 
-import { IService } from "@/types/dashboard";
 import {
   MdSystemUpdateAlt,
   MdBuildCircle,
@@ -27,10 +26,11 @@ import {
   MdLocalShipping,
 } from "react-icons/md";
 import { Badge } from "@/components/ui/badge";
-import { ServiceType, ServiceTypeNames } from "@/lib/enums/service-type";
+import { ServiceType, ServiceTypeNames } from "@/features/services/enums/service-type";
 import { cn, formatter } from "@/lib/utils";
 import Image from "next/image";
 import { CheckCircle2, Edit, XCircle } from "lucide-react";
+import { IService } from "../../type/services-type";
 
 // Object map type sang icon tương ứng
 const serviceTypeIcons = {
