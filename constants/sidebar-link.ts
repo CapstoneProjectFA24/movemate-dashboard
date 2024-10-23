@@ -9,7 +9,7 @@ import {
 import { MdMiscellaneousServices } from "react-icons/md";
 import { FaRegListAlt } from "react-icons/fa";
 import { Settings, User } from "lucide-react";
-
+import { FaMailchimp ,FaUserPen} from "react-icons/fa6";
 interface Route {
   label: string;
   icon: LucideIcon | IconType;
@@ -27,14 +27,14 @@ export const routes: Route[] = [
     href: "/dashboard",
   },
   {
-    label: "Quản lý",
-    icon: GoCheckCircle,
-    activeIcon: GoCheckCircleFill,
+    label: "Quản lý nhân sự",
+    icon: FaUserPen,
+    activeIcon: FaUserPen,
     isParent: true,
     children: [
       {
-        label: "Create Users",
-        href: "/admin/create",
+        label: "Danh sách nhân sự",
+        href: "/dashboard/users",
         icon: GoCheckCircle,
         activeIcon: GoCheckCircleFill,
       },
@@ -55,15 +55,17 @@ export const routes: Route[] = [
     ],
   },
   {
+    label: "Phản hồi",
+    icon: FaMailchimp,
+    activeIcon: FaMailchimp,
+    href: "/dashboard/mail",
+  },
+  {
     label: "Cài đặt",
     icon: Settings,
     activeIcon: Settings,
     href: "/dashboard/settings",
   },
-  {
-    label: "Nhân viên",
-    icon: User,
-    activeIcon: User,
-    href: "/member",
-  },
+
+
 ];

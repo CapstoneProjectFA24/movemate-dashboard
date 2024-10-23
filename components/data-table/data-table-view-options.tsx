@@ -1,28 +1,27 @@
-"use client"
+"use client";
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
-import { MixerHorizontalIcon } from "@radix-ui/react-icons"
-import { type Table } from "@tanstack/react-table"
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { type Table } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 interface DataTableViewOptionsProps<TData> {
-  table: Table<TData>
-  columnLabels?: Record<string, string> 
+  table: Table<TData>;
+  columnLabels?: Record<string, string>;
 }
 
 export function DataTableViewOptions<TData>({
   table,
-  columnLabels = {},  
+  columnLabels = {},
 }: DataTableViewOptionsProps<TData>) {
-  console.log(columnLabels)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,9 +54,9 @@ export function DataTableViewOptions<TData>({
               >
                 {columnLabels[column.id] || column.id}
               </DropdownMenuCheckboxItem>
-            )
+            );
           })}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
