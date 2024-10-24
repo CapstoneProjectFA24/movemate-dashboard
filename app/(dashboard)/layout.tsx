@@ -1,5 +1,6 @@
-import { Navbar } from "@/components/shared/navbar/navbar";
-import { Sidebar } from "@/components/shared/sidebar/sidebar";
+import { Navbar } from "@/components/shared/dashboard/navbar/navbar";
+import { Sidebar } from "@/components/shared/dashboard/sidebar/sidebar";
+
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

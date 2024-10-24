@@ -3,13 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import MaxWidthWrapper from "./max-width-wrapper";
-import { ModeToggle } from "../navbar/mode-toggle";
 import { links } from "@/constants/nav-landing-link";
 import NavMobile from "./nav-mobile";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import FormPopoverUser from "../form-popover-user/form-popover-user";
 import UserAvatar from "../form-popover-user/user-avatar";
+import { ModeToggle } from "../dashboard/navbar/mode-toggle";
 
 const Navbar = () => {
   const pathname = usePathname();

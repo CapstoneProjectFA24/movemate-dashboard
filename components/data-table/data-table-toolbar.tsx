@@ -20,7 +20,7 @@ interface DataTableToolbarProps<TData> {
   filterableColumns?: DataTableFilterableColumn<TData>[]
   searchableColumns?: DataTableSearchableColumn<TData>[]
   newRowLink?: string
-  columnLabels?: Record<string, string> 
+  columnLabels?: Record<string, string>
   deleteRowsAction?: React.MouseEventHandler<HTMLButtonElement>
 }
 
@@ -35,30 +35,31 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0
   const [isPending, startTransition] = React.useTransition()
 
+  const handleGlobalSearch = React.useCallback(
+    (value: string) => {
+      searchableColumns.forEach((column) => {
+        const columnId = String(column.id)
+        table.getColumn(columnId)?.setFilterValue(value)
+      })
+    },
+    [searchableColumns, table]
+  )
+
+  const currentSearchValue = searchableColumns.length > 0
+    ? (table.getColumn(String(searchableColumns[0].id))?.getFilterValue() as string) ?? ""
+    : ""
+
   return (
     <div className="flex w-full items-center justify-between space-x-2 overflow-auto p-1">
       <div className="flex flex-1 items-center space-x-2">
-        {searchableColumns.length > 0 &&
-          searchableColumns.map(
-            (column) =>
-              table.getColumn(column.id ? String(column.id) : "") && (
-                <Input
-                  key={String(column.id)}
-                  placeholder={`Tìm kiếm ${column.title}...`}
-                  value={
-                    (table
-                      .getColumn(String(column.id))
-                      ?.getFilterValue() as string) ?? ""
-                  }
-                  onChange={(event) =>
-                    table
-                      .getColumn(String(column.id))
-                      ?.setFilterValue(event.target.value)
-                  }
-                  className="h-8 w-[150px] lg:w-[250px] focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
-              )
-          )}
+        {searchableColumns.length > 0 && (
+          <Input
+            placeholder="Tìm kiếm..."
+            value={currentSearchValue}
+            onChange={(event) => handleGlobalSearch(event.target.value)}
+            className="h-8 w-[150px] lg:w-[250px] focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+        )}
         {filterableColumns.length > 0 &&
           filterableColumns.map(
             (column) =>
@@ -117,7 +118,7 @@ export function DataTableToolbar<TData>({
             </div>
           </Link>
         ) : null}
-        <DataTableViewOptions table={table} columnLabels= {columnLabels}/>
+        <DataTableViewOptions table={table} columnLabels={columnLabels} />
       </div>
     </div>
   )

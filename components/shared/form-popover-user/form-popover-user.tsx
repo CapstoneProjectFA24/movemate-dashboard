@@ -1,17 +1,20 @@
 "use client";
 
-import React from "react";
-
+import React, { useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, LogOut, Settings } from "lucide-react";
-
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { 
+  Settings,
+  LogOut,
+  ChevronRight,
+  LayoutDashboard
+} from "lucide-react";
 import UserAvatar from "./user-avatar";
 
 interface FormPopoverUserProps {
@@ -21,12 +24,6 @@ interface FormPopoverUserProps {
   sideOffset?: number;
 }
 
-const nameStringTest = "Nguyễn Thành Vinh";
-const nameSplit = nameStringTest.split(" ");
-// console.log(nameSplit[0]);
-// console.log(nameSplit[nameSplit.length - 1]);
-const fullName = nameSplit[0] + " " + nameSplit[nameSplit.length - 1];
-
 const FormPopoverUser = ({
   children,
   side = "bottom",
@@ -34,51 +31,88 @@ const FormPopoverUser = ({
   sideOffset = 0,
 }: FormPopoverUserProps) => {
   const router = useRouter();
-  const handleLogout = () => {
-    signOut();
-    router.push("/");
-  };
+  const { data: session } = useSession();
+  
+  const hasManagementAccess = useCallback(() => {
+    const role = session?.user?.roleName;
+    return role === "Admin" || role === "Staff" || role === "Reviewer";
+  }, [session?.user?.roleName]);
+
+  useEffect(() => {
+    if (hasManagementAccess()) {
+      router.prefetch("/dashboard");
+    }
+  }, [hasManagementAccess, router]);
+
+  const getFullName = useCallback((name: string) => {
+    const nameParts = name.split(" ");
+    return `${nameParts[0]} ${nameParts[nameParts.length - 1]}`;
+  }, []);
+
+  const handleNavigateToDashboard = useCallback(() => {
+   
+    router.push("/dashboard");
+  }, [router]);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await signOut({ redirect: false });
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }, [router]);
+
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className="w-60 pt-3 mr-2 dark:bg-gray-800"
+        className="w-64 pt-3 mr-2 dark:bg-gray-800"
         side={side}
         sideOffset={sideOffset}
       >
-        <div className="mb-2 p-1">Tài khoản</div>
-        <div className="flex ">
-          <div className="flex items-center gap-2">
-            <UserAvatar />
-            <div className="text-xs">
-              <p className="font-bold text-sm">{fullName}</p>
-              <p className="text-neutral-200">vinh@gmail.com</p>
+        <div className="px-3 pb-2 text-sm font-medium">Tài khoản</div>
+        <div className="px-3 py-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <UserAvatar />
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">
+                  {getFullName("Nguyễn Thành Vinh")}
+                </p>
+                <p className="text-xs text-neutral-200">vinh@gmail.com</p>
+              </div>
             </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-neutral-500 hover:text-neutral-400"
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
           </div>
-          <Button
-            className="h-auto w-auto ml-auto p-2 text-neutral-600"
-            variant="ghost"
-          >
-            <MoreVertical className="h-4 w-4" />
-          </Button>
         </div>
 
-        <div className="pt-6  text-neutral-500 space-y-2">
-          {/* <Button
-            variant="ghost"
-            className="flex items-center gap-x-3 group w-full justify-start"
-          >
-            <Settings className="h-6 w-6 " />
-            <div className=" p-2 rounded-md font-normal">Quản lý tài khoản</div>
-          </Button> */}
+        <div className="mt-2 border-t border-neutral-700">
+          {hasManagementAccess() && (
+            <Button
+              onClick={handleNavigateToDashboard}
+              variant="ghost"
+              className="w-full justify-start gap-3 px-3 py-2 font-normal"
+            >
+              <LayoutDashboard className="h-5 w-5" />
+              Trang quản lý
+            </Button>
+          )}
+
           <Button
             onClick={handleLogout}
             variant="ghost"
-            className="flex items-center gap-x-3 group w-full justify-start"
+            className="w-full justify-start gap-3 px-3 py-2 font-normal text-red-500 hover:text-red-400"
           >
-            <LogOut className="h-6 w-6 " />
-            <div className=" p-2 rounded-md font-normal">Đăng xuất</div>
+            <LogOut className="h-5 w-5" />
+            Đăng xuất
           </Button>
         </div>
       </PopoverContent>

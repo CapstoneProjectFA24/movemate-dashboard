@@ -18,7 +18,10 @@ interface UserJWT extends JWT {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const authOptions: NextAuthConfig = {
-  session: { strategy: "jwt" },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -50,7 +53,6 @@ export const authOptions: NextAuthConfig = {
         } catch (error) {
           return null;
         }
-
       },
     }),
   ],
@@ -64,8 +66,16 @@ export const authOptions: NextAuthConfig = {
     async session({ session, token }) {
       session.user = token as UserJWT;
       if (token) {
-        const { id, email, roleName, roleId, accessToken, refreshToken } = token;
-        Object.assign(session.user, { id, email, roleName, roleId, accessToken, refreshToken });
+        const { id, email, roleName, roleId, accessToken, refreshToken } =
+          token;
+        Object.assign(session.user, {
+          id,
+          email,
+          roleName,
+          roleId,
+          accessToken,
+          refreshToken,
+        });
       }
       return session;
     },
@@ -74,4 +84,10 @@ export const authOptions: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET!,
 };
 
-export const { handlers, auth, signIn, signOut, unstable_update: update } = NextAuth(authOptions);
+export const {
+  handlers,
+  auth,
+  signIn,
+  signOut,
+  unstable_update: update,
+} = NextAuth(authOptions);

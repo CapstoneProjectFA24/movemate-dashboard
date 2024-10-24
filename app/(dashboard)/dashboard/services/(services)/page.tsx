@@ -5,7 +5,6 @@ import { ServicesTable } from "@/features/services/components/services-table/ser
 import { SearchParams } from "@/types/table";
 import React from "react";
 
-
 export interface IndexPageProps {
   searchParams: SearchParams;
 }

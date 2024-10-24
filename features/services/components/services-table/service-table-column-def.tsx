@@ -26,7 +26,7 @@ import {
   MdLocalShipping,
 } from "react-icons/md";
 import { Badge } from "@/components/ui/badge";
-import { ServiceType, ServiceTypeNames } from "@/features/services/enums/service-type";
+import { ServiceType, ServiceTypeNames } from "@/features/services/enums/service-enum";
 import { cn, formatter } from "@/lib/utils";
 import Image from "next/image";
 import { CheckCircle2, Edit, XCircle } from "lucide-react";
