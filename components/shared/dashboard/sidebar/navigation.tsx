@@ -11,14 +11,23 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { routes } from "@/constants";
-
+import { Route } from "@/constants/sidebar-link";
+import { useRole } from "@/hooks/use-auth-session-client";
 
 export const Navigation = () => {
   const pathname = usePathname();
+  const { userRole, hasRole, hasAnyRole } = useRole();
+
+  const isRouteVisible = (route: Route) => {
+    if (route.allowsRoles && !hasAnyRole(route.allowsRoles)) {
+      return false;
+    }
+    return true;
+  };
 
   return (
     <ul className="flex flex-col space-y-1">
-      {routes.map((item) => {
+      {routes.filter(isRouteVisible).map((item) => {
         const isActive = pathname === item.href;
         const Icon = isActive ? item.activeIcon : item.icon;
 

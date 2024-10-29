@@ -1,3 +1,7 @@
+import LoadingSpinner, {
+  FullPageSpinner,
+} from "@/components/shared/custom-ui/loading-spinner";
+import { Suspense } from "react";
 
 interface CreateServicesLayoutProps {
   children: React.ReactNode;
@@ -5,11 +9,13 @@ interface CreateServicesLayoutProps {
 
 const CreateServicesLayout = ({ children }: CreateServicesLayoutProps) => {
   return (
-    <div className="space-y-2">
-      <div className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md min-w-full">
-        {children}
+    <Suspense fallback={<FullPageSpinner />}>
+      <div className="space-y-2">
+        <div className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md min-w-full">
+          {children}
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 
