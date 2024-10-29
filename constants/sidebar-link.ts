@@ -10,6 +10,7 @@ import { MdMiscellaneousServices } from "react-icons/md";
 import { FaRegListAlt } from "react-icons/fa";
 import { Settings, User } from "lucide-react";
 import { FaMailchimp, FaUserPen } from "react-icons/fa6";
+import { TbBrandBooking } from "react-icons/tb";
 import { UserRole } from "@/lib/enums/user-role-enum";
 export interface Route {
   label: string;
@@ -60,8 +61,8 @@ export const routes: Route[] = [
   },
   {
     label: "Quản lý đơn dọn nhà",
-    icon: FaMailchimp,
-    activeIcon: FaMailchimp,
+    icon: TbBrandBooking,
+    activeIcon: TbBrandBooking,
     href: "/dashboard/bookings",
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },

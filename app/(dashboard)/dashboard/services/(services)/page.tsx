@@ -10,9 +10,9 @@ export interface IndexPageProps {
 }
 const ServicePage = ({ searchParams }: IndexPageProps) => {
   const servicesPromise = getServices(searchParams);
-
+console.log(searchParams)
   return (
-    <div>
+    <div className=" min-w-full">
       <Shell>
         <React.Suspense
           fallback={
