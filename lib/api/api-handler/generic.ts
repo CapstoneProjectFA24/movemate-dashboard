@@ -44,7 +44,7 @@ export async function fetchListData<T>(
     metaData: {
       totalItemsCount: number;
       pageSize: number;
-      TotalPagesCount: number;
+      totalPagesCount: number;
     };
   }>(() => axiosAuth.get(url, { params: searchParams }));
 
@@ -54,7 +54,7 @@ export async function fetchListData<T>(
       success: true,
       data: {
         data: payload || [],
-        pageCount: metaData?.TotalPagesCount || 0,
+        pageCount: metaData?.totalPagesCount || 0,
       }
     };
   }

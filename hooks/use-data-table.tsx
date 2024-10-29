@@ -53,14 +53,13 @@ export function useDataTable<TData, TValue>({
 
   const sort = searchParams?.get("sort");
   const [column, order] = sort?.split(".") ?? [];
-  const globalSearch = searchParams?.get("Search") ?? "";
-
+  const globalSearch = searchParams?.get("search") ?? "";
   // create query string
   const createQueryString = useCallback(
     (params: Record<string, string | number | null>) => {
       const newSearchParams = new URLSearchParams(searchParams?.toString());
 
-
+      // Remove existing page and per_page if they are default values
       if (newSearchParams.get("page") === "1") {
         newSearchParams.delete("page");
       }
@@ -78,8 +77,8 @@ export function useDataTable<TData, TValue>({
           newSearchParams.delete(key);
           continue;
         }
-        
-        if (value === null || value === "") {
+
+        if (value === null) {
           newSearchParams.delete(key);
         } else {
           newSearchParams.set(key, String(value));
@@ -171,7 +170,7 @@ export function useDataTable<TData, TValue>({
   }, [sorting]);
 
   // Handle server-side filtering
-  const debouncedColumnFilters = JSON.parse(
+  const debouncedSearchableColumnFilters = JSON.parse(
     useDebounce(
       JSON.stringify(
         columnFilters.filter((filter) => {
@@ -182,11 +181,9 @@ export function useDataTable<TData, TValue>({
     )
   ) as ColumnFiltersState;
 
-
-
-  const filterableColumnFilters = debouncedColumnFilters.filter(filter => 
-    filterableColumns.find(column => column.id === filter.id)
-  );
+  const filterableColumnFilters = columnFilters.filter((filter) => {
+    return filterableColumns.find((column) => column.id === filter.id);
+  });
 
   useEffect(() => {
     // Initialize new params
@@ -195,13 +192,13 @@ export function useDataTable<TData, TValue>({
       per_page: 10,
     };
 
-    // Handle global search
-    const searchValue =
-      debouncedColumnFilters.length > 0
-        ? (debouncedColumnFilters[0].value as string)
-        : null;
-    if ( newParamsObject.search = searchValue) {
-      Object.assign(newParamsObject, { search: newParamsObject.search });
+    // Handle debounced searchable column filters
+    for (const column of debouncedSearchableColumnFilters) {
+      if (typeof column.value === "string") {
+        Object.assign(newParamsObject, {
+          [column.id]: typeof column.value === "string" ? column.value : null,
+        });
+      }
     }
 
     // Handle filterable column filters
@@ -214,7 +211,10 @@ export function useDataTable<TData, TValue>({
     // Remove deleted values
     for (const key of searchParams.keys()) {
       if (
-        key === "Search" && !searchValue ||
+        (searchableColumns.find((column) => column.id === key) &&
+          !debouncedSearchableColumnFilters.find(
+            (column) => column.id === key
+          )) ||
         (filterableColumns.find((column) => column.id === key) &&
           !filterableColumnFilters.find((column) => column.id === key))
       ) {
@@ -223,19 +223,15 @@ export function useDataTable<TData, TValue>({
     }
 
     // After cumulating all the changes, push new params
-    router.push(`${pathname}?${createQueryString(newParamsObject)}`);
+    const queryString = createQueryString(newParamsObject);
+    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(debouncedColumnFilters),
+    JSON.stringify(debouncedSearchableColumnFilters),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(filterableColumnFilters),
-    pathname,
-    createQueryString,
-    router,
-    searchParams,
-    filterableColumns,
   ]);
 
   const dataTable = useReactTable({
