@@ -9,16 +9,20 @@ import {
 import { MdMiscellaneousServices } from "react-icons/md";
 import { FaRegListAlt } from "react-icons/fa";
 import { Settings, User } from "lucide-react";
-import { FaMailchimp ,FaUserPen} from "react-icons/fa6";
-interface Route {
+import { FaMailchimp, FaUserPen } from "react-icons/fa6";
+import { UserRole } from "@/lib/enums/user-role-enum";
+export interface Route {
   label: string;
   icon: LucideIcon | IconType;
   activeIcon: LucideIcon | IconType;
   href?: string;
   isParent?: boolean;
   children?: Omit<Route, "isParent" | "children">[];
+  allowsRoles?: UserRole[];
 }
 
+// ko truyền allowRoles là full role dc vô nhé 
+// code dev để full mốt chặn sau => ví dụ ở bookings route
 export const routes: Route[] = [
   {
     label: "Trang chủ",
@@ -55,6 +59,13 @@ export const routes: Route[] = [
     ],
   },
   {
+    label: "Quản lý đơn dọn nhà",
+    icon: FaMailchimp,
+    activeIcon: FaMailchimp,
+    href: "/dashboard/bookings",
+    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+  },
+  {
     label: "Phản hồi",
     icon: FaMailchimp,
     activeIcon: FaMailchimp,
@@ -66,6 +77,4 @@ export const routes: Route[] = [
     activeIcon: Settings,
     href: "/dashboard/settings",
   },
-
-
 ];

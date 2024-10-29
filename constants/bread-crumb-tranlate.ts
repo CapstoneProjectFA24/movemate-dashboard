@@ -7,5 +7,6 @@ export const breadcrumbTranslations: { [key: string]: string } = {
     settings: "Cài đặt",
     services: "Dịch vụ",
     create_service: "Tạo mới dịch vụ",
-    mail : "Phản hồi"
+    bookings: "Quản lý đơn dọn nhà",
+    mail : "Phản hồi",
   };

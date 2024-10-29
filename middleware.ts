@@ -15,7 +15,7 @@ export default auth((req) => {
   //change to ADMIN later
   const isAdminRole =
     req.auth?.user.roleName?.toUpperCase() === "ADMIN" ||
-    req.auth?.user.roleName?.toUpperCase() === "STAFF" ||
+    req.auth?.user.roleName?.toUpperCase() === "REVIEWER" || 
     req.auth?.user.roleName?.toUpperCase() === "MANAGER";
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
