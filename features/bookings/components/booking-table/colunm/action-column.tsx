@@ -12,6 +12,10 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { BookingStatus } from "@/features/bookings/enums/booking-state-enum";
+import { toast } from "sonner";
+import { useTransition } from "react";
+import { updateDetailStatus } from "@/features/bookings/action/update-booking";
 
 interface ActionMenuProps {
   row: Row<IBooking>;
@@ -19,22 +23,39 @@ interface ActionMenuProps {
 
 const ActionMenu = ({ row }: ActionMenuProps) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  const handleViewDetails = () => {
-    router.push(`/dashboard/bookings/${row.original.id}`);
+  const isReviewOnl = row.original.isReviewOnline;
+  const status = row.original.status as BookingStatus;
+  const isNotYetReviewedOnl = [
+    BookingStatus.ASSIGNED,
+    BookingStatus.REVIEWING,
+    BookingStatus.PENDING,
+  ].includes(status);
+
+  const handleViewDetails = async () => {
+    if (isReviewOnl && isNotYetReviewedOnl) {
+      const params = row.original.id;
+
+      startTransition(async () => {
+        const result = await updateDetailStatus(params.toString());
+
+        if (!result.success) {
+          toast.error(result.error);
+          return;
+        }
+
+        router.push(`/dashboard/bookings/${row.original.id}`);
+        toast.success("Cập nhật sang reviewing thành công!");
+      });
+    } else {
+      startTransition(() => {
+        router.push(`/dashboard/bookings/${row.original.id}`);
+      });
+    }
   };
 
-  const handleDelete = () => {
-    // Implement delete logic
-    // startTransition(() => {
-    //   row.toggleSelected(false);
-    //   toast.promise(deleteBooking(row.original.id), {
-    //     loading: "Đang xóa...",
-    //     success: "Xóa thành công",
-    //     error: "Lỗi khi xóa",
-    //   });
-    // });
-  };
+  const handleDelete = () => {};
 
   return (
     <DropdownMenu>
@@ -52,7 +73,6 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
           <span>Chi tiết</span>
           <Edit className="ml-auto h-4 w-4" />
         </DropdownMenuItem>
-
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleDelete}>
           Xóa

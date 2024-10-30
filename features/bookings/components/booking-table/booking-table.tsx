@@ -64,7 +64,6 @@ export function BookingTable({ bookingPromise }: BookingTableProps) {
         columns={columns}
         searchableColumns={searchableColumns}
         filterableColumns={filterableColumns}
-        newRowLink="/dashboard/services/create_service"
         columnLabels={labels}
       />
     </div>

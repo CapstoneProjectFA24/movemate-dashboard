@@ -13,12 +13,12 @@ import {
 
 import { SearchParams } from "@/types/table";
 import { IBooking } from "../type/booking-type";
-import { BOOKING_URL, SERVICES_URL } from "@/constants/api-constant";
+import { BOOKING_URL } from "@/constants/api-constant";
 import { auth } from "@/lib/next-auth/auth";
 import { axiosAuth } from "@/lib/api/api-interceptor/api";
 
 export async function getBookingsOnl(
-  searchParams: SearchParams,
+  searchParams: SearchParams
 ): Promise<ApiListResponse<IBooking>> {
   noStore();
   const sesison = await auth();
@@ -26,7 +26,7 @@ export async function getBookingsOnl(
 
   const modifiedSearchParams = {
     ...searchParams,
-    userId: userId,
+    // userId: userId,
     IsReviewOnl: true,
   };
 
@@ -42,7 +42,7 @@ export async function getBookingsOnl(
   return result.data;
 }
 export async function getBookingsOff(
-  searchParams: SearchParams,
+  searchParams: SearchParams
 ): Promise<ApiListResponse<IBooking>> {
   noStore();
   const sesison = await auth();
@@ -81,35 +81,4 @@ export async function getBooking(
   return result.data;
 }
 
-export async function updateBookingOnlineDetail(
-  params: string
-): Promise<Result<void>> {
-  noStore();
-  const result = await apiRequest(() =>
-    axiosAuth.put(`${BOOKING_URL.UPDATE_DETAILS_STATUS}/${params}`)
-  );
 
-  if (result.success) {
-    revalidatePath("/dashboard/bookings");
-    return { success: true, data: undefined };
-  }
-
-  return result;
-}
-
-export async function updateBookingOnlineDetail1(
-  params: string,
-  data: any
-): Promise<Result<void>> {
-  noStore();
-  const result = await apiRequest(() =>
-    axiosAuth.put(`${BOOKING_URL.UPDATE_BOOKING_STATUS}/${params}`, data)
-  );
-
-  if (result.success) {
-    revalidatePath("/dashboard/bookings");
-    return { success: true, data: undefined };
-  }
-
-  return result;
-}
