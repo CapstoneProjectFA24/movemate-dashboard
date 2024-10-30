@@ -13,13 +13,13 @@ import {
 import { toast } from "sonner";
 
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
-import { getBookings } from "../../action/bookings";
+import { getBookingsOff, getBookingsOnl } from "../../action/bookings";
 import { IBooking } from "../../type/booking-type";
 import { fetchBookingsTableColumnDefs } from "./booking-table-column-def";
 import { BookingStatusNames } from "../../enums/booking-state-enum";
 
 interface BookingTableProps {
-  bookingPromise: ReturnType<typeof getBookings>;
+  bookingPromise: ReturnType<typeof getBookingsOnl | typeof getBookingsOff>;
 }
 
 export function BookingTable({ bookingPromise }: BookingTableProps) {
