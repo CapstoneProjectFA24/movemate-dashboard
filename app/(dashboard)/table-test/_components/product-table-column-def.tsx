@@ -3,7 +3,7 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { IHouse } from "@/types/dashboard";
+import { IHouse } from "@/features/services/type/house-type";
 
 
 export function fetchHousesTableColumnDefs(): ColumnDef<IHouse, unknown>[] {

@@ -3,8 +3,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { getHouses } from "@/lib/actions/house";
-import { useToast } from "@/hooks/use-toast";
 import { signOut, useSession, } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface TestCompoProps {
   housePromise: ReturnType<typeof getHouses>;
