@@ -29,7 +29,6 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
   const status = row.original.status as BookingStatus;
   const isNotYetReviewedOnl = [
     BookingStatus.ASSIGNED,
-    BookingStatus.REVIEWING,
     BookingStatus.PENDING,
   ].includes(status);
 

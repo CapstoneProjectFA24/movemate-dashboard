@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Image } from "lucide-react";
-import { BookingTracker } from "../../type/booking-type";
+import { BookingTracker } from "../../../type/booking-type";
 
 interface BookingImagesProps {
   bookingTrackers: BookingTracker[] | undefined;
@@ -19,7 +19,7 @@ const BookingImages = ({ bookingTrackers }: BookingImagesProps) => {
       <Card className="w-full">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center text-base font-medium">
-            <Image className="h-4 w-4 mr-2" />
+            <Image className="h-4 w-4 mr-2 text-primary" />
             Hình ảnh nhà khách hàng
           </CardTitle>
         </CardHeader>
