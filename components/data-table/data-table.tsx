@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
         newRowLink={newRowLink}
       />
       <div className="rounded-md border border-black dark:border-gray-600">
-        <div className="max-h-[calc(2.5rem*11)] overflow-auto">
+        <div className="overflow-auto">
           <Table>
             <TableHeader className="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
               {dataTable.getHeaderGroups().map((headerGroup) => (

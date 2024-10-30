@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useModal } from "@/hooks/use-modal";
 import {
   Sheet,
@@ -12,33 +12,43 @@ import { useGetServicesToUpdateBooking } from "@/features/bookings/react-query/q
 import { ServiceType } from "@/features/services/enums/service-enum";
 import { IService } from "@/features/services/type/services-type";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
+import { useParams } from "next/navigation";
+import { updateBookingStatus } from "@/features/bookings/action/update-booking";
 
 export const UpdateBookingServicesModalSheet = () => {
+  const params = useParams();
+  const [isPending, startTransition] = useTransition();
   const { isOpen, onClose, type, data } = useModal();
   const isOpenModal = isOpen && type === "updateBookingServicesModalSheet";
   const { data: services, isLoading } = useGetServicesToUpdateBooking(
     data.bookingDetail?.type as ServiceType
   );
 
-  const bookingDetails = data.bookingDetails;
-
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [parentService, setParentService] = useState<IService | null>(null);
 
-  const prepareBookingDetails = () => {
-    return selectedServices.map((service) => ({
+  const handleSubmit = async () => {
+    const bookingDetails = selectedServices.map((service) => ({
       serviceId: service.id,
       quantity: quantities[service.id] || 0,
     }));
-  };
-
-  const handleSubmit = () => {
-    const bookingDetails = prepareBookingDetails();
     const dataToSend = { bookingDetails };
-    console.log(dataToSend);
+
+
+    startTransition(async () => {
+      const result = await updateBookingStatus(
+        params.id.toString(),
+        dataToSend
+      );
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Cập nhật dịch vụ thành công !");
+    });
   };
 
   useEffect(() => {
@@ -58,37 +68,51 @@ export const UpdateBookingServicesModalSheet = () => {
       );
 
       if (selectedServiceFromBooking) {
-        setSelectedServices((prev) => [...prev, selectedServiceFromBooking]);
-        setQuantities((prev) => ({
-          ...prev,
+        setSelectedServices([selectedServiceFromBooking]);
+        setQuantities({
           [selectedServiceFromBooking.id]: data.bookingDetail?.quantity || 0,
-        }));
+        });
         setParentService(null);
       } else if (childService) {
         setSelectedServices([childService]);
-        setQuantities((prev) => ({
-          ...prev,
+        setQuantities({
           [childService.id]: data.bookingDetail?.quantity || 0,
-        }));
+        });
         setParentService(parentWithChild!);
       }
     }
   }, [services, data.bookingDetail]);
 
   const handleIncrease = (event: React.MouseEvent, serviceId: string) => {
-    event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
-    setQuantities((prev) => ({
-      ...prev,
-      [serviceId]: (prev[serviceId] || 0) + 1,
-    }));
+    event.stopPropagation();
+    const service = selectedServices.find((s) => s.id.toString() === serviceId);
+
+    if (service && service.isQuantity) {
+      const currentQuantity = quantities[serviceId] || 0;
+      const maxQuantity =
+        parentService?.inverseParentService?.find(
+          (child) => child.id.toString() === serviceId
+        )?.quantityMax || Infinity;
+
+      if (currentQuantity < maxQuantity) {
+        setQuantities((prev) => ({
+          ...prev,
+          [serviceId]: currentQuantity + 1,
+        }));
+      } else {
+        toast.info(`Số lượng tối đa cho ${service.name} là ${maxQuantity}.`);
+      }
+    }
   };
 
   const handleDecrease = (event: React.MouseEvent, serviceId: string) => {
-    event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
-    if (quantities[serviceId] > 0) {
+    event.stopPropagation();
+    const currentQuantity = quantities[serviceId] || 0;
+
+    if (currentQuantity > 0) {
       setQuantities((prev) => ({
         ...prev,
-        [serviceId]: prev[serviceId] - 1,
+        [serviceId]: currentQuantity - 1,
       }));
     }
   };
@@ -96,9 +120,17 @@ export const UpdateBookingServicesModalSheet = () => {
   const handleServiceSelect = (service: IService) => {
     setSelectedServices((prev) => {
       const isSelected = prev.some((s) => s.id === service.id);
+
       if (isSelected) {
         return prev.filter((s) => s.id !== service.id);
       } else {
+        if (!service.isQuantity) {
+          return [...prev, service];
+        }
+        setQuantities((prev) => ({
+          ...prev,
+          [service.id]: 1,
+        }));
         return [...prev, service];
       }
     });
@@ -109,7 +141,7 @@ export const UpdateBookingServicesModalSheet = () => {
 
     return parentService.inverseParentService.map((child) => {
       const isSelected = selectedServices.some((s) => s.id === child.id);
-      const isInBookingDetails = bookingDetails!.some(
+      const isInBookingDetails = data.bookingDetails!.some(
         (detail) => detail.serviceId === child.id
       );
 
@@ -139,17 +171,9 @@ export const UpdateBookingServicesModalSheet = () => {
                 >
                   -
                 </Button>
-                <Input
-                  type="number"
-                  value={quantities[child.id] || 0}
-                  onChange={(e) =>
-                    setQuantities((prev) => ({
-                      ...prev,
-                      [child.id]: parseInt(e.target.value) || 0,
-                    }))
-                  }
-                  className="w-16 text-center"
-                />
+                <span className="w-12 text-center flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                  {quantities[child.id] || 0}
+                </span>
                 <Button
                   variant="outline"
                   onClick={(e) => handleIncrease(e, child.id.toString())}
@@ -165,16 +189,14 @@ export const UpdateBookingServicesModalSheet = () => {
     });
   };
 
-  if (isLoading) {
-    return <p className="p-4">Loading...</p>;
-  }
-
   return (
     <Sheet open={isOpenModal} onOpenChange={onClose}>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Cập nhật dịch vụ</SheetTitle>
-          <SheetDescription>Chỉnh sửa dịch vụ đã đặt.</SheetDescription>
+          <SheetDescription>
+            Chỉnh sửa dịch vụ khách hàng đã đặt.
+          </SheetDescription>
         </SheetHeader>
         <ScrollArea className="max-h-[80vh] p-4 overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {parentService ? (
@@ -189,39 +211,29 @@ export const UpdateBookingServicesModalSheet = () => {
                   <CardContent>
                     <p className="text-gray-600">{service.description}</p>
                     <p className="font-medium">Giá: {service.amount} VNĐ</p>
-                    {service.isQuantity && (
-                      <div className="flex items-center gap-2 mt-4">
-                        <Button
-                          variant="outline"
-                          onClick={(e) =>
-                            handleDecrease(e, service.id.toString())
-                          }
-                          className="px-2 py-1 border-orange-500 text-orange-500"
-                        >
-                          -
-                        </Button>
-                        <Input
-                          type="number"
-                          value={quantities[service.id] || 0}
-                          onChange={(e) =>
-                            setQuantities((prev) => ({
-                              ...prev,
-                              [service.id]: parseInt(e.target.value) || 0,
-                            }))
-                          }
-                          className="w-16 text-center"
-                        />
-                        <Button
-                          variant="outline"
-                          onClick={(e) =>
-                            handleIncrease(e, service.id.toString())
-                          }
-                          className="px-2 py-1 border-orange-500 text-orange-500"
-                        >
-                          +
-                        </Button>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-2 mt-4">
+                      <Button
+                        variant="outline"
+                        onClick={(e) =>
+                          handleDecrease(e, service.id.toString())
+                        }
+                        className="px-2 py-1 border-orange-500 text-orange-500"
+                      >
+                        -
+                      </Button>
+                      <span className="w-12 text-center flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                        {quantities[service.id] || 0}
+                      </span>
+                      <Button
+                        variant="outline"
+                        onClick={(e) =>
+                          handleIncrease(e, service.id.toString())
+                        }
+                        className="px-2 py-1 border-orange-500 text-orange-500"
+                      >
+                        +
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>

@@ -12,7 +12,7 @@ const TIME_THRESHOLDS = {
 const STATUS_CONFIG = {
   URGENT: {
     variant: "destructive" as const,
-    label: "Cần review ngay",
+    label: "Cần xem ngay",
   },
   WARNING: {
     variant: "warning" as const,
@@ -49,7 +49,13 @@ const BookingTimeDisplay = ({
 }) => (
   <div className="flex flex-col space-y-1">
     <div className="font-medium">{bookingTime}</div>
-    <Badge variant={status.variant} className="w-24 flex items-center justify-center">{status.label}</Badge>
+    <Badge
+      variant={status.variant}
+      className="w-24 flex items-center justify-center cursor-pointer"
+      style={{ fontSize: "0.65rem" }}
+    >
+      {status.label}
+    </Badge>
   </div>
 );
 
