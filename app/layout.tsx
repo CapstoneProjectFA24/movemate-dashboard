@@ -9,6 +9,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
 import SessionProviders from "@/providers/session-provider";
+import { ModalProvider } from "@/providers/modal-provider";
+import { QueryProvider } from "@/providers/query-provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -59,8 +61,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProviders>
-            {children}
-            <Toaster />
+            <QueryProvider>
+              <ModalProvider />
+              {children}
+              <Toaster />
+            </QueryProvider>
           </SessionProviders>
         </ThemeProvider>
       </body>
