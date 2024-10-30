@@ -13,7 +13,7 @@ import {
   DataTableSearchableColumn,
 } from "@/types/table";
 import { toast } from "sonner";
-import { IHouse } from "@/types/dashboard";
+import { IHouse } from "@/features/services/type/house-type";
 
 interface HouseTableProps {
   housePromise: ReturnType<typeof getHouses>;

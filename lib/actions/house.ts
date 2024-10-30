@@ -13,7 +13,7 @@ import {
   fetchListData,
 } from "@/lib/api/api-handler/generic";
 import { SearchParams } from "@/types/table";
-import { IHouse } from "@/types/dashboard";
+import { IHouse } from "@/features/services/type/house-type";
 
 /////////////////// test ///////////////////
 
