@@ -14,7 +14,7 @@ const AssignStaff = ({ booking }: AssignStaffProps) => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Truck className="h-5 w-5 mr-2 text-primary" />
-            Dịch vụ đã chọn
+            Các nhân viên thực hiện quá trình
           </CardTitle>
         </CardHeader>
         <CardContent>

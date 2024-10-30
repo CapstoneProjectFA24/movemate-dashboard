@@ -39,6 +39,7 @@ export async function updateBookingStatus(
   params: string,
   data: any
 ): Promise<Result<void>> {
+
   noStore();
   const result = await apiRequest(() =>
     axiosAuth.put(`${BOOKING_URL.UPDATE_BOOKING_STATUS}/${params}`, data)
