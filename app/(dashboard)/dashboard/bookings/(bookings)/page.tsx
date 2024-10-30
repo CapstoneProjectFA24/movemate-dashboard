@@ -38,7 +38,7 @@ const ReviewerBookingPage = ({ searchParams }: IndexPageProps) => {
                 />
               }
             >
-              <BookingTable bookingPromise={bookingOnlPromise} />
+              <BookingTable bookingPromise={bookingOffPromise} />
             </React.Suspense>
           </Shell>
         </TabsContent>
@@ -55,7 +55,7 @@ const ReviewerBookingPage = ({ searchParams }: IndexPageProps) => {
                 />
               }
             >
-              <BookingTable bookingPromise={bookingOffPromise} />
+              <BookingTable bookingPromise={bookingOnlPromise} />
             </React.Suspense>
           </Shell>
         </TabsContent>

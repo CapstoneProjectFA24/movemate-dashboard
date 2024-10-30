@@ -78,9 +78,9 @@ export type IBooking = {
   
   export type BookingDetail = {
     id?: number;
-    serviceId?: number;
+    serviceId: number;
     bookingId?: number;
-    quantity?: number;
+    quantity: number;
     price?: number;
     status?: string | null;
     type?: string;

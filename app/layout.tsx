@@ -5,11 +5,10 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { siteConfig } from "@/config/site";
 // const font = Open_Sans({ subsets: ["latin"] });
 import { fontMono, fontSans } from "@/lib/fonts";
-
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
 import SessionProviders from "@/providers/session-provider";
-import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -55,13 +54,12 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
           <SessionProviders>
             {children}
-
             <Toaster />
           </SessionProviders>
         </ThemeProvider>

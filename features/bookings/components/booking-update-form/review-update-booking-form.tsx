@@ -4,32 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  Truck,
-  Building2,
-  MapPin,
-  CalendarClock,
-} from "lucide-react";
+import { Truck, Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Form } from "@/components/ui/form";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { toast } from "sonner";
@@ -40,13 +19,12 @@ import {
   BookingStatusNames,
 } from "../../enums/booking-state-enum";
 import { IBooking } from "../../type/booking-type";
-import {
-  updateBookingOnlineDetail,
-  updateBookingOnlineDetail1,
-} from "../../action/bookings";
+
 import BookingImages from "./booking-images";
 import { IHouse } from "@/features/services/type/house-type";
-import { formatDate, formatter } from "@/lib/utils";
+import FormFieldCustom from "@/components/form/form-field";
+import SelectFormField from "@/components/form/select-form-field";
+import NomarlInfo from "./normal-info";
 
 const bookingSchema = z.object({
   truckCategoryId: z.number(),
@@ -98,7 +76,10 @@ const ReviewUpdateBookingForm = ({
     isRoundTrip: booking?.isRoundTrip || false,
     roomNumber: booking?.roomNumber || "",
     floorsNumber: booking?.floorsNumber || "",
-    bookingDetails: booking?.bookingDetails || [],
+    bookingDetails: (booking?.bookingDetails || []).map((detail) => ({
+      serviceId: detail.serviceId ?? 0,
+      quantity: detail.quantity ?? 1,
+    })),
   };
 
   const form = useForm<BookingFormValues>({
@@ -111,19 +92,13 @@ const ReviewUpdateBookingForm = ({
     try {
       setLoading(true);
 
-      // // Gọi API thứ nhất
-      // const result1 = await updateBookingOnlineDetail(params.id as string);
-      // if (!result1.success) {
-      //   throw new Error("API 1 failed");
-      // }
-
       // // Gọi API thứ hai
-      // const result2 = await updateBookingOnlineDetail1(
+      // const result = await updateBookingStatus(
       //   params.id as string,
       //   data
       // );
-      // if (!result2.success) {
-      //   throw new Error("API 2 failed");
+      // if (!result.success) {
+      //   throw new Error("API failed");
       // }
 
       toast.success("Cập nhật đơn dọn nhà thành công");
@@ -138,69 +113,7 @@ const ReviewUpdateBookingForm = ({
 
   return (
     <div className=" mx-auto p-6">
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => router.push("/dashboard/bookings")}
-          className="mb-4"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Quay lại
-        </Button>
-
-        <div className="flex items-center space-x-4">
-          <h2 className="text-3xl font-bold tracking-tight">Đơn dọn nhà</h2>
-          {booking?.status && (
-            <div
-            // className={`px-3 py-1 rounded-full text-sm font-medium bg-${
-            //   BookingStatusColors[booking.status ]
-            // }-100 text-${BookingStatusColors[booking.status]}-700`}
-            >
-              Đang đợi đánh giá
-            </div>
-          )}
-        </div>
-        <p className="text-sm text-muted-foreground mt-1">
-          Mã đơn: {params.id}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-8 mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <CalendarClock className="h-5 w-5 mr-2" />
-              Thông tin chung
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="grid md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Ngày tạo
-              </p>
-              <p>{formatDate(booking?.createdAt)}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Ngày đặt
-              </p>
-              <p>{formatDate(booking?.bookingAt)}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Tổng tiền
-              </p>
-              <p className="font-medium">{formatter.format(booking?.total!)}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Đã đặt cọc
-              </p>
-              <p>{booking?.isDeposited ? "Rồi" : "Chưa"}</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <NomarlInfo booking={booking} />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -214,117 +127,50 @@ const ReviewUpdateBookingForm = ({
                 </CardTitle>
               </CardHeader>
               <CardContent className="grid md:grid-cols-2 gap-6">
-                <FormField
+                <SelectFormField
                   control={form.control}
                   name="houseTypeId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Loại nhà</FormLabel>
-                      <Select
-                        disabled={loading || !canReview}
-                        onValueChange={(value) =>
-                          field.onChange(parseInt(value))
-                        }
-                        value={field.value.toString()}
-                        defaultValue={field.value.toString()}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Chọn loại nhà" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {houseTypes?.map((type: IHouse) => (
-                            <SelectItem
-                              key={type.id}
-                              value={type.id.toString()}
-                            >
-                              {type.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Loại nhà"
+                  placeholder="Chọn loại nhà"
+                  options={houseTypes} // list cần chọn
+                  renderOption={(option) => option.name} // chọn loại render cần thiết
+                  loading={loading}
+                  canReview={canReview}
                 />
 
                 <div className="grid grid-cols-2 gap-4">
-                  <FormField
+                  <FormFieldCustom
                     control={form.control}
                     name="roomNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Số phòng</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            disabled={loading || !canReview}
-                            placeholder="Nhập số phòng"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    label="Số phòng"
+                    placeholder="Nhập số phòng"
+                    type="number"
+                    disabled={loading || !canReview}
                   />
-
-                  <FormField
+                  <FormFieldCustom
                     control={form.control}
                     name="floorsNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Số tầng</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            disabled={loading || !canReview}
-                            placeholder="Nhập số tầng"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    label="Số tầng"
+                    placeholder="Nhập số tầng"
+                    type="number"
+                    disabled={loading || !canReview}
                   />
                 </div>
-
-                <FormField
+                <FormFieldCustom
                   control={form.control}
                   name="pickupAddress"
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormLabel>
-                        Địa chỉ cho nhân viên tới để dọn nhà
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading || !canReview}
-                          placeholder="Nhập địa chỉ nhận đồ"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="  Địa chỉ cho nhân viên tới để dọn nhà"
+                  placeholder="Nhập địa chỉ nhận đồ"
+                  classNameItem="col-span-2"
+                  disabled={loading || !canReview}
                 />
-
-                <FormField
+                <FormFieldCustom
                   control={form.control}
                   name="deliveryAddress"
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormLabel>Địa chỉ vận chuyển đi</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading || !canReview}
-                          placeholder="Nhập địa chỉ giao đồ"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Địa chỉ vận chuyển đi"
+                  placeholder="Nhập địa chỉ giao đồ"
+                  classNameItem="col-span-2"
+                  disabled={loading || !canReview}
                 />
               </CardContent>
             </Card>
