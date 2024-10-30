@@ -4,13 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
-import { Truck, Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { AlertModal } from "@/components/modals/alert-modal";
 import { toast } from "sonner";
 import {
   BookingStatus,
@@ -20,11 +16,13 @@ import {
 } from "../../enums/booking-state-enum";
 import { IBooking } from "../../type/booking-type";
 
-import BookingImages from "./booking-images";
+import BookingImages from "./main-ui-booking-form/booking-images";
 import { IHouse } from "@/features/services/type/house-type";
-import FormFieldCustom from "@/components/form/form-field";
-import SelectFormField from "@/components/form/select-form-field";
-import NomarlInfo from "./normal-info";
+
+import NomarlInfo from "./main-ui-booking-form/normal-info";
+import DetailServices from "./main-ui-booking-form/detail-services";
+import UpdateBasicInfo from "./main-ui-booking-form/update-basic-info";
+import AssignStaff from "./main-ui-booking-form/assign-staff";
 
 const bookingSchema = z.object({
   truckCategoryId: z.number(),
@@ -92,17 +90,7 @@ const ReviewUpdateBookingForm = ({
     try {
       setLoading(true);
 
-      // // Gọi API thứ hai
-      // const result = await updateBookingStatus(
-      //   params.id as string,
-      //   data
-      // );
-      // if (!result.success) {
-      //   throw new Error("API failed");
-      // }
-
       toast.success("Cập nhật đơn dọn nhà thành công");
-      // router.push("/dashboard/bookings");
     } catch (error) {
       toast.error("Đã xảy ra lỗi khi cập nhật");
       console.error("Error updating booking:", error);
@@ -112,106 +100,21 @@ const ReviewUpdateBookingForm = ({
   };
 
   return (
-    <div className=" mx-auto p-6">
-      <NomarlInfo booking={booking} />
-
+    <div className="p-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <NomarlInfo booking={booking} />
           <BookingImages bookingTrackers={booking?.bookingTrackers} />
-          <div className="grid grid-cols-1 gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Building2 className="h-5 w-5 mr-2" />
-                  Thông tin địa điểm
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-6">
-                <SelectFormField
-                  control={form.control}
-                  name="houseTypeId"
-                  label="Loại nhà"
-                  placeholder="Chọn loại nhà"
-                  options={houseTypes} // list cần chọn
-                  renderOption={(option) => option.name} // chọn loại render cần thiết
-                  loading={loading}
-                  canReview={canReview}
-                />
+          <DetailServices booking={booking} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <UpdateBasicInfo
+              control={form.control}
+              houseTypes={houseTypes}
+              loading={loading}
+              canReview={canReview}
+            />
 
-                <div className="grid grid-cols-2 gap-4">
-                  <FormFieldCustom
-                    control={form.control}
-                    name="roomNumber"
-                    label="Số phòng"
-                    placeholder="Nhập số phòng"
-                    type="number"
-                    disabled={loading || !canReview}
-                  />
-                  <FormFieldCustom
-                    control={form.control}
-                    name="floorsNumber"
-                    label="Số tầng"
-                    placeholder="Nhập số tầng"
-                    type="number"
-                    disabled={loading || !canReview}
-                  />
-                </div>
-                <FormFieldCustom
-                  control={form.control}
-                  name="pickupAddress"
-                  label="  Địa chỉ cho nhân viên tới để dọn nhà"
-                  placeholder="Nhập địa chỉ nhận đồ"
-                  classNameItem="col-span-2"
-                  disabled={loading || !canReview}
-                />
-                <FormFieldCustom
-                  control={form.control}
-                  name="deliveryAddress"
-                  label="Địa chỉ vận chuyển đi"
-                  placeholder="Nhập địa chỉ giao đồ"
-                  classNameItem="col-span-2"
-                  disabled={loading || !canReview}
-                />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Truck className="h-5 w-5 mr-2" />
-                  Dịch vụ đã chọn
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {booking?.bookingDetails &&
-                booking.bookingDetails.length > 0 ? (
-                  <div className="grid gap-4">
-                    {booking.bookingDetails.map((detail, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-4 rounded-lg  bg-muted/40"
-                      >
-                        <div>
-                          <p className="font-medium text-gray-500">
-                            Dịch vụ {detail.serviceId}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            Số lượng: {detail.quantity}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            Số lượng: {detail.name}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-center py-4">
-                    Chưa có dịch vụ nào được chọn
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+            <AssignStaff booking={booking} />
           </div>
 
           <div className="flex items-center justify-end gap-4">

@@ -24,6 +24,7 @@ export async function getBookingsOnl(
   const sesison = await auth();
   const userId = sesison?.user?.id;
 
+    // nhớ sửa để phân có thể chạy với đúng ý muốn
   const modifiedSearchParams = {
     ...searchParams,
     // userId: userId,
