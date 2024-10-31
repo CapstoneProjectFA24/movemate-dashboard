@@ -17,19 +17,38 @@ interface DetailServicesProps {
 
 const DetailServices = ({ booking }: DetailServicesProps) => {
   const { onOpen } = useModal();
+  const hasBookingDetails =
+    booking?.bookingDetails && booking.bookingDetails.length > 0;
 
   return (
     <Card className="mb-8 shadow-sm hover:shadow-md transition-shadow duration-300">
       <CardHeader className="border-b">
-        <CardTitle className="flex items-center text-lg">
-          <CalendarClock className="h-5 w-5 mr-2 text-primary" />
-          Chi tiết dịch vụ
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center text-lg">
+            <CalendarClock className="h-5 w-5 mr-2 text-primary" />
+            Chi tiết dịch vụ
+          </CardTitle>
+          {/* TO DO  */}
+          {/* {hasBookingDetails && (
+            <Button
+              onClick={() =>
+                onOpen("createNewServicesBookingModal", {
+                  bookingDetails: booking?.bookingDetails,
+                })
+              }
+              variant="secondary"
+              type="button"
+              className="group hover:shadow-md bg-primary/10 hover:bg-primary/50 transition-transform duration-200 transform active:scale-95 rounded-full"
+            >
+              <Plus className="h-5 w-5 group-hover:scale-110 transition-transform duration-200 text-primary" />
+            </Button>
+          )} */}
+        </div>
       </CardHeader>
       <CardContent className="p-6">
-        {booking?.bookingDetails && booking.bookingDetails.length > 0 ? (
+        {hasBookingDetails ? (
           <div className="grid md:grid-cols-2 gap-6">
-            {booking.bookingDetails.map((detail) => {
+            {booking?.bookingDetails?.map((detail) => {
               const ServiceIcon = ServiceTypeIcons[detail.type as ServiceType];
 
               return (
@@ -52,13 +71,13 @@ const DetailServices = ({ booking }: DetailServicesProps) => {
                       </p>
                       <div className="flex items-center space-x-4 text-sm">
                         <span className="text-muted-foreground">
-                          Số lượng:{" "}
+                          Số lượng:
                           <span className="font-medium text-foreground">
                             {detail.quantity}
                           </span>
                         </span>
                         <span className="text-muted-foreground">
-                          Đơn giá:{" "}
+                          Đơn giá:
                           <span className="font-medium text-foreground">
                             {formatter.format(detail.price!)}
                           </span>

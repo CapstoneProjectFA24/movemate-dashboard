@@ -69,7 +69,8 @@ const ReviewUpdateBookingForm = ({
 
   // logic
   // reviewOnline và reviewOff chỉ có thể cập nhật trạng thái khi REVIEWING
-  // ngoại phụ một xíu là reviewOff thêm điều kiện là SUGGESTED trong assignments list trong booking đó và cần phải filter lấy role của  "staffType": "REVIEWER",
+  // ngoại phụ một xíu là reviewOff thêm điều kiện là SUGGESTED trong assignments list trong booking đó và cần phải filter 
+  //lấy role của  "staffType": "REVIEWER",
   const review = booking?.assignments!.some((assignment) => {
       assignment.status === BookingStateAssign.SUGGESTED && assignment.staffType === "REVIEWER"
   })
