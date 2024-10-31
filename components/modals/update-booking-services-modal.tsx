@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { updateBookingStatus } from "@/features/bookings/action/update-booking";
+import { formatter } from "@/lib/utils";
 
 export const UpdateBookingServicesModalSheet = () => {
   const params = useParams();
@@ -34,7 +35,7 @@ export const UpdateBookingServicesModalSheet = () => {
   const handleSubmit = async () => {
     const bookingDetails = selectedServices.map((service) => ({
       serviceId: service.id,
-      quantity: quantities[service.id] || 0,
+      quantity: service.isQuantity ? quantities[service.id] || 0 : 1,
     }));
 
     const truckCategoryId = selectedServices.find(
@@ -71,12 +72,21 @@ export const UpdateBookingServicesModalSheet = () => {
         toast.error(result.error);
         return;
       }
+      onClose();
       toast.success("Cập nhật dịch vụ thành công !");
     });
   };
 
   useEffect(() => {
-    if (services?.data) {
+    if (!isOpenModal) {
+      setSelectedServices([]);
+      setQuantities({});
+      setParentService(null);
+    }
+  }, [isOpenModal]);
+
+  useEffect(() => {
+    if (services?.data && isOpenModal) {
       const selectedServiceFromBooking = services.data.find(
         (service) => service.id === data.bookingDetail?.serviceId
       );
@@ -93,19 +103,23 @@ export const UpdateBookingServicesModalSheet = () => {
 
       if (selectedServiceFromBooking) {
         setSelectedServices([selectedServiceFromBooking]);
-        setQuantities({
-          [selectedServiceFromBooking.id]: data.bookingDetail?.quantity || 0,
-        });
+        if (selectedServiceFromBooking.isQuantity) {
+          setQuantities({
+            [selectedServiceFromBooking.id]: data.bookingDetail?.quantity || 0,
+          });
+        }
         setParentService(null);
       } else if (childService) {
         setSelectedServices([childService]);
-        setQuantities({
-          [childService.id]: data.bookingDetail?.quantity || 0,
-        });
+        if (childService.isQuantity) {
+          setQuantities({
+            [childService.id]: data.bookingDetail?.quantity || 0,
+          });
+        }
         setParentService(parentWithChild!);
       }
     }
-  }, [services, data.bookingDetail]);
+  }, [services, data.bookingDetail, isOpenModal]);
 
   const handleIncrease = (event: React.MouseEvent, serviceId: string) => {
     event.stopPropagation();
@@ -166,10 +180,10 @@ export const UpdateBookingServicesModalSheet = () => {
 
     return parentService.inverseParentService.map((child) => {
       const isSelected = selectedServices.some((s) => s.id === child.id);
-      const isInBookingDetails = data.bookingDetails 
-      ? data.bookingDetails.some((detail) => detail.serviceId === child.id)
-      : false;
-      
+      const isInBookingDetails = data.bookingDetails
+        ? data.bookingDetails.some((detail) => detail.serviceId === child.id)
+        : false;
+
       return (
         <Card
           key={child.id}
@@ -186,23 +200,86 @@ export const UpdateBookingServicesModalSheet = () => {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600">{child.description}</p>
-            <p className="font-medium">Giá: {child.amount} VNĐ</p>
+            <p className="font-medium">
+              Giá: {formatter.format(child.truckCategory?.price ?? 0)}
+            </p>
             {isSelected && child.isQuantity && (
               <div className="flex items-center gap-2 mt-4">
                 <Button
                   variant="outline"
                   onClick={(e) => handleDecrease(e, child.id.toString())}
-                  className="px-2 py-1 border-orange-500 text-orange-500"
+                  className="w-9 h-9 rounded-full border-2 border-orange-500 text-orange-500 "
                 >
                   -
                 </Button>
                 <span className="w-12 text-center flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-                  {quantities[child.id] || 0}
+                  <div className="flex items-center justify-center">
+                    {quantities[child.id] || 0}
+                  </div>
                 </span>
                 <Button
                   variant="outline"
                   onClick={(e) => handleIncrease(e, child.id.toString())}
-                  className="px-2 py-1 border-orange-500 text-orange-500"
+                  className="w-9 h-9 rounded-full border-2 border-orange-500 text-orange-500 "
+                >
+                  +
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      );
+    });
+  };
+
+  const renderServices = () => {
+    if (!services?.data) {
+      return <p className="p-4">Không tìm thấy dịch vụ.</p>;
+    }
+
+    return services.data.map((service) => {
+      const isSelected = selectedServices.some((s) => s.id === service.id);
+      const isInBookingDetails = data.bookingDetails
+        ? data.bookingDetails.some((detail) => detail.serviceId === service.id)
+        : false;
+
+      return (
+        <Card
+          key={service.id}
+          className={`mb-4 cursor-pointer relative ${
+            isSelected ? "border-orange-500" : "border-gray-300"
+          }`}
+          onClick={() => handleServiceSelect(service)}
+        >
+          {isInBookingDetails && (
+            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-orange-500" />
+          )}
+          <CardHeader>
+            <CardTitle>{service.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600">{service.description}</p>
+            <p className="font-medium">
+              Giá: {formatter.format(service.amount)}
+            </p>
+            {isSelected && service.isQuantity && (
+              <div className="flex items-center gap-2 mt-4">
+                <Button
+                  variant="outline"
+                  onClick={(e) => handleDecrease(e, service.id.toString())}
+                  className="w-9 h-9 rounded-full border-2 border-orange-500 text-orange-500 "
+                >
+                  -
+                </Button>
+                <span className="w-12 text-center flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                  <div className="flex items-center justify-center">
+                    {quantities[service.id] || 0}
+                  </div>
+                </span>
+                <Button
+                  variant="outline"
+                  onClick={(e) => handleIncrease(e, service.id.toString())}
+                  className="w-9 h-9 rounded-full border-2 border-orange-500 text-orange-500 "
                 >
                   +
                 </Button>
@@ -226,45 +303,8 @@ export const UpdateBookingServicesModalSheet = () => {
         <ScrollArea className="max-h-[80vh] p-4 overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {parentService ? (
             <div>{renderChildServices()}</div>
-          ) : selectedServices.length > 0 ? (
-            selectedServices.map((service) => (
-              <div key={service.id}>
-                <Card className="mb-4 border border-gray-300">
-                  <CardHeader>
-                    <CardTitle>{service.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{service.description}</p>
-                    <p className="font-medium">Giá: {service.amount} VNĐ</p>
-                    <div className="flex items-center gap-2 mt-4">
-                      <Button
-                        variant="outline"
-                        onClick={(e) =>
-                          handleDecrease(e, service.id.toString())
-                        }
-                        className="px-2 py-1 border-orange-500 text-orange-500"
-                      >
-                        -
-                      </Button>
-                      <span className="w-12 text-center flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-                        {quantities[service.id] || 0}
-                      </span>
-                      <Button
-                        variant="outline"
-                        onClick={(e) =>
-                          handleIncrease(e, service.id.toString())
-                        }
-                        className="px-2 py-1 border-orange-500 text-orange-500"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ))
           ) : (
-            <p className="p-4">Không tìm thấy dịch vụ.</p>
+            <div>{renderServices()}</div>
           )}
         </ScrollArea>
         <div className="flex justify-end p-4">

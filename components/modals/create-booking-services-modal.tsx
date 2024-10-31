@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { MdBuildCircle } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
+import { formatter } from "@/lib/utils";
 export const CreateNewServicesBookingModal = () => {
   const params = useParams();
   const [isPending, startTransition] = useTransition();
@@ -214,54 +215,51 @@ export const CreateNewServicesBookingModal = () => {
             opacity: { duration: 0.2 },
           },
         }}
+        className="ml-8 mt-4 space-y-4 pr-4 max-h-[250px] overflow-y-auto"
       >
-        <ScrollArea className="max-h-[250px] overflow-auto ">
-          <div className="ml-8 mt-4 space-y-4 pr-4">
-            {parentService.inverseParentService.map((childService, index) => {
-              const isSelected = selectedServices.some(
-                (s) => s.id === childService.id
-              );
-              const ServiceIcon =
-                ServiceTypeIcons[childService.type as ServiceType];
+        {parentService.inverseParentService.map((childService, index) => {
+          const isSelected = selectedServices.some(
+            (s) => s.id === childService.id
+          );
+          const ServiceIcon =
+            ServiceTypeIcons[childService.type as ServiceType];
 
-              return (
-                <motion.div
-                  key={childService.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <Card
-                    className={`border transition-all duration-200 hover:border-orange-300 ${
-                      isSelected ? "border-orange-500" : "border-gray-200"
-                    }`}
+          return (
+            <motion.div
+              key={childService.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <Card
+                className={`border transition-all duration-200 hover:border-orange-300 ${
+                  isSelected ? "border-orange-500" : "border-gray-200"
+                }`}
+              >
+                <CardContent className="p-4">
+                  <div
+                    className="flex items-start justify-between cursor-pointer"
+                    onClick={() => handleServiceSelect(childService, true)}
                   >
-                    <CardContent className="p-4">
-                      <div
-                        className="flex items-start justify-between cursor-pointer"
-                        onClick={() => handleServiceSelect(childService, true)}
-                      >
-                        <div>
-                          <CardTitle className="text-lg flex items-center gap-2">
-                            {ServiceIcon && <ServiceIcon className="h-4 w-4" />}
-                            {childService.name}
-                          </CardTitle>
-                          <p className="text-sm text-gray-600">
-                            {childService.description}
-                          </p>
-                          <p className="text-sm font-medium mt-1 text-orange-600">
-                            Giá: {childService.amount.toLocaleString()} VNĐ
-                          </p>
-                        </div>
-                        {isSelected && renderQuantityControls(childService)}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </ScrollArea>
+                    <div>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        {ServiceIcon && <ServiceIcon className="h-4 w-4" />}
+                        {childService.name}
+                      </CardTitle>
+                      <p className="text-sm text-gray-600">
+                        {childService.description}
+                      </p>
+                      <p className="text-sm font-medium mt-1 text-orange-600">
+                        Giá: {formatter.format(childService.amount)}
+                      </p>
+                    </div>
+                    {isSelected && renderQuantityControls(childService)}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          );
+        })}
       </motion.div>
     );
   };
@@ -324,7 +322,8 @@ export const CreateNewServicesBookingModal = () => {
                   {service.description}
                 </p>
                 <p className="font-medium mt-1 text-orange-600">
-                  Giá: {service.amount.toLocaleString()} VNĐ
+                
+                {hasChildServices ? "" :`  Giá: ${formatter.format(service.amount)}`}
                 </p>
               </div>
               {hasChildServices && (
@@ -393,17 +392,23 @@ export const CreateNewServicesBookingModal = () => {
               ))}
             </TabsList>
 
-            {Object.values(ServiceType).map((serviceType) => (
-              <TabsContent key={serviceType} value={serviceType}>
-                <ScrollArea className="max-h-[68vh] p-4 overflow-auto ">
-                  {isLoading ? (
-                    <p className="text-center">Đang tải...</p>
-                  ) : (
-                    <>{renderServicesByType(serviceType)}</>
-                  )}
-                </ScrollArea>
-              </TabsContent>
-            ))}
+            <div className="h-[60vh] overflow-hidden">
+              <ScrollArea className="h-full">
+                {Object.values(ServiceType).map((serviceType) => (
+                  <TabsContent
+                    key={serviceType}
+                    value={serviceType}
+                    className="m-0 p-4"
+                  >
+                    {isLoading ? (
+                      <p className="text-center">Đang tải...</p>
+                    ) : (
+                      <>{renderServicesByType(serviceType)}</>
+                    )}
+                  </TabsContent>
+                ))}
+              </ScrollArea>
+            </div>
           </Tabs>
         </div>
 
