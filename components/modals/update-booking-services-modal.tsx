@@ -166,10 +166,10 @@ export const UpdateBookingServicesModalSheet = () => {
 
     return parentService.inverseParentService.map((child) => {
       const isSelected = selectedServices.some((s) => s.id === child.id);
-      const isInBookingDetails = data.bookingDetails!.some(
-        (detail) => detail.serviceId === child.id
-      );
-
+      const isInBookingDetails = data.bookingDetails 
+      ? data.bookingDetails.some((detail) => detail.serviceId === child.id)
+      : false;
+      
       return (
         <Card
           key={child.id}
