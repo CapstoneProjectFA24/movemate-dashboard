@@ -16,7 +16,7 @@ import { IService } from "@/features/services/type/services-type";
 import { ServiceType } from "@/features/services/enums/service-enum";
 
 export async function getServicesUpdateBooking(
-  type: ServiceType
+  type?: ServiceType
 ): Promise<ApiListResponse<IService>> {
   noStore();
 

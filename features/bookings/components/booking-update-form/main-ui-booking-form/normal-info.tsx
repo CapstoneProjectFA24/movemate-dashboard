@@ -21,6 +21,7 @@ const NomarlInfo = ({ booking }: NomarlInfoProps) => {
           variant="ghost"
           onClick={() => router.push("/dashboard/bookings")}
           className="mb-4"
+          type="button"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Quay lại

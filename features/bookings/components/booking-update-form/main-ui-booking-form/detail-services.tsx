@@ -2,102 +2,109 @@
 import React from "react";
 import { IBooking } from "../../../type/booking-type";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarClock, Edit } from "lucide-react";
+import { CalendarClock, Edit, Plus, Package } from "lucide-react";
 import { formatter } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal";
+import {
+  ServiceType,
+  ServiceTypeIcons,
+} from "@/features/services/enums/service-enum";
 
 interface DetailServicesProps {
   booking: IBooking | null;
-  // onUpdate: (detail: any) => void;
 }
 
-const DetailServices = ({
-  booking,
-}: // onUpdate
-DetailServicesProps) => {
+const DetailServices = ({ booking }: DetailServicesProps) => {
   const { onOpen } = useModal();
-// console.log("booking:", booking)
-// booking:  {
-//   id: 163 
-//   ....
-//   bookingDetails: [
-//     {
-//       id: 568,
-//       serviceId: 9,
-//       bookingId: 163,
-//       quantity: 2,
-//       price: 600000,
-//       status: null,
-//       type: 'DISASSEMBLE',
-//       name: 'Tháo lắp, đóng gói máy lạnh',
-//       description: 'Mô tả cho dịch vụ con 1'
-//     },
-//     {
-//       id: 569,
-//       serviceId: 2,
-//       bookingId: 163,
-//       quantity: 2,
-//       price: 240000,
-//       status: null,
-//       type: 'PORTER',
-//       name: 'Bốc xếp (Bởi tài xế)',
-//       description: 'Mô tả cho dịch vụ con 1'
-//     },
-//     {
-//       id: 570,
-//       serviceId: 18,
-//       bookingId: 163,
-//       quantity: 1,
-//       price: 100000,
-//       status: null,
-//       type: 'SYSTEM',
-//       name: 'Phí chờ',
-//       description: 'Phí chờ 1h'
-//     }
-//   ],
-// }
+
   return (
-    <>
-      {booking?.bookingDetails && booking.bookingDetails.length > 0 && (
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <CalendarClock className="h-5 w-5 mr-2 text-primary" />
-              Chi tiết dịch vụ
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="grid md:grid-cols-2 gap-4">
-            {booking.bookingDetails.map((detail) => (
-              <div
-                key={detail.id}
-                className="flex justify-between items-center p-2  border-b"
+    <Card className="mb-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+      <CardHeader className="border-b">
+        <CardTitle className="flex items-center text-lg">
+          <CalendarClock className="h-5 w-5 mr-2 text-primary" />
+          Chi tiết dịch vụ
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-6">
+        {booking?.bookingDetails && booking.bookingDetails.length > 0 ? (
+          <div className="grid md:grid-cols-2 gap-6">
+            {booking.bookingDetails.map((detail) => {
+              const ServiceIcon = ServiceTypeIcons[detail.type as ServiceType];
+
+              return (
+                <div
+                  key={detail.id}
+                  className="rounded-lg p-4 border hover:border-primary transition-colors duration-200 shadow-sm"
+                >
+                  <div className="flex justify-between items-start space-x-4">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        {ServiceIcon && (
+                          <ServiceIcon className="h-4 w-4 text-primary" />
+                        )}
+                        <h3 className="font-semibold text-base">
+                          {detail.name}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {detail.description}
+                      </p>
+                      <div className="flex items-center space-x-4 text-sm">
+                        <span className="text-muted-foreground">
+                          Số lượng:{" "}
+                          <span className="font-medium text-foreground">
+                            {detail.quantity}
+                          </span>
+                        </span>
+                        <span className="text-muted-foreground">
+                          Đơn giá:{" "}
+                          <span className="font-medium text-foreground">
+                            {formatter.format(detail.price!)}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      type="button"
+                      className="hover:bg-primary/10"
+                      onClick={() =>
+                        onOpen("updateBookingServicesModalSheet", {
+                          bookingDetail: detail,
+                          bookingDetails: booking.bookingDetails,
+                        })
+                      }
+                    >
+                      <Edit className="h-4 w-4 text-primary" />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-64 rounded-lg border-2 border-dashed">
+            <div className="text-center space-y-4">
+              <Package className="h-12 w-12 text-muted-foreground mx-auto" />
+              <p className="text-muted-foreground">
+                Chưa có dịch vụ nào được thêm
+              </p>
+              <Button
+                onClick={() => onOpen("createNewServicesBookingModal", {})}
+                variant="default"
+                type="button"
+                className="group hover:shadow-md transition-all duration-200"
               >
-                <div className="flex-1 mr-4">
-                  <p className="text-sm font-medium">{detail.name}</p>
-                  <p className="text-muted-foreground">{detail.description}</p>
-                  <p className="text-muted-foreground">
-                    Số lượng: {detail.quantity} - Đơn giá:
-                    {formatter.format(detail.price!)}
-                  </p>
-                </div>
-                <div className="flex-shrink-0 w-1/6">
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() =>
-                      onOpen("updateBookingServicesModalSheet", {bookingDetail: detail, bookingDetails: booking.bookingDetails})
-                    }
-                  >
-                    <Edit className="h-4 w-4 text-primary" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
-    </>
+                <Plus className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                Thêm dịch vụ mới
+              </Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

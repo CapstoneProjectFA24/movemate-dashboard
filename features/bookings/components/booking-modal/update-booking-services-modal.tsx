@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useTransition } from "react";
 import { useModal } from "@/hooks/use-modal";
 import {
@@ -35,8 +36,31 @@ export const UpdateBookingServicesModalSheet = () => {
       serviceId: service.id,
       quantity: quantities[service.id] || 0,
     }));
-    const dataToSend = { bookingDetails };
 
+    const truckCategoryId = selectedServices.find(
+      (service) => service.truckCategoryId
+    )?.truckCategoryId;
+
+    let oldData;
+    if (data.bookingDetail?.type === ServiceType.TRUCK) {
+      const oldServicesTypeTruck = data.bookingDetail;
+
+      const isServiceChanged = !selectedServices.some(
+        (service) => service.id === oldServicesTypeTruck.serviceId
+      );
+
+      if (isServiceChanged) {
+        oldData = {
+          serviceId: oldServicesTypeTruck.serviceId,
+          quantity: 0,
+        };
+      }
+    }
+    const formatData = oldData ? [...bookingDetails, oldData] : bookingDetails;
+
+    const dataToSend = truckCategoryId
+      ? { bookingDetails: formatData, truckCategoryId }
+      : { bookingDetails: formatData };
 
     startTransition(async () => {
       const result = await updateBookingStatus(
@@ -120,19 +144,20 @@ export const UpdateBookingServicesModalSheet = () => {
   const handleServiceSelect = (service: IService) => {
     setSelectedServices((prev) => {
       const isSelected = prev.some((s) => s.id === service.id);
+      const filteredServices = isSelected
+        ? prev.filter((s) => s.id !== service.id)
+        : service.type === ServiceType.TRUCK
+        ? prev.filter((s) => s.type !== ServiceType.TRUCK).concat(service)
+        : [...prev, service];
 
-      if (isSelected) {
-        return prev.filter((s) => s.id !== service.id);
-      } else {
-        if (!service.isQuantity) {
-          return [...prev, service];
-        }
-        setQuantities((prev) => ({
-          ...prev,
+      if (service.isQuantity && !isSelected) {
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
           [service.id]: 1,
         }));
-        return [...prev, service];
       }
+
+      return filteredServices;
     });
   };
 
