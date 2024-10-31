@@ -23,9 +23,10 @@ import NomarlInfo from "./main-ui-booking-form/normal-info";
 import DetailServices from "./main-ui-booking-form/detail-services";
 import UpdateBasicInfo from "./main-ui-booking-form/update-basic-info";
 import AssignStaff from "./main-ui-booking-form/assign-staff";
+import { AlertModal } from "@/components/modals/alert-modal";
+import { BookingStateAssign } from "../../enums/booking-state-assign";
 
 const bookingSchema = z.object({
-  truckCategoryId: z.number(),
   houseTypeId: z.number(),
   pickupAddress: z.string().min(1, "Pickup address is required"),
   pickupPoint: z.string().min(1, "Pickup point is required"),
@@ -57,14 +58,25 @@ const ReviewUpdateBookingForm = ({
   isReviewOnline = false,
 }: BookingFormProps) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const params = useParams();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const canReview =
     (isReviewOnline && booking?.status === BookingStatus.ASSIGNED) ||
     booking?.status === BookingStatus.REVIEWING;
 
+  const isReview = true || false ;
+
+  // logic
+  // reviewOnline và reviewOff chỉ có thể cập nhật trạng thái khi REVIEWING
+  // ngoại phụ một xíu là reviewOff thêm điều kiện là SUGGESTED trong assignments list trong booking đó và cần phải filter lấy role của  "staffType": "REVIEWER",
+  const review = booking?.assignments!.some((assignment) => {
+      assignment.status === BookingStateAssign.SUGGESTED && assignment.staffType === "REVIEWER"
+  })
+ 
+  console.log(review)
+
   const defaultValues: BookingFormValues = {
-    truckCategoryId: 1,
     houseTypeId: booking?.houseTypeId || 0,
     pickupAddress: booking?.pickupAddress || "",
     pickupPoint: booking?.pickupPoint || "",
@@ -99,34 +111,59 @@ const ReviewUpdateBookingForm = ({
     }
   };
 
+  const onSubmitUpdate = async () => {
+    try {
+      console.log("update ne");
+    } finally {
+      setOpen(false);
+    }
+  };
+
   return (
-    <div className="p-6">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <NomarlInfo booking={booking} />
-          <BookingImages bookingTrackers={booking?.bookingTrackers} />
-          <DetailServices booking={booking} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <UpdateBasicInfo
-              control={form.control}
-              houseTypes={houseTypes}
-              loading={loading}
-              canReview={canReview}
-            />
+    <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onSubmitUpdate}
+        loading={loading}
+      />
+      <div className="p-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <NomarlInfo booking={booking} />
+            <BookingImages bookingTrackers={booking?.bookingTrackers} />
+            <DetailServices booking={booking} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <UpdateBasicInfo
+                control={form.control}
+                houseTypes={houseTypes}
+                loading={loading}
+                canReview={canReview}
+              />
 
-            <AssignStaff booking={booking} />
-          </div>
+              <AssignStaff booking={booking} />
+            </div>
 
-          <div className="flex items-center justify-end gap-4">
-            {canReview && (
-              <Button disabled={loading} type="submit">
-                Xác nhận đánh giá
-              </Button>
-            )}
-          </div>
-        </form>
-      </Form>
-    </div>
+            <div className="flex items-center justify-end gap-4">
+              {canReview && (
+                <Button
+                  disabled={loading}
+                  type="button"
+                  onClick={() => setOpen(true)}
+                >
+                  Xác nhận đánh giá
+                </Button>
+              )}
+              {canReview && (
+                <Button disabled={loading} type="button">
+                  Cập nhật
+                </Button>
+              )}
+            </div>
+          </form>
+        </Form>
+      </div>
+    </>
   );
 };
 

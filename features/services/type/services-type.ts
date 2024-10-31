@@ -26,5 +26,6 @@ export type IService = {
   inverseParentService: IService[];
   isQuantity?: boolean;
   quantityMax?: number | null;
+  truckCategoryId?: number;
   truckCategory?: ITruckCategory;
 };

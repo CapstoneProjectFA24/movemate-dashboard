@@ -31,7 +31,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   return (
     <Modal
       title="Bạn chắc chắn chứ?"
-      description="Hành động này không thể quay lại nếu tiếp tục."
+      description="Hành động này sẽ thay đổi trạng thái và không thể quay lại."
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -39,7 +39,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         <Button disabled={loading} variant="outline" onClick={onClose}>
           Hủy
         </Button>
-        <Button disabled={loading} variant="destructive" onClick={onConfirm}>Tiếp tục</Button>
+        <Button disabled={loading} onClick={onConfirm}>Tiếp tục</Button>
       </div>
     </Modal>
   );
