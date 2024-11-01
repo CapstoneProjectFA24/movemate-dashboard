@@ -29,9 +29,12 @@ export async function updateDetailStatus(
     return { success: false, error: result.error };
   }
 
-  console.log("actions");
+
   revalidatePath("/dashboard/bookings");
 
+  // revalidatePath("/dashboard/bookings");
+  // revalidatePath(`/dashboard/bookings/${params}`);
+  // revalidatePath("/dashboard/bookings", "layout");
   return { success: true, data: undefined };
 }
 

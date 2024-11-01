@@ -5,14 +5,26 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CalendarClock, MapPin } from "lucide-react";
 import { formatDate, formatter } from "@/lib/utils";
+import { useBookingStatus } from "@/features/bookings/hooks/use-booking-status";
+// import { BookingStatus } from "@/features/bookings/enums/booking-state-enum";
 
 interface NomarlInfoProps {
   booking: IBooking | null;
+  canReview: boolean;
 }
 
-const NomarlInfo = ({ booking }: NomarlInfoProps) => {
+const NomarlInfo = ({ booking, canReview }: NomarlInfoProps) => {
   const router = useRouter();
   const params = useParams();
+  const {
+    statusMessage,
+    canReviewOffline,
+    canReviewOnline,
+    isWaitingForPayment,
+    isStaffEnroute,
+    isStaffArrived,
+    isReviewed,
+  } = useBookingStatus(booking);
 
   return (
     <>
@@ -29,7 +41,7 @@ const NomarlInfo = ({ booking }: NomarlInfoProps) => {
 
         <div className="flex items-center space-x-4">
           <h2 className="text-3xl font-bold tracking-tight">Đơn dọn nhà</h2>
-          {booking?.status && <div>Đang đợi đánh giá</div>}
+          {statusMessage && <div>{statusMessage}</div>}
         </div>
         <p className="text-sm text-muted-foreground mt-1">
           Mã đơn: {params.id}
@@ -88,8 +100,6 @@ const NomarlInfo = ({ booking }: NomarlInfoProps) => {
           </div>
         </CardContent>
       </Card>
-
-  
     </>
   );
 };
