@@ -7,11 +7,12 @@ import {
   GoHomeFill,
 } from "react-icons/go";
 import { MdMiscellaneousServices } from "react-icons/md";
-import { FaRegListAlt } from "react-icons/fa";
+import { FaEnvelope, FaEnvelopeOpen, FaListAlt, FaRegListAlt, FaUserCheck } from "react-icons/fa";
 import { Settings, User } from "lucide-react";
 import { FaMailchimp, FaUserPen } from "react-icons/fa6";
 import { TbBrandBooking } from "react-icons/tb";
 import { UserRole } from "@/lib/enums/user-role-enum";
+import { MdSettings, MdSettingsApplications } from "react-icons/md";
 export interface Route {
   label: string;
   icon: LucideIcon | IconType;
@@ -34,14 +35,14 @@ export const routes: Route[] = [
   {
     label: "Quản lý nhân sự",
     icon: FaUserPen,
-    activeIcon: FaUserPen,
+    activeIcon: FaUserCheck,
     isParent: true,
     children: [
       {
         label: "Danh sách nhân sự",
         href: "/dashboard/users",
-        icon: GoCheckCircle,
-        activeIcon: GoCheckCircleFill,
+        icon: FaUserPen,
+        activeIcon: FaUserCheck,
       },
     ],
   },
@@ -55,7 +56,7 @@ export const routes: Route[] = [
         label: "Danh sách dịch vụ",
         href: "/dashboard/services",
         icon: FaRegListAlt,
-        activeIcon: FaRegListAlt,
+        activeIcon: FaListAlt,
       },
     ],
   },
@@ -68,8 +69,8 @@ export const routes: Route[] = [
   },
   {
     label: "Phản hồi",
-    icon: FaMailchimp,
-    activeIcon: FaMailchimp,
+    icon: FaEnvelope,
+    activeIcon: FaEnvelopeOpen,
     href: "/dashboard/mail",
   },
   {
