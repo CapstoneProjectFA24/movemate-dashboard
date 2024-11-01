@@ -18,7 +18,6 @@ const ReviewerBookingDetailPage = async ({
       <ReviewUpdateBookingForm
         booking={bookingResponse?.data}
         houseTypes={houseTypesResponse?.data}
-        isReviewOnline
       />
     </div>
   );
