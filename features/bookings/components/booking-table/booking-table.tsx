@@ -17,6 +17,8 @@ import { getBookingsOff, getBookingsOnl } from "../../action/bookings";
 import { IBooking } from "../../type/booking-type";
 import { fetchBookingsTableColumnDefs } from "./booking-table-column-def";
 import { BookingStatusNames } from "../../enums/booking-state-enum";
+import { ProcessStatusNames } from "./colunm/process-status-column";
+import { OrderStatusNames } from "./colunm/order-status-column";
 
 interface BookingTableProps {
   bookingPromise: ReturnType<typeof getBookingsOnl | typeof getBookingsOff>;
@@ -43,6 +45,24 @@ export function BookingTable({ bookingPromise }: BookingTableProps) {
       id: "status",
       title: "Trạng thái",
       options: Object.entries(BookingStatusNames).map(([value, label]) => ({
+        label,
+        value,
+      })),
+    },
+    // test mode
+    {
+      id: "status",
+      title: "Trạng thái proccess",
+      options: Object.entries(ProcessStatusNames).map(([value, label]) => ({
+        label,
+        value,
+      })),
+    },
+      // test mode
+    {
+      id: "status",
+      title: "Trạng thái đơn",
+      options: Object.entries(OrderStatusNames).map(([value, label]) => ({
         label,
         value,
       })),
