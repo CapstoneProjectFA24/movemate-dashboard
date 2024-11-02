@@ -24,7 +24,7 @@ interface ServicesTableProps {
 
 export function ServicesTable({ servicesPromise }: ServicesTableProps) {
   const { data, pageCount } = React.use(servicesPromise);
-console.log(pageCount)
+
   const columns = React.useMemo<ColumnDef<IService, unknown>[]>(
     () => fetchServicesTableColumnDefs(),
     []
