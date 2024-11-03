@@ -23,7 +23,7 @@ export const Sidebar = () => {
             className="rounded-md"
           />
           <h1 className="font-semibold text-xl text-black dark:text-white">
-            Movemate
+            MoveMate
           </h1>
         </Link>
 
