@@ -34,10 +34,43 @@ export const UpdateBookingServicesModalSheet = () => {
   const [parentService, setParentService] = useState<IService | null>(null);
 
   const handleSubmit = async () => {
+    const dataToSend = formatDataUpdate();
+
+    startTransition(async () => {
+      const result = await updateBookingStatus(
+        params.id.toString(),
+        dataToSend
+      );
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+      onClose();
+      toast.success("Cập nhật dịch vụ thành công !");
+    });
+  };
+
+  const formatDataUpdate = () => {
     const bookingDetails = selectedServices.map((service) => ({
       serviceId: service.id,
       quantity: service.isQuantity ? quantities[service.id] || 0 : 1,
     }));
+
+    const unselectedNonQuantityServices = services!.data
+      .filter(
+        (service) =>
+          !service.isQuantity &&
+          !selectedServices.some((s) => s.id === service.id)
+      )
+      .map((service) => ({
+        serviceId: service.id,
+        quantity: 0,
+      }));
+
+    const combinedBookingDetails = [
+      ...bookingDetails,
+      ...unselectedNonQuantityServices,
+    ];
 
     const truckCategoryId = selectedServices.find(
       (service) => service.truckCategoryId
@@ -58,24 +91,14 @@ export const UpdateBookingServicesModalSheet = () => {
         };
       }
     }
-    const formatData = oldData ? [...bookingDetails, oldData] : bookingDetails;
 
-    const dataToSend = truckCategoryId
+    const formatData = oldData
+      ? [...combinedBookingDetails, oldData]
+      : combinedBookingDetails;
+
+    return truckCategoryId
       ? { bookingDetails: formatData, truckCategoryId }
       : { bookingDetails: formatData };
-
-    startTransition(async () => {
-      const result = await updateBookingStatus(
-        params.id.toString(),
-        dataToSend
-      );
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      onClose();
-      toast.success("Cập nhật dịch vụ thành công !");
-    });
   };
 
   useEffect(() => {
