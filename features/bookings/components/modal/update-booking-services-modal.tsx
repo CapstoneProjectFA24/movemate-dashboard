@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { updateBookingStatus } from "@/features/bookings/action/update-booking";
 import { formatter } from "@/lib/utils";
+import ServicesCardUpdateSkeleton from "../skeleton/services-card-update-skeleton";
 
 export const UpdateBookingServicesModalSheet = () => {
   const params = useParams();
@@ -233,6 +234,15 @@ export const UpdateBookingServicesModalSheet = () => {
   };
 
   const renderServices = () => {
+    if (isLoading) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, index) => (
+            <ServicesCardUpdateSkeleton key={index} />
+          ))}
+        </div>
+      );
+    }
     if (!services?.data) {
       return <p className="p-4">Không tìm thấy dịch vụ.</p>;
     }
