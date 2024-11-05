@@ -1,7 +1,9 @@
 "use client";
 
-import { CreateNewServicesBookingModal } from "@/components/modals/create-booking-services-modal";
-import { UpdateBookingServicesModalSheet } from "@/components/modals/update-booking-services-modal";
+import { CreateNewServicesBookingModal } from "@/features/bookings/components/modal/create-booking-services-modal";
+import { UpdateBookingServicesModalSheet } from "@/features/bookings/components/modal/update-booking-services-modal";
+import { ConfirmEstimatedTimeModal } from "@/features/bookings/components/modal/confirm-estimate-time-modal";
+import { CreateScheduleModal } from "@/features/bookings/components/modal/create-schedule-modal";
 import { useEffect, useState } from "react";
 
 export const ModalProvider = () => {
@@ -17,6 +19,8 @@ export const ModalProvider = () => {
     <>
       <UpdateBookingServicesModalSheet />
       <CreateNewServicesBookingModal/>
+      <CreateScheduleModal/>
+      <ConfirmEstimatedTimeModal/>
     </>
   );
 };

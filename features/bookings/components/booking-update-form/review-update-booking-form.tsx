@@ -8,25 +8,19 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import {
-  BookingStatus,
-  BookingStatusColors,
-  BookingStatusIcons,
-  BookingStatusNames,
-} from "../../enums/booking-state-enum";
-import { IBooking } from "../../type/booking-type";
 
-import BookingImages from "./main-ui-booking-form/booking-images";
+import { IBooking } from "../../type/booking-type";
 import { IHouse } from "@/features/services/type/house-type";
 
+import BookingImages from "./main-ui-booking-form/booking-images";
 import NomarlInfo from "./main-ui-booking-form/normal-info";
 import DetailServices from "./main-ui-booking-form/detail-services";
 import UpdateBasicInfo from "./main-ui-booking-form/update-basic-info";
 import AssignStaff from "./main-ui-booking-form/assign-staff";
-import { BookingStateAssign } from "../../enums/booking-state-assign";
 import { useBookingStatus } from "../../hooks/use-booking-status";
-import AlertModal from "@/components/modals/alert-modal";
 import { updateDetailStatus } from "../../action/update-booking";
+import AlertModal from "../modal/alert-modal";
+import { useModal } from "@/hooks/use-modal";
 
 const bookingSchema = z.object({
   houseTypeId: z.number(),
@@ -58,25 +52,31 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [openReviewModal, setOpenReviewModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const { onOpen } = useModal();
 
   const {
     statusMessage,
     canReviewOffline,
     canReviewOnline,
-    isWaitingForPayment,
+    canCreateSchedule,
+    canConfirmReview,
+    canUpdateServices,
+    canConfirmArrival,
+    canConfirmMoving,
+    canConfirmSuggestion,
+    isWaitingCustomer,
+    isWaitingPayment,
     isStaffEnroute,
     isStaffArrived,
+    isSuggested,
     isReviewed,
     isInProgress,
     isInTransit,
     isDelivered,
     isCompleted,
-    isSuggested,
   } = useBookingStatus(booking);
-  console.log("canReviewOnline", canReviewOnline);
-  console.log("canReviewOffline", canReviewOffline);
+
   const defaultValues: BookingFormValues = {
     houseTypeId: booking?.houseTypeId || 0,
     pickupAddress: booking?.pickupAddress || "",
@@ -101,11 +101,9 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
   const onSubmit = async (data: BookingFormValues) => {
     try {
       setLoading(true);
-
       toast.success("Cập nhật đơn dọn nhà thành công");
     } catch (error) {
       toast.error("Đã xảy ra lỗi khi cập nhật");
-      console.error("Error updating booking:", error);
     } finally {
       setLoading(false);
     }
@@ -114,121 +112,129 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
   const onConfirmReview = async () => {
     try {
       setLoading(true);
-      if (canReviewOnline) {
-        // Xử lý logic xác nhận đánh giá online  // TODO
+      if (canConfirmReview) {
         startTransition(async () => {
           const result = await updateDetailStatus(params.toString());
           if (!result.success) {
             toast.error(result.error);
             return;
           }
-
-          toast.success("Cập nhật đánh giá thành công!");
+          toast.success("Xác nhận đánh giá thành công!");
         });
       }
-      toast.error("Xác nhận đánh giá thành công");
     } catch (error) {
       toast.error("Đã xảy ra lỗi khi xác nhận đánh giá");
     } finally {
       setLoading(false);
-      setOpenReviewModal(false);
     }
   };
 
   const onConfirmUpdate = async () => {
     try {
       setLoading(true);
-      if (canReviewOffline) {
-        toast.success("Xác nhận đánh giá thành công");
+      if (
+        canUpdateServices ||
+        canConfirmMoving ||
+        canConfirmArrival ||
+        (canConfirmSuggestion && !isReviewed)
+      ) {
+        const result = await updateDetailStatus(params.id.toString());
+        if (!result.success) {
+          toast.error(result.error);
+          return;
+        }
+        toast.success("Cập nhật trạng thái thành công");
       }
     } catch (error) {
-      toast.error("Đã xảy ra lỗi khi cập nhật đánh giá");
+      toast.error("Đã xảy ra lỗi khi cập nhật trạng thái");
     } finally {
       setLoading(false);
       setOpenUpdateModal(false);
     }
   };
 
-  const getButtonLabel = () => {
-    if (isStaffEnroute) return "Xác nhận đã đến";
-    if (isStaffArrived) return "Bắt đầu thực hiện";
+  const getUpdateButtonLabel = () => {
+    if (canConfirmMoving) return "Xác nhận di chuyển";
+    if (canConfirmArrival) return "Xác nhận đã đến";
+
     if (isInProgress) return "Cập nhật tiến độ";
     if (isInTransit) return "Xác nhận đã giao";
     if (isDelivered) return "Hoàn thành đơn";
     return "Cập nhật";
   };
 
+  const shouldShowUpdateButton =
+    canConfirmMoving ||
+    canConfirmArrival ||
+    canUpdateServices ||
+    (isInProgress && !isCompleted);
+
+  const isButtonDisabled =
+    loading || isWaitingCustomer || isWaitingPayment || isCompleted;
+
   return (
     <>
-      <AlertModal
-        isOpen={openReviewModal}
-        onClose={() => setOpenReviewModal(false)}
-        onConfirm={onConfirmReview}
-        loading={loading}
-        title="Xác nhận đánh giá"
-        description="Bạn có chắc chắn muốn xác nhận đánh giá này?"
-      />
       <AlertModal
         isOpen={openUpdateModal}
         onClose={() => setOpenUpdateModal(false)}
         onConfirm={onConfirmUpdate}
         loading={loading}
-        title="Cập nhật đánh giá"
+        title="Cập nhật trạng thái"
         description="Bạn có chắc chắn muốn cập nhật trạng thái này?"
       />
       <div className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <NomarlInfo
-              booking={booking}
-              canReview={canReviewOffline || canReviewOnline}
-            />
+            <NomarlInfo booking={booking} canReview={canUpdateServices} />
             <BookingImages bookingTrackers={booking?.bookingTrackers} />
-            <DetailServices booking={booking} />
+            <DetailServices booking={booking} canReview={canUpdateServices} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <UpdateBasicInfo
                 control={form.control}
                 houseTypes={houseTypes}
                 loading={loading}
-                canReview={canReviewOnline || canReviewOffline}
+                canReview={canUpdateServices}
               />
               <AssignStaff booking={booking} />
             </div>
 
             <div className="flex items-center justify-end gap-4">
-              {/* Button xác nhận đánh giá online */}
-              {canReviewOnline && !isReviewed && (
+              {canCreateSchedule && (
                 <Button
-                  disabled={loading}
+                  disabled={isButtonDisabled}
                   type="button"
-                  onClick={() => setOpenReviewModal(true)}
-                  className="bg-primary hover:bg-primary/90"
-                >
-                  Xác nhận đánh giá
-                </Button>
-              )}
-
-              {/* Button cập nhật cho quy trình offline */}
-              {canReviewOffline && !isCompleted && (
-                <Button
-                  disabled={loading || isWaitingForPayment}
-                  type="button"
-                  onClick={() => setOpenUpdateModal(true)}
+                  onClick={() =>
+                    onOpen("createScheduleModal", { booking: booking! })
+                  }
                   className="bg-secondary hover:bg-secondary/90"
                 >
-                  {getButtonLabel()}
+                  Xếp lịch với khách
                 </Button>
               )}
-
-              {/* {(canReviewOffline || canReviewOnline) && !isCompleted && (
+              {canConfirmSuggestion && !isReviewed && !canCreateSchedule && (
                 <Button
-                  disabled={loading || isWaitingForPayment}
-                  type="submit"
-                  className="bg-primary hover:bg-primary/90"
+                  disabled={isButtonDisabled}
+                  type="button"
+                  onClick={() =>
+                    onOpen("confirmEstimatedTimeModal", { booking: booking! })
+                  }
+                  className="bg-secondary hover:bg-secondary/90"
                 >
-                  Lưu thông tin
+                  Xác nhận đề xuất
                 </Button>
-              )} */}
+              )}
+              {shouldShowUpdateButton &&
+                !canCreateSchedule &&
+                !canConfirmSuggestion && (
+                  <Button
+                    disabled={isButtonDisabled}
+                    type="button"
+                    onClick={() => setOpenUpdateModal(true)}
+                    className="bg-secondary hover:bg-secondary/90"
+                  >
+                    {getUpdateButtonLabel()}
+                  </Button>
+                )}
             </div>
           </form>
         </Form>

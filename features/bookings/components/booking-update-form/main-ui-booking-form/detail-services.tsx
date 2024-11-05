@@ -13,9 +13,10 @@ import {
 
 interface DetailServicesProps {
   booking: IBooking | null;
+  canReview: boolean;
 }
 
-const DetailServices = ({ booking }: DetailServicesProps) => {
+const DetailServices = ({ booking, canReview }: DetailServicesProps) => {
   const { onOpen } = useModal();
   const hasBookingDetails =
     booking?.bookingDetails && booking.bookingDetails.length > 0;
@@ -28,8 +29,7 @@ const DetailServices = ({ booking }: DetailServicesProps) => {
             <CalendarClock className="h-5 w-5 mr-2 text-primary" />
             Chi tiết dịch vụ
           </CardTitle>
-          {/* TO DO  */}
-          {/* {hasBookingDetails && (
+          {canReview && hasBookingDetails && (
             <Button
               onClick={() =>
                 onOpen("createNewServicesBookingModal", {
@@ -42,7 +42,7 @@ const DetailServices = ({ booking }: DetailServicesProps) => {
             >
               <Plus className="h-5 w-5 group-hover:scale-110 transition-transform duration-200 text-primary" />
             </Button>
-          )} */}
+          )}
         </div>
       </CardHeader>
       <CardContent className="p-6">
@@ -84,20 +84,22 @@ const DetailServices = ({ booking }: DetailServicesProps) => {
                         </span>
                       </div>
                     </div>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      type="button"
-                      className="hover:bg-primary/10"
-                      onClick={() =>
-                        onOpen("updateBookingServicesModalSheet", {
-                          bookingDetail: detail,
-                          bookingDetails: booking.bookingDetails,
-                        })
-                      }
-                    >
-                      <Edit className="h-4 w-4 text-primary" />
-                    </Button>
+                    {canReview && (
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        type="button"
+                        className="hover:bg-primary/10"
+                        onClick={() =>
+                          onOpen("updateBookingServicesModalSheet", {
+                            bookingDetail: detail,
+                            bookingDetails: booking.bookingDetails,
+                          })
+                        }
+                      >
+                        <Edit className="h-4 w-4 text-primary" />
+                      </Button>
+                    )}
                   </div>
                 </div>
               );
@@ -110,15 +112,17 @@ const DetailServices = ({ booking }: DetailServicesProps) => {
               <p className="text-muted-foreground">
                 Chưa có dịch vụ nào được thêm
               </p>
-              <Button
-                onClick={() => onOpen("createNewServicesBookingModal", {})}
-                variant="default"
-                type="button"
-                className="group hover:shadow-md transition-all duration-200"
-              >
-                <Plus className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                Thêm dịch vụ mới
-              </Button>
+              {canReview && (
+                <Button
+                  onClick={() => onOpen("createNewServicesBookingModal", {})}
+                  variant="default"
+                  type="button"
+                  className="group hover:shadow-md transition-all duration-200"
+                >
+                  <Plus className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Thêm dịch vụ mới
+                </Button>
+              )}
             </div>
           </div>
         )}

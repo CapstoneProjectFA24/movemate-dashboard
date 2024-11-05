@@ -1,16 +1,19 @@
 
-import { BookingDetail } from "@/features/bookings/type/booking-type";
+import { BookingDetail, IBooking } from "@/features/bookings/type/booking-type";
 import { create } from "zustand";
 
 
 export type ModalType =
   | "updateBookingServicesModalSheet"
   | "createNewServicesBookingModal"
+  | "createScheduleModal"
+  | "confirmEstimatedTimeModal"
 ;
 
 
 export interface ModalData{
   bookingDetail?: BookingDetail,
+  booking?: IBooking ,
   bookingDetails?: BookingDetail[]
 }
 

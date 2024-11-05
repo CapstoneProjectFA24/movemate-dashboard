@@ -13,7 +13,7 @@ const OrderStatus = {
   DEPOSITING: [BookingStatus.DEPOSITING],
   IN_PROGRESS: [BookingStatus.REVIEWING, BookingStatus.IN_PROGRESS, BookingStatus.IN_TRANSIT],
   COMPLETED: [BookingStatus.COMPLETED, BookingStatus.DELIVERED],
-  CANCELLED: [BookingStatus.CANCEL, BookingStatus.REFUNDED]
+  CANCELLED: [BookingStatus.CANCELLED, BookingStatus.REFUNDED]
 };
 
 const ProcessStatus = {
