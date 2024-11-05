@@ -27,10 +27,8 @@ export async function updateDetailStatus(
   );
 
   if (!result.success) {
-    
     return { success: false, error: result.error };
   }
-
 
   revalidatePath("/dashboard/bookings");
 
@@ -44,7 +42,6 @@ export async function updateBookingStatus(
   params: string,
   data: any
 ): Promise<Result<void>> {
-
   noStore();
   const result = await apiRequest(() =>
     axiosAuth.put(`${BOOKING_URL.UPDATE_BOOKING_STATUS}/${params}`, data)
@@ -58,22 +55,19 @@ export async function updateBookingStatus(
   return { success: true, data: undefined };
 }
 
-
 export async function updateSchedule(
   params: string,
   data?: any
 ): Promise<Result<void>> {
   noStore();
-  console.log(data)
+  console.log(data);
   const result = await apiRequest(() =>
     axiosAuth.put(`${BOOKING_URL.UPDATE_BOOKING_SCHEDULE}/${params}`, data)
   );
 
   if (!result.success) {
-    
     return { success: false, error: result.error };
   }
-
 
   revalidatePath("/dashboard/bookings");
 
