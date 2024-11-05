@@ -6,6 +6,7 @@ import {
   GoHome,
   GoHomeFill,
 } from "react-icons/go";
+import { GrTransaction } from "react-icons/gr";
 import { MdMiscellaneousServices } from "react-icons/md";
 import { FaEnvelope, FaEnvelopeOpen, FaListAlt, FaRegListAlt, FaUserCheck } from "react-icons/fa";
 import { Settings, User } from "lucide-react";
@@ -65,6 +66,13 @@ export const routes: Route[] = [
     icon: TbBrandBooking,
     activeIcon: TbBrandBooking,
     href: "/dashboard/bookings",
+    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+  },
+  {
+    label: "Quản lý thanh toán",
+    icon: GrTransaction ,
+    activeIcon: GrTransaction ,
+    href: "/dashboard/transactions",
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
   {

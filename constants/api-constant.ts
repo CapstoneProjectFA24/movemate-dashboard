@@ -1,5 +1,6 @@
 export const BASIC_URL ={
-    GET_USERS : '/users'
+    GET_USERS : '/users',
+    GET_TRANSACTIONS: "/transactions",
 }
 
 export const SERVICES_URL = {
