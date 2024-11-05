@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { updateBookingStatus } from "@/features/bookings/action/update-booking";
 import { formatter } from "@/lib/utils";
-import ServicesCardUpdateSkeleton from "../skeleton/services-card-update-skeleton";
+import ServicesCardUpdateSkeleton from "../../features/bookings/components/skeleton/services-card-update-skeleton";
 
 export const UpdateBookingServicesModalSheet = () => {
   const params = useParams();
