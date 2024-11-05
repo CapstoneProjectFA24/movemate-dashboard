@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useTransition } from "react";
 import { Control, useFormContext } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Building2, Save } from "lucide-react";
@@ -7,6 +8,9 @@ import SelectFormField from "@/components/form/select-form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IHouse } from "@/features/services/type/house-type";
+import { useParams } from "next/navigation";
+import { updateBookingStatus } from "@/features/bookings/action/update-booking";
+import { toast } from "sonner";
 
 interface UpdateBasicInfoProps {
   control: Control<any>;
@@ -22,7 +26,8 @@ const UpdateBasicInfo = ({
   canReview,
 }: UpdateBasicInfoProps) => {
   const { getValues } = useFormContext();
-
+  const [isPending, startTransition] = useTransition();
+  const params = useParams();
   const handleUpdateClick = () => {
     const data = {
       houseTypeId: getValues("houseTypeId"),
@@ -31,7 +36,15 @@ const UpdateBasicInfo = ({
       pickupAddress: getValues("pickupAddress"),
       deliveryAddress: getValues("deliveryAddress"),
     };
-    console.log("Updating basic info:", data);
+
+    startTransition(async () => {
+      const result = await updateBookingStatus(params.id.toString(), data);
+
+      if (!result.success) {
+        toast.error(result.error);
+      }
+      toast.success("Cập nhật dịch vụ thành công !");
+    });
   };
 
   return (
