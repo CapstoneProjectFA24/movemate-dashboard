@@ -1,7 +1,10 @@
+export const BASIC_URL ={
+    GET_USERS : '/users'
+}
+
 export const SERVICES_URL = {
     GET_SERVICES : "/services",
     GET_HOUSE_TYPE: "housetypes",
-
 }
 
 
