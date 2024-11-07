@@ -1,3 +1,5 @@
+import { FullPageSpinner } from "@/components/shared/custom-ui/loading-spinner";
+
 export default function loading(){
-    return <div className="text-black text-center">...loading</div>
+    return <FullPageSpinner/>
 }

@@ -44,6 +44,7 @@ export const routes: Route[] = [
     icon: FaUserPen,
     activeIcon: FaUserCheck,
     isParent: true,
+     allowsRoles: [UserRole.ADMIN, UserRole.MANAGER],
     children: [
       {
         label: "Danh sách nhân sự",
