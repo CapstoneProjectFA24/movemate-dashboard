@@ -34,6 +34,7 @@ import { toast } from "sonner";
 interface CreateServiceFormProps {
   truckCategorys: ITruckCategory[] | null;
 }
+
 const serviceTypes = [
   { value: "SYSTEM", label: "Hệ thống" },
   { value: "DISASSEMBLE", label: "Tháo lắp" },
