@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
-import { ITruckCategory } from "../../type/services-type";
+import { ITruckCategory } from "../type/services-type";
 
 import {
   Form,
@@ -29,7 +29,7 @@ import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { z } from "zod";
-import { serviceSchema, ServiceSchemaType } from "../../type/services-schema-v1";
+import { serviceSchema, ServiceSchemaType } from "./services-schema-v1";
 
 interface CreateServiceFormProps {
   truckCategorys: ITruckCategory[] | null;
