@@ -1,3 +1,4 @@
+
 import { getServiceById } from "@/features/services/action/services";
 import { getTruckCategorys } from "@/features/services/action/truck-category";
 import ServiceDetailUpdateForm from "@/features/services/components/services-form/service-detail-update-form";
