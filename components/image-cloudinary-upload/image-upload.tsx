@@ -20,10 +20,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onRemove,
   value
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isImageMounted, setIsImageMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsImageMounted(true);
   }, []);
 
   const onUpload = (result: any) => {
@@ -31,7 +31,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   };
 
-  if (!isMounted) {
+  if (!isImageMounted) {
     return null;
   }
 
@@ -87,61 +87,46 @@ interface ImageUploadOneProps {
   value: string | null;
     onRemove: (value: string) => void;
 }
-
 export const ImageUploadOne: React.FC<ImageUploadOneProps> = ({
   disabled,
   onChange,
   onRemove,
-  value
+  value,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const onUpload = (result: any) => {
     onChange(result.info.secure_url);
   };
 
-
-  if (!isMounted) {
-    return null;
-  }
-
-  return ( 
+  return (
     <div>
       {value && (
         <div className="mb-4 flex items-center gap-4">
           <div className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
             <div className="z-10 absolute top-2 right-2">
-              <Button type="button" onClick={() => onRemove(value)} variant="action" size="sm">
+              <Button
+                type="button"
+                onClick={() => onRemove(value)}
+                variant="action"
+                size="sm"
+              >
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
-            <Image
-              fill
-              className="object-cover"
-              alt="Image"
-              src={value}
-            />
+            <Image fill className="object-cover" alt="Image" src={value} />
           </div>
         </div>
       )}
-      <CldUploadWidget 
-        onUpload={onUpload} 
-        uploadPreset={`qod41b9g`}
-      >
+      <CldUploadWidget onUpload={onUpload} uploadPreset={`qod41b9g`}>
         {({ open }) => {
           const onClick = () => {
             open();
           };
 
           return (
-            <Button 
-              type="button" 
-              disabled={disabled || !!value} 
-              variant="action" 
+            <Button
+              type="button"
+              disabled={disabled || !!value}
+              variant="action"
               onClick={onClick}
             >
               <ImagePlus className="h-4 w-4 mr-2" />
@@ -152,5 +137,4 @@ export const ImageUploadOne: React.FC<ImageUploadOneProps> = ({
       </CldUploadWidget>
     </div>
   );
-}
- 
+};

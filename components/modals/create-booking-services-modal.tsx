@@ -420,7 +420,7 @@ export const CreateNewServicesBookingModal = () => {
             Thêm dịch vụ
           </DialogTitle>
           <DialogDescription className="">
-            Chọn dịch vụ bạn muốn thêm vào đơn này.
+            Chọn dịch vụ con bạn muốn thêm vào đây
           </DialogDescription>
         </DialogHeader>
 

@@ -6,6 +6,7 @@ export const BASIC_URL ={
 export const SERVICES_URL = {
   GET_SERVICES: "/services",
   CREATE_SERVICES: "/services/manage/create-service",
+  UPDATE_SERVICES: "/services/manage",
   GET_HOUSE_TYPE: "/housetypes",
   GET_TRUCK_CATEGORY: "/truckcategorys",
 };
