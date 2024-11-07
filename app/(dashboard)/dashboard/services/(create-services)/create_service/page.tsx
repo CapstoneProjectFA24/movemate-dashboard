@@ -22,22 +22,22 @@ const CreateService = async () => {
     // </div>
     <div className="flex">
       <div className="flex-1">
-        <Tabs defaultValue="basic" className="flex">
-          <TabsList className="flex flex-col h-full space-x-0 space-y-2 bg-muted/50  rounded-lg mr-4 text-start">
+        {/* <Tabs defaultValue="basic" className="flex"> */}
+        {/* <TabsList className="flex flex-col h-full space-x-0 space-y-2 bg-muted/50  rounded-lg mr-4 text-start">
             <TabsTrigger value="basic">Dịch vụ mới</TabsTrigger>
             <TabsTrigger value="child-services">Dịch vụ con</TabsTrigger>
-          </TabsList>
+          </TabsList> */}
 
-          <TabsContent value="basic" className="flex-1">
-            {/* Content for basic tab */}
-            <CreateServiceForm truckCategorys={truckCategorys.data}/>
-          </TabsContent>
+        {/* <TabsContent value="basic" className="flex-1"> */}
+        {/* Content for basic tab */}
+        <CreateServiceForm truckCategorys={truckCategorys.data} />
+        {/* </TabsContent> */}
 
-          <TabsContent value="child-services" className="flex-1">
-            {/* Content for child services tab */}
-            <div>Nội dung dịch vụ con</div>
-          </TabsContent>
-        </Tabs>
+        {/* <TabsContent value="child-services" className="flex-1"> */}
+        {/* Content for child services tab */}
+        {/* <div>Nội dung dịch vụ con</div> */}
+        {/* </TabsContent> */}
+        {/* </Tabs>  */}
       </div>
     </div>
   );
