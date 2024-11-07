@@ -1,9 +1,17 @@
-import React from 'react'
+import { getTruckCategorys } from "@/features/services/action/truck-category";
+import CreateServiceForm from "@/features/services/components/services-form/create-service-form";
+// import CreateServiceForm from "@/features/services/components/services-form/create-service-form-v1";
+import React from "react";
 
-const CreateService = () => {
+const CreateService = async () => {
+  const truckCategorys = await getTruckCategorys();
+
   return (
-    <div>CreateService</div>
-  )
-}
+    <div>
+      {/* <CreateServiceForm truckCategorys={truckCategorys.data} /> */}
+      <CreateServiceForm  />
+    </div>
+  );
+};
 
-export default CreateService
+export default CreateService;
