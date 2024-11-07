@@ -19,6 +19,7 @@ export interface ApiListResponse<T> {
 }
 export interface ApiSingleResponse<T> {
   data: T | null;
+  error?: string;
 }
 
 export async function apiRequest<T>(request: () => Promise<AxiosResponse<T>>): Promise<Result<T>> {

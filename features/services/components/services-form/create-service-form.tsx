@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ServiceSchemaType, serviceSchema } from "../../type/services-schema";
+import { ServiceSchemaType, serviceSchema } from "../../type/create-services-schema";
 import { ITruckCategory } from "../../type/services-type";
 import { createServices } from "../../action/create-service";
 import { toast } from "sonner";

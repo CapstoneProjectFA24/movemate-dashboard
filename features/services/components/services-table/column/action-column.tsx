@@ -29,6 +29,7 @@ import {
   ServiceType,
   ServiceTypeNames,
 } from "@/features/services/enums/service-enum";
+import { useRouter } from "next/navigation";
 
 const serviceTypeIcons = {
   [ServiceType.SYSTEM]: MdSystemUpdateAlt,
@@ -58,7 +59,7 @@ interface ActionMenuProps {
 
 const ActionMenu = ({ row }: ActionMenuProps) => {
   const currentStatus = row.original.isActived ? "active" : "inactive";
-
+  const router = useRouter()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,7 +74,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
           onClick={() => {
-            // router.push(`/dashboard/auctions/${row.original.auctionId}`)
+            router.push(`/dashboard/services/${row.original.id}`)
           }}
         >
           <span>Chi tiết</span>
