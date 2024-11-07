@@ -5,8 +5,8 @@ export const BASIC_URL ={
 
 export const SERVICES_URL = {
   GET_SERVICES: "/services",
-  CREATE_SERVICES: "/services/manage/create-service",
-  UPDATE_SERVICES: "/services/manage",
+  CREATE_SERVICES: "/services/manager/create-service",
+  UPDATE_SERVICES: "/services/manager",
   GET_HOUSE_TYPE: "/housetypes",
   GET_TRUCK_CATEGORY: "/truckcategorys",
 };
