@@ -56,7 +56,6 @@ const Services = () => {
             className="max-w-xs max-h-40 rounded-lg mx-auto"
           />
         </div>
-        {/* Add more images if needed */}
       </Slider>
 
       <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Bảng giá thuê xe</h2>

@@ -7,8 +7,8 @@ interface User {
   name: string;
   status: string;
   rating: number;
-  phone?: string;       // Optional field for phone number
-  truckInfo?: string;   // Optional field for truck information (specific to drivers)
+  phone?: string; 
+  truckInfo?: string;  
 }
 
 const UserPage = () => {
@@ -57,7 +57,6 @@ const UserPage = () => {
         ))}
       </div>
 
-      {/* User Information with Status Dropdown */}
       <div className="bg-white p-4 rounded-lg shadow-inner">
         {activeTab === 'driver' && (
           <UserList users={driverInfo} type="driver" onStatusChange={handleStatusChange} statuses={driverStatuses} />

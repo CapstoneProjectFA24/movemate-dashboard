@@ -33,12 +33,6 @@ export const links: Route[] = [
     href: "/services",
   },
   {
-    label: "Bảng giá",
-    icon: RiPriceTag2Fill,
-    activeIcon: RiPriceTag2Fill,
-    href: "/prices",
-  },
-  {
     label: "Liên hệ",
     href: "/contact",
     icon:IoMdContacts,
