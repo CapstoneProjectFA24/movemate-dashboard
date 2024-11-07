@@ -1,5 +1,6 @@
 import { getTruckCategorys } from "@/features/services/action/truck-category";
 import CreateServiceForm from "@/features/services/components/services-form/create-service-form";
+// import CreateServiceForm from "@/features/services/components/services-form/create-service-form-v1";
 import React from "react";
 
 const CreateService = async () => {
@@ -7,7 +8,8 @@ const CreateService = async () => {
 
   return (
     <div>
-      <CreateServiceForm truckCategorys={truckCategorys.data} />
+      {/* <CreateServiceForm truckCategorys={truckCategorys.data} /> */}
+      <CreateServiceForm  />
     </div>
   );
 };
