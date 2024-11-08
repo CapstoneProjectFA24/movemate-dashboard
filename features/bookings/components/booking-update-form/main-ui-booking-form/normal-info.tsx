@@ -78,7 +78,7 @@ const NomarlInfo = ({ booking, canReview }: NomarlInfoProps) => {
             <p className="text-sm font-medium text-muted-foreground">
               Đã đặt cọc
             </p>
-            <p>{booking?.isDeposited ? "Rồi" : "Chưa"}</p>
+            <p>{booking?.isDeposited ? "Có" : "Không"}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">
