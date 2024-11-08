@@ -36,17 +36,6 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* <div className="fixed bottom-4 right-4 space-y-3">
-        <a href="/call" className="bg-green-600 p-3 rounded-full shadow-lg">
-          <Phone size={24} className="text-white" />
-        </a>
-        <a href="/feedback" className="bg-green-600 p-3 rounded-full shadow-lg">
-          <MessageCircle size={24} className="text-white" />
-        </a>
-        <a href="/support" className="bg-green-600 p-3 rounded-full shadow-lg">
-          <Phone size={24} className="text-white" />
-        </a>
-      </div> */}
     </div>
   );
 };
