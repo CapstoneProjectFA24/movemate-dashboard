@@ -6,9 +6,16 @@ import {
   GoHome,
   GoHomeFill,
 } from "react-icons/go";
+import { GrTransaction } from "react-icons/gr";
 import { MdMiscellaneousServices } from "react-icons/md";
-import { FaEnvelope, FaEnvelopeOpen, FaListAlt, FaRegListAlt, FaUserCheck } from "react-icons/fa";
-import { Settings, User } from "lucide-react";
+import {
+  FaEnvelope,
+  FaEnvelopeOpen,
+  FaListAlt,
+  FaRegListAlt,
+  FaUserCheck,
+} from "react-icons/fa";
+import { Settings, User, BadgePlus } from "lucide-react";
 import { FaMailchimp, FaUserPen } from "react-icons/fa6";
 import { TbBrandBooking } from "react-icons/tb";
 import { UserRole } from "@/lib/enums/user-role-enum";
@@ -23,7 +30,7 @@ export interface Route {
   allowsRoles?: UserRole[];
 }
 
-// ko truyền allowRoles là full role dc vô nhé 
+// ko truyền allowRoles là full role dc vô nhé
 // code dev để full mốt chặn sau => ví dụ ở bookings route
 export const routes: Route[] = [
   {
@@ -37,6 +44,7 @@ export const routes: Route[] = [
     icon: FaUserPen,
     activeIcon: FaUserCheck,
     isParent: true,
+     allowsRoles: [UserRole.ADMIN, UserRole.MANAGER],
     children: [
       {
         label: "Danh sách nhân sự",
@@ -58,6 +66,12 @@ export const routes: Route[] = [
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
       },
+      {
+        label: "Tạo mới dịch vụ",
+        href: "/dashboard/services/create_service",
+        icon: BadgePlus,
+        activeIcon: BadgePlus,
+      },
     ],
   },
   {
@@ -65,6 +79,13 @@ export const routes: Route[] = [
     icon: TbBrandBooking,
     activeIcon: TbBrandBooking,
     href: "/dashboard/bookings",
+    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+  },
+  {
+    label: "Quản lý thanh toán",
+    icon: GrTransaction,
+    activeIcon: GrTransaction,
+    href: "/dashboard/transactions",
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
   {

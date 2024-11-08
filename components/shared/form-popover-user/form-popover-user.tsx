@@ -79,9 +79,9 @@ const FormPopoverUser = ({
               <UserAvatar />
               <div className="space-y-1">
                 <p className="text-sm font-semibold">
-                  {getFullName("Nguyễn Thành Vinh")}
+                  {getFullName(session?.user.name ?? "Nguyễn Thành Vinh")}
                 </p>
-                <p className="text-xs text-neutral-200">vinh@gmail.com</p>
+                <p className="text-xs text-neutral-200">{session?.user.email ?? "vinh@gmail.com"}</p>
               </div>
             </div>
             <Button

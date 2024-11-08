@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useParams } from "next/navigation";
 import { useModal } from "@/hooks/use-modal";
 import {
@@ -34,9 +34,11 @@ import { formatter } from "@/lib/utils";
 export const CreateNewServicesBookingModal = () => {
   const params = useParams();
   const [isPending, startTransition] = useTransition();
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const isOpenModal = isOpen && type === "createNewServicesBookingModal";
   const { data: services, isLoading } = useGetServicesToUpdateBooking();
+
+  const bookingDetails = data.bookingDetails;
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
@@ -58,26 +60,40 @@ export const CreateNewServicesBookingModal = () => {
     [ServiceType.PORTER]: <Package2 className="w-4 h-4" />,
     [ServiceType.TRUCK]: <Truck className="w-4 h-4" />,
   };
-
   const handleSubmit = async () => {
     if (selectedServices.length === 0) {
       toast.error("Vui lòng chọn ít nhất một dịch vụ!");
       return;
     }
 
-    const bookingDetails = selectedServices.map((service) => ({
+    const bookingDetailsToSend = selectedServices.map((service) => ({
       serviceId: service.id,
       quantity: quantities[service.id] || 0,
     }));
 
+    if (bookingDetails) {
+      bookingDetails.forEach((detail) => {
+        if (
+          !bookingDetailsToSend.some((bd) => bd.serviceId === detail.serviceId)
+        ) {
+          bookingDetailsToSend.push({
+            serviceId: detail.serviceId,
+            quantity: 0,
+          });
+        }
+      });
+    }
+
     const truckCategoryId = selectedServices.find(
-      (service) => service.truckCategoryId
+      (service) => service.type === ServiceType.TRUCK
     )?.truckCategoryId;
 
     const dataToSend = truckCategoryId
-      ? { bookingDetails, truckCategoryId }
-      : { bookingDetails };
-    // console.log(dataToSend);
+      ? { bookingDetails: bookingDetailsToSend, truckCategoryId }
+      : { bookingDetails: bookingDetailsToSend };
+
+    console.log(dataToSend);
+
     startTransition(async () => {
       const result = await updateBookingStatus(
         params.id.toString(),
@@ -87,9 +103,42 @@ export const CreateNewServicesBookingModal = () => {
         toast.error(result.error);
         return;
       }
-      toast.success("Cập nhật dịch vụ thành công !");
+      toast.success("Cập nhật dịch vụ thành công!");
     });
   };
+
+  // check nếu có data thì làm như update nè !
+  useEffect(() => {
+    if (bookingDetails && services?.data) {
+      const initialSelectedServices: IService[] = [];
+      const initialQuantities: { [key: string]: number } = {};
+
+      services.data.forEach((service) => {
+        const mainServiceInBooking = bookingDetails.find(
+          (bd) => bd.serviceId === service.id
+        );
+        if (mainServiceInBooking) {
+          initialSelectedServices.push(service);
+          initialQuantities[service.id.toString()] =
+            mainServiceInBooking.quantity;
+        }
+
+        service.inverseParentService?.forEach((childService) => {
+          const childServiceInBooking = bookingDetails.find(
+            (bd) => bd.serviceId === childService.id
+          );
+          if (childServiceInBooking) {
+            initialSelectedServices.push(childService);
+            initialQuantities[childService.id.toString()] =
+              childServiceInBooking.quantity;
+          }
+        });
+      });
+
+      setSelectedServices(initialSelectedServices);
+      setQuantities(initialQuantities);
+    }
+  }, [bookingDetails, services]);
 
   const toggleExpand = (serviceId: string) => {
     setExpandedServices((prev) => ({
@@ -322,8 +371,9 @@ export const CreateNewServicesBookingModal = () => {
                   {service.description}
                 </p>
                 <p className="font-medium mt-1 text-orange-600">
-                
-                {hasChildServices ? "" :`  Giá: ${formatter.format(service.amount)}`}
+                  {hasChildServices
+                    ? ""
+                    : `  Giá: ${formatter.format(service.amount)}`}
                 </p>
               </div>
               {hasChildServices && (
@@ -366,11 +416,11 @@ export const CreateNewServicesBookingModal = () => {
     <Dialog open={isOpenModal} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gray-900">
+          <DialogTitle className="text-2xl font-semibold ">
             Thêm dịch vụ
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
-            Chọn dịch vụ bạn muốn thêm vào booking.
+          <DialogDescription className="">
+            Chọn dịch vụ con bạn muốn thêm vào đây
           </DialogDescription>
         </DialogHeader>
 

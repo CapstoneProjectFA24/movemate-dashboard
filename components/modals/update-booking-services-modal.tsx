@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { updateBookingStatus } from "@/features/bookings/action/update-booking";
 import { formatter } from "@/lib/utils";
+import ServicesCardUpdateSkeleton from "../../features/bookings/components/skeleton/services-card-update-skeleton";
 
 export const UpdateBookingServicesModalSheet = () => {
   const params = useParams();
@@ -33,10 +34,43 @@ export const UpdateBookingServicesModalSheet = () => {
   const [parentService, setParentService] = useState<IService | null>(null);
 
   const handleSubmit = async () => {
+    const dataToSend = formatDataUpdate();
+
+    startTransition(async () => {
+      const result = await updateBookingStatus(
+        params.id.toString(),
+        dataToSend
+      );
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+      onClose();
+      toast.success("Cập nhật dịch vụ thành công !");
+    });
+  };
+
+  const formatDataUpdate = () => {
     const bookingDetails = selectedServices.map((service) => ({
       serviceId: service.id,
       quantity: service.isQuantity ? quantities[service.id] || 0 : 1,
     }));
+
+    const unselectedNonQuantityServices = services!.data
+      .filter(
+        (service) =>
+          !service.isQuantity &&
+          !selectedServices.some((s) => s.id === service.id)
+      )
+      .map((service) => ({
+        serviceId: service.id,
+        quantity: 0,
+      }));
+
+    const combinedBookingDetails = [
+      ...bookingDetails,
+      ...unselectedNonQuantityServices,
+    ];
 
     const truckCategoryId = selectedServices.find(
       (service) => service.truckCategoryId
@@ -57,24 +91,14 @@ export const UpdateBookingServicesModalSheet = () => {
         };
       }
     }
-    const formatData = oldData ? [...bookingDetails, oldData] : bookingDetails;
 
-    const dataToSend = truckCategoryId
+    const formatData = oldData
+      ? [...combinedBookingDetails, oldData]
+      : combinedBookingDetails;
+
+    return truckCategoryId
       ? { bookingDetails: formatData, truckCategoryId }
       : { bookingDetails: formatData };
-
-    startTransition(async () => {
-      const result = await updateBookingStatus(
-        params.id.toString(),
-        dataToSend
-      );
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      onClose();
-      toast.success("Cập nhật dịch vụ thành công !");
-    });
   };
 
   useEffect(() => {
@@ -233,6 +257,15 @@ export const UpdateBookingServicesModalSheet = () => {
   };
 
   const renderServices = () => {
+    if (isLoading) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, index) => (
+            <ServicesCardUpdateSkeleton key={index} />
+          ))}
+        </div>
+      );
+    }
     if (!services?.data) {
       return <p className="p-4">Không tìm thấy dịch vụ.</p>;
     }

@@ -16,7 +16,7 @@ export const isActivedColumn = {
       <Badge
         className={cn(
           "bg-opacity-10 text-xs cursor-pointer",
-          isActived ? "bg-green-500 text-green-500" : "bg-red-500 text-red-500"
+          isActived ? " text-green-500" : " text-red-500"
         )}
       >
         {isActived ? "Đang hoạt động" : "Không hoạt động"}

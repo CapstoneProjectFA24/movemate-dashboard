@@ -9,6 +9,10 @@ interface UserJWT extends JWT {
   id: string;
   email: string;
   roleName: string;
+  name: string;
+  phone: string;
+  gender: string;
+  avatarUrl: string;
   roleId: number;
   accessToken: string;
   refreshToken: string;
@@ -66,12 +70,26 @@ export const authOptions: NextAuthConfig = {
     async session({ session, token }) {
       session.user = token as UserJWT;
       if (token) {
-        const { id, email, roleName, roleId, accessToken, refreshToken } =
-          token;
+        const {
+          id,
+          email,
+          roleName,
+          name,
+          phone,
+          gender,
+          avatarUrl,
+          roleId,
+          accessToken,
+          refreshToken,
+        } = token;
         Object.assign(session.user, {
           id,
           email,
           roleName,
+          name,
+          phone,
+          gender,
+          avatarUrl,
           roleId,
           accessToken,
           refreshToken,

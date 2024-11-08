@@ -20,7 +20,7 @@ const NomarlInfo = ({ booking, canReview }: NomarlInfoProps) => {
     statusMessage,
     canReviewOffline,
     canReviewOnline,
-    isWaitingForPayment,
+
     isStaffEnroute,
     isStaffArrived,
     isReviewed,
