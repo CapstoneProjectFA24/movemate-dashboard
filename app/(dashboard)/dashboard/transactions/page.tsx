@@ -89,9 +89,7 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
         />
       </div>
 
-      {/* Main Content */}
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Transaction Table */}
         <div className="lg:w-3/4">
           <Shell className="h-full">
             <React.Suspense
@@ -110,7 +108,6 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
           </Shell>
         </div>
 
-        {/* Right Column - Charts */}
         <div className="lg:w-1/4">
           <ScrollArea className="h-[calc(100vh-10rem)]">
             <div className="space-y-6 pr-4">
