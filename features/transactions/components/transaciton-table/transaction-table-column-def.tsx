@@ -13,11 +13,13 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { ITransaction } from "../../type/transaction-type";
 import selectColumn from "./column/select-column";
 import idColumn from "./column/id-column";
+import amountColumn from "./column/amount";
 
 export function fetchTransactionsTableColumnDefs(): ColumnDef<ITransaction, unknown>[] {
   return [
     selectColumn,
     idColumn,
+    amountColumn,
     // nameColumn,
     // amountColumn,
     // typeColum,

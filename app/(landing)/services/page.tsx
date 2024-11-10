@@ -1,13 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import 'aos/dist/aos.css';
-import AOS from 'aos';
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-AOS.init();
 
 const Services = () => {
   const [activeTab, setActiveTab] = useState('services1');
