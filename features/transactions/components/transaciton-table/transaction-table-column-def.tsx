@@ -14,14 +14,19 @@ import { ITransaction } from "../../type/transaction-type";
 import selectColumn from "./column/select-column";
 import idColumn from "./column/id-column";
 import amountColumn from "./column/amount";
+import {transTypeColumn} from "./column/transaction-type";
+import { paymentMethodColumn } from "./column/payment-method";
+import statusColumn from "./column/status-column";
+
 
 export function fetchTransactionsTableColumnDefs(): ColumnDef<ITransaction, unknown>[] {
   return [
     selectColumn,
     idColumn,
     amountColumn,
-    // nameColumn,
-    // amountColumn,
+    transTypeColumn,
+    paymentMethodColumn,
+    statusColumn,
     // typeColum,
     // inverseParentColumn,
     // isActivedColumn,

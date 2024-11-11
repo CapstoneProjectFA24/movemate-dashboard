@@ -15,19 +15,7 @@ export const amountColumn = {
     const isPositive = amount >= 0;
 
     return (
-      <div className={`
-        flex items-center gap-2 font-medium
-        ${isPositive ? 'text-green-600' : 'text-red-600'}
-        transition-all duration-200 ease-in-out
-        hover:scale-105
-        rounded-lg py-1 px-2
-        ${isPositive ? 'bg-green-50' : 'bg-red-50'}
-      `}>
-        {isPositive ? (
-          <TrendingUp className="w-4 h-4" />
-        ) : (
-          <TrendingDown className="w-4 h-4" />
-        )}
+      <div>
         <span className="tabular-nums tracking-tight">
           {isPositive ? '+' : '-'}{formatted}
         </span>
@@ -35,7 +23,6 @@ export const amountColumn = {
     );
   },
   enableSorting: true,
-  enableHiding: false,
 } as const;
 
 export default amountColumn;
