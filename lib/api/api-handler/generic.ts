@@ -15,6 +15,7 @@ export type Result<T> = {
 export interface ApiListResponse<T> {
   data: T[];
   pageCount?: number;
+  totalItemsCount?: number;
   error?: string;
 }
 export interface ApiSingleResponse<T> {
@@ -56,6 +57,7 @@ export async function fetchListData<T>(
       data: {
         data: payload || [],
         pageCount: metaData?.totalPagesCount || 0,
+        totalItemsCount: metaData?.totalItemsCount || 0
       }
     };
   }
