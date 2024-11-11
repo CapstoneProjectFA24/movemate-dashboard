@@ -12,13 +12,14 @@ export const inverseParentColumn = {
   cell: ({ row }: { row: Row<IService> }) => {
     const services = row.getValue("inverseParentService") as any[];
     return (
-      <div className="max-w-6 flex  ">
-        <Badge variant="outline" className="text-xs cursor-pointer ">
+      <div className="flex items-center justify-start space-x-2">
+        <Badge variant="outline" className="text-xs cursor-pointer px-2 py-1 rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-all">
           {services?.length || 0}
         </Badge>
       </div>
     );
   },
+
   enableSorting: false,
 
 } as const;
