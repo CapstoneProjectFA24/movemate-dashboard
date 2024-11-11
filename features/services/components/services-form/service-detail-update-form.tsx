@@ -75,7 +75,6 @@ const ServiceDetailUpdateForm = ({
         if (!result.success) {
           toast.error(result.error);
         } else {
-          form.reset();
           toast.success("Cập nhật dịch vụ thành công !");
         }
       });
