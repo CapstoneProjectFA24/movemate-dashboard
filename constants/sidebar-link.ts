@@ -9,11 +9,15 @@ import {
 import { GrTransaction } from "react-icons/gr";
 import { MdMiscellaneousServices } from "react-icons/md";
 import {
+  FaCalendar,
+  FaCalendarCheck,
+  FaCalendarPlus,
   FaEnvelope,
   FaEnvelopeOpen,
   FaListAlt,
   FaRegListAlt,
   FaUserCheck,
+  FaUserPlus,
 } from "react-icons/fa";
 import { Settings, User, BadgePlus } from "lucide-react";
 import { FaMailchimp, FaUserPen } from "react-icons/fa6";
@@ -87,6 +91,32 @@ export const routes: Route[] = [
     activeIcon: GrTransaction,
     href: "/dashboard/transactions",
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+  },
+  {
+    label: "Quản lý lịch làm việc",
+    icon: FaCalendar,
+    activeIcon: FaCalendarCheck,
+    isParent: true,
+    children: [
+      {
+        label: "Lịch làm việc",
+        href: "/dashboard/schedule",
+        icon: FaRegListAlt,
+        activeIcon: FaListAlt,
+      },
+      {
+        label: "Tạo ca làm việc",
+        href: "/dashboard/schedule/create-shift",
+        icon: FaCalendarPlus,
+        activeIcon: FaCalendarPlus,
+      },
+      {
+        label: "Tạo tổ",
+        href: "/dashboard/schedule/create-team",
+        icon: FaUserPlus,
+        activeIcon: FaUserPlus,
+      },
+    ],
   },
   {
     label: "Phản hồi",
