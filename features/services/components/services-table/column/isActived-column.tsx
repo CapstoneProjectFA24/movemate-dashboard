@@ -3,6 +3,27 @@ import { Row, type Column } from "@tanstack/react-table";
 import { IService } from "@/features/services/type/services-type";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { useTheme } from "next-themes";
+
+const StatusBadge = ({ isActived }: { isActived: boolean }) => {
+  const { theme } = useTheme();   
+  return (
+    <Badge
+      className={cn(
+        "bg-opacity-10 text-xs cursor-pointer rounded-2 px-2 py-1",
+        theme === "light"
+          ? isActived
+            ? "text-white"
+            : "text-red-500"
+          : isActived
+          ? "text-green-600 bg-green-100"
+          : "text-red-600 bg-red-100"
+      )}
+    >
+      {isActived ? "Đang hoạt động" : "Không hoạt động"}
+    </Badge>
+  );
+};
 
 export const isActivedColumn = {
   accessorKey: "isActived",
@@ -12,16 +33,7 @@ export const isActivedColumn = {
 
   cell: ({ row }: { row: Row<IService> }) => {
     const isActived = row.getValue("isActived") as boolean;
-    return (
-      <Badge
-        className={cn(
-          "bg-opacity-10 text-xs cursor-pointer",
-          isActived ? " text-green-500" : " text-red-500"
-        )}
-      >
-        {isActived ? "Đang hoạt động" : "Không hoạt động"}
-      </Badge>
-    );
+    return <StatusBadge isActived={isActived} />;
   },
   enableSorting: false,
   enableHiding: false,
