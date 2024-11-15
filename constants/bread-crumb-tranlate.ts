@@ -10,4 +10,6 @@ export const breadcrumbTranslations: { [key: string]: string } = {
     bookings: "Quản lý đơn dọn nhà",
     mail : "Phản hồi",
     transactions: "Giao dịch",
+    schedule: "Lịch làm việc",
+    create_shift: "Tạo ca làm việc",
   };

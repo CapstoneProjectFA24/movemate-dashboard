@@ -100,19 +100,19 @@ export const routes: Route[] = [
     children: [
       {
         label: "Lịch làm việc",
-        href: "/dashboard/schedule",
+        href: "/dashboard/schedule_list",
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
       },
       {
         label: "Tạo ca làm việc",
-        href: "/dashboard/schedule/create-shift",
+        href: "/dashboard/schedule/create_shift",
         icon: FaCalendarPlus,
         activeIcon: FaCalendarPlus,
       },
       {
         label: "Tạo tổ",
-        href: "/dashboard/schedule/create-team",
+        href: "/dashboard/schedule/create_team",
         icon: FaUserPlus,
         activeIcon: FaUserPlus,
       },
