@@ -37,4 +37,9 @@ export const links: Route[] = [
     href: "/contact",
     icon:IoMdContacts,
   },
+  {
+    label: "Thông tin",
+    href: "/information",
+    icon:IoMdContacts,
+  },
 ];
