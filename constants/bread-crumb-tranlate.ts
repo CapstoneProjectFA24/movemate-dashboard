@@ -12,4 +12,6 @@ export const breadcrumbTranslations: { [key: string]: string } = {
     transactions: "Giao dịch",
     schedule: "Lịch làm việc",
     create_shift: "Tạo ca làm việc",
+    create_team: "Tạo tổ",
+    schedule_list: "Tạo lịch làm việc"
   };

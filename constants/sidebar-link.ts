@@ -100,7 +100,7 @@ export const routes: Route[] = [
     children: [
       {
         label: "Lịch làm việc",
-        href: "/dashboard/schedule_list",
+        href: "/dashboard/schedule/schedule_list",
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
       },

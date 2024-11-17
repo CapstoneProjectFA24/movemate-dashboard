@@ -1,5 +1,5 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import { Check } from 'lucide-react';
+import { Check, Mail, Phone } from 'lucide-react';
 
 const InformationPage = () => {
   return (
@@ -124,7 +124,13 @@ const InformationPage = () => {
                 </div>
               </section>
 
+              <section className="text-center mt-8">
+                <h2 className="text-lg font-normal mb-4 text-gray-400">Đối tác</h2>
+                <div className="flex justify-center mt-6 space-x-6">
+                  <img src="https://lh3.googleusercontent.com/QzsJhcwLuK7hxgEV8tJtAffEAW-By-HOaqnEyZe5iFOSwNtufFnoAUSNsod01V63uRlcU_S5xZTHzHlazgTnx85wsVbYHaiAf20q4u5gT0kgrq7Sb3bm" alt="Logo 1" className="w-48 h-auto" />
 
+                </div>
+              </section>
             </Tabs.Content>
 
             <Tabs.Content value="tab2" className="mt-4">
@@ -179,6 +185,41 @@ const InformationPage = () => {
                     </tr>
                   </tbody>
                 </table>
+                <section>
+                  <h2 className="text-lg font-bold mb-4 text-orange-500 text-center">Liên hệ</h2>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Nếu bạn cần được hỗ trợ hoặc hướng dẫn thêm, vui lòng liên hệ:
+                  </p>
+                  <img
+                    src="https://lh3.googleusercontent.com/QzsJhcwLuK7hxgEV8tJtAffEAW-By-HOaqnEyZe5iFOSwNtufFnoAUSNsod01V63uRlcU_S5xZTHzHlazgTnx85wsVbYHaiAf20q4u5gT0kgrq7Sb3bm"
+                    alt="PasarPolis Logo"
+                    className="mb-4 w-48 h-auto"
+                  />
+                  <div className="text-left max-w-md">
+                    <p className="font-semibold">CÔNG TY TNHH PP VIETNAM</p>
+                    <p className="text-sm text-gray-600">
+                      Tòa nhà E.Town Central, Phòng #22-143, Số 11, đường Đoàn Văn Bơ,
+                      Phường 13, Quận 4, TP. Hồ Chí Minh
+                    </p>
+                    <p className="text-sm text-gray-600 mt-2">
+                      09:00 - 18:00 Thứ 2 đến Thứ 6 (trừ các ngày lễ, Tết)
+                    </p>
+                    <div className="mt-4 space-y-2">
+                      <p className="flex items-center text-sm text-gray-600">
+                        <Mail size={18} className="text-orange-500 mr-2" />
+                        <span>cskh@pasarpolis.co.id</span>
+                      </p>
+                      <p className="flex items-center text-sm text-gray-600">
+                        <Phone size={18} className="text-blue-500 mr-2" />
+                        <span>0967 292 971</span>
+                      </p>
+                      <p className="flex items-center text-sm text-gray-600">
+                        <Phone size={18} className="text-blue-500 mr-2" />
+                        <span>1900232454</span>
+                      </p>
+                    </div>
+                  </div>
+                </section>
               </div>
             </Tabs.Content>
 
