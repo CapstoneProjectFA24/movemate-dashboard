@@ -84,7 +84,7 @@ const InformationPage = () => {
                   </li>
                 </ul>
               </section>
-              <section className="text-center mt-8">
+              {/* <section className="text-center mt-8">
                 <h2 className="text-lg font-bold mb-4 text-orange-500">Cách chọn mua bảo hiểm</h2>
                 <p className="text-sm text-gray-600">
                   Bạn có thể dễ dàng chọn mua bảo hiểm thông qua các bước đơn giản.
@@ -94,7 +94,7 @@ const InformationPage = () => {
                   alt="Hướng dẫn mua bảo hiểm"
                   className="mx-auto mt-4"
                 />
-              </section>
+              </section> */}
               <section className="mt-8">
                 <h2 className="text-lg font-bold mb-4 text-orange-500 text-center">Câu hỏi thường gặp</h2>
                 <div className="space-y-4">
@@ -136,24 +136,42 @@ const InformationPage = () => {
             <Tabs.Content value="tab2" className="mt-4">
 
               <div className="space-y-4 mt-4">
-                <h3 className="font-semibold text-orange-500 text-center">Các bước yêu cầu bồi thường bảo hiểm</h3>
+                <h3 className="font-semibold text-orange-500 text-center">Các bước Yêu cầu bồi thường bảo hiểm</h3>
                 <div className="flex space-x-4">
                   <div className="flex items-center justify-center w-8 h-8 bg-orange-500 text-white rounded-full">
                     1
                   </div>
-                  <p>Vui lòng kiểm tra sản phẩm có còn trong thời hạn bảo hành.</p>
+                  <p>Truy cập <a href="https://movemate.pasarpolis.io" className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">https://movemate.pasarpolis.io</a> của đơn vị đồng đại lý – Công ty TNHH PP Vietnam.</p>
                 </div>
                 <div className="flex space-x-4">
                   <div className="flex items-center justify-center w-8 h-8 bg-orange-500 text-white rounded-full">
                     2
                   </div>
-                  <p>Đảm bảo sản phẩm không bị hỏng hóc do sử dụng sai cách.</p>
+                  <p>Đăng nhập với số điện thoại/ địa chỉ email được liên kết với Tài khoản MoveMate của bạn.</p>
                 </div>
                 <div className="flex space-x-4">
                   <div className="flex items-center justify-center w-8 h-8 bg-orange-500 text-white rounded-full">
                     3
                   </div>
-                  <p>Gửi yêu cầu bảo hiểm trong vòng 7 ngày kể từ khi xảy ra sự cố.</p>
+                  <p>Chọn Chính sách bảo hiểm mà bạn muốn yêu cầu bồi thường.</p>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="flex items-center justify-center w-8 h-8 bg-orange-500 text-white rounded-full">
+                    4
+                  </div>
+                  <p>Điền đầy đủ các thông tin và tải lên các tài liệu theo yêu cầu.</p>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="flex items-center justify-center w-8 h-8 bg-orange-500 text-white rounded-full">
+                    5
+                  </div>
+                  <p>Làm theo hướng dẫn ở các trang tiếp theo để tạo Yêu cầu bồi thường bảo hiểm.</p>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="flex items-center justify-center w-8 h-8 bg-orange-500 text-white rounded-full">
+                    6
+                  </div>
+                  <p>Bạn cần thanh toán trước chi phí sửa chữa. Cung cấp đầy đủ các thông tin sửa chữa tài sản bị hư hỏng, thông tin thanh toán (hóa đơn đỏ).</p>
                 </div>
               </div>
 
@@ -237,6 +255,13 @@ const InformationPage = () => {
                   3. Vui lòng đọc kỹ hợp đồng bảo hiểm để hiểu rõ quyền lợi của bạn.
                 </p>
               </div>
+              <h3 className="text-md font-semibold mt-4">Bảo hiểm Quyền lợi tiêu dùng</h3>
+              <p>
+                Bảo hiểm Quyền lợi tiêu dùng được cung cấp bởi Công ty bảo hiểm PVI, thông qua đối tác môi giới bảo hiểm PasarPolis. Các Điều khoản và Điều kiện của Bảo hiểm Quyền lợi tiêu dùng là một phần thuộc hệ thống Điều khoản và Điều kiện của MoveMate. Việc sử dụng các dịch vụ Bảo hiểm Quyền lợi tiêu dùng cần phải tuân thủ những Điều khoản và Điều kiện của MoveMate, Chính sách bảo mật, và Điều khoản và Điều kiện riêng được nêu ra bên dưới. Người dùng được khuyến cáo nên đọc kỹ vì nó có thể ảnh hưởng đến quyền và nghĩa vụ về mặt pháp lý của Người dùng.
+              </p>
+              <p>
+                Bằng việc đăng ký và/hoặc sử dụng trang www.movemate.info, Người dùng được coi là đã đọc, hiểu, hiểu rõ và đồng ý với tất cả các nội dung trong Điều khoản và Điều kiện. Nếu Người dùng không đồng ý với một, một phần hoặc tất cả các nội dung của Điều khoản và Điều kiện, Người dùng không được phép sử dụng các dịch vụ tại trang www.movemate.info.
+              </p>
               <h3 className="text-md font-semibold mt-4">Quyền lợi bảo hiểm</h3>
               <p>
                 Tuân thủ các điều khoản bảo hiểm, Công ty bảo hiểm sẽ bồi thường chi phí hợp lý cho các trường hợp như:
@@ -244,21 +269,20 @@ const InformationPage = () => {
               <ul>
                 <li>Chi phí điều trị y tế và nằm viện do thương tật hoặc bệnh tật bất ngờ.</li>
                 <li>Tử vong hoặc thương tật toàn bộ vĩnh viễn.</li>
-                <li>Tổn thất hoặc thiệt hại tài sản phát sinh từ sản phẩm được bán qua Shopee.</li>
+                <li>Tổn thất hoặc thiệt hại tài sản phát sinh từ sản phẩm được bán qua MoveMate.</li>
               </ul>
-
               <h3 className="text-md font-semibold mt-4">Điều kiện bảo hiểm</h3>
               <p>
                 Thời hạn bảo hiểm là 12 tháng kể từ ngày bảo hiểm được kích hoạt. Các sản phẩm được bảo hiểm phải còn mới và đính kèm Bảo hiểm Quyền lợi tiêu dùng.
               </p>
-
               <h3 className="text-md font-semibold mt-4">Các điểm loại trừ</h3>
               <ul>
                 <li>Không bảo hiểm đối với hành động cố ý hoặc sai sót cố ý của Người được bảo hiểm.</li>
-                <li>Không bảo hiểm đối với các sản phẩm bán bên ngoài nền tảng Shopee.</li>
+                <li>Không bảo hiểm đối với các sản phẩm bán bên ngoài nền tảng MoveMate.</li>
                 <li>Trách nhiệm phát sinh từ chiến tranh, nội chiến, hay các hành động khủng bố.</li>
               </ul>
             </Tabs.Content>
+
 
           </Tabs.Root>
         </div>
