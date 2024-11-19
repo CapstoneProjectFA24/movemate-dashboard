@@ -13,5 +13,7 @@ export const breadcrumbTranslations: { [key: string]: string } = {
     schedule: "Lịch làm việc",
     create_shift: "Tạo ca làm việc",
     create_team: "Tạo tổ",
-    schedule_list: "Tạo lịch làm việc"
+    schedule_list: "Tạo lịch làm việc",
+    booking: "Đơn dọn nhà",
+    exception: "Đơn chưa có nhân viên"
   };
