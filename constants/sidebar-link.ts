@@ -82,7 +82,21 @@ export const routes: Route[] = [
     label: "Quản lý đơn dọn nhà",
     icon: TbBrandBooking,
     activeIcon: TbBrandBooking,
-    href: "/dashboard/bookings",
+    isParent: true,
+    children: [
+      {
+        label: "Đơn dọn nhà",
+        href: "/dashboard/bookings/booking",
+        icon: FaRegListAlt,
+        activeIcon: FaListAlt,
+      },
+      {
+        label: "Đơn chưa có nhân viên",
+        href: "/dashboard/bookings/exception",
+        icon: BadgePlus,
+        activeIcon: BadgePlus,
+      },
+    ],
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
   {
