@@ -53,7 +53,7 @@ const WorkScheduleCalendar = () => {
 
   const shifts: Shift[] = [
     { id: 'ca-1', name: 'Ca 1: 7h - 12h', startTime: '07:00', endTime: '12:00' },
-    { id: 'ca-2', name: 'Ca 2: 13h - 17h', startTime: '13:00', endTime: '17:00' },
+    { id: 'ca-2', name: 'Ca 2: 12h - 17h', startTime: '12:00', endTime: '17:00' },
   ];
 
   const toggleDarkMode = () => {
@@ -95,9 +95,7 @@ const WorkScheduleCalendar = () => {
   return (
     <div className={`min-h-screen ${darkMode ? 'dark' : ''} bg-gray-50 dark:bg-gray-900 p-4`}>
       <div className="max-w-7xl mx-auto">
-        {/* Header Controls */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-          {/* Dark Mode Toggle */}
           <button
             onClick={toggleDarkMode}
             className="p-2 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
@@ -161,7 +159,7 @@ const WorkScheduleCalendar = () => {
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200'
               }`}
             >
-              Month
+              Tháng
             </button>
             <button
               onClick={() => setView('timeGridWeek')}
@@ -171,7 +169,7 @@ const WorkScheduleCalendar = () => {
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200'
               }`}
             >
-              Week
+              Tuần
             </button>
             <button
               onClick={() => setView('timeGridDay')}
@@ -181,7 +179,7 @@ const WorkScheduleCalendar = () => {
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200'
               }`}
             >
-              Day
+              Ngày
             </button>
           </div>
         </div>
@@ -200,8 +198,8 @@ const WorkScheduleCalendar = () => {
             events={events.filter((event) =>
               selectedTeams.includes(event.teamId)
             )}
-            slotMinTime="06:00:00"
-            slotMaxTime="18:00:00"
+            slotMinTime="04:00:00"
+            slotMaxTime="22:00:00"
             allDaySlot={false}
             height="auto"
             expandRows={true}

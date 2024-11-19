@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Table,
     TableBody,
@@ -32,7 +33,9 @@ import {
     BarChart3
 } from 'lucide-react';
 
-const ExceptionDashboard = () => {
+const ExceptionDashboard: React.FC = () => {
+    const [selectedShift, setSelectedShift] = useState('all');
+    
     const mockStats = {
         unassigned: 12,
         exceptions: {
@@ -53,22 +56,49 @@ const ExceptionDashboard = () => {
         },
     ];
 
-    const mockStaff = [
+    // Mock data for staff
+    const mockDrivers = [
         {
             id: 1,
-            name: "Trần Văn B",
+            name: "Nguyễn Văn A",
             role: "Tài Xế",
             rating: 4.8,
-            phone: "09090290291",
-            status: "Sẵn Sàng"
+            phone: "0987654321",
+            status: "Sẵn Sàng",
+            shift: "Ca 1"
         },
         {
             id: 2,
-            name: "Trần Văn C",
+            name: "Trần Văn B",
             role: "Tài Xế",
-            rating: 4.8,
-            phone: "09090290291",
-            status: "Sẵn Sàng"
+            rating: 4.5,
+            phone: "0987654322",
+            status: "Sẵn Sàng",
+            shift: "Ca 2"
+        },
+    ];
+
+    const mockPorters = [
+        {
+            id: 3,
+            name: "Lê Văn C",
+            role: "Nhân viên bốc xếp",
+            rating: 4.6,
+            phone: "0987654323",
+            status: "Sẵn Sàng",
+            shift: "Ca 1"
+        },
+    ];
+
+    const mockEvaluators = [
+        {
+            id: 4,
+            name: "Phạm Thị D",
+            role: "Nhân viên đánh giá",
+            rating: 4.9,
+            phone: "0987654324",
+            status: "Sẵn Sàng",
+            shift: "Ca 2"
         },
     ];
 
@@ -77,6 +107,48 @@ const ExceptionDashboard = () => {
         { name: '11:00', noDriver: 6, noPorter: 3 },
         { name: '12:00', noDriver: 8, noPorter: 4 },
     ];
+
+    const filterByShift = (staff: any) => {
+        if (selectedShift === 'all') return true;
+        return staff.shift === selectedShift;
+    };
+
+    const StaffTable: React.FC<{ data: any[] }> = ({ data }) => (
+        <div className="rounded-md border">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Tên</TableHead>
+                        <TableHead>Vai Trò</TableHead>
+                        <TableHead>Đánh Giá</TableHead>
+                        <TableHead>Số điện thoại</TableHead>
+                        <TableHead>Ca làm việc</TableHead>
+                        <TableHead>Trạng Thái</TableHead>
+                        <TableHead>Thao Tác</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {data.filter(filterByShift).map((staff) => (
+                        <TableRow key={staff.id}>
+                            <TableCell>{staff.name}</TableCell>
+                            <TableCell>{staff.role}</TableCell>
+                            <TableCell>{staff.rating}</TableCell>
+                            <TableCell>{staff.phone}</TableCell>
+                            <TableCell>{staff.shift}</TableCell>
+                            <TableCell>
+                                <Badge variant="outline" className="bg-green-50">
+                                    {staff.status}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                <Button variant="outline" size="sm">Chọn</Button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
+    );
 
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-6">
@@ -131,9 +203,14 @@ const ExceptionDashboard = () => {
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <Select>
-                            <option>Tất Cả Ngoại Lệ</option>
-                            <option>Thiếu Tài Xế</option>
-                            <option>Thiếu Nhân Viên Bốc Xếp</option>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Tất Cả Ngoại Lệ" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Tất Cả Ngoại Lệ</SelectItem>
+                                <SelectItem value="noDriver">Thiếu Tài Xế</SelectItem>
+                                <SelectItem value="noPorter">Thiếu Nhân Viên Bốc Xếp</SelectItem>
+                            </SelectContent>
                         </Select>
                         <Input type="date" className="w-full" />
                     </div>
@@ -185,93 +262,92 @@ const ExceptionDashboard = () => {
                 </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
-                    <Card className="h-full">
-                        <CardHeader>
-                            <CardTitle className="text-lg flex items-center gap-2">
-                                <Users className="h-5 w-5" />
-                                Nhân Viên Sẵn Sàng
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                <div className="flex gap-2">
-                                    <Input placeholder="Tìm kiếm nhân viên..." className="max-w-sm" />
-                                    <Button variant="outline">
-                                        <Search className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                                <div className="rounded-md border">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Tên</TableHead>
-                                                <TableHead>Vai Trò</TableHead>
-                                                <TableHead>Đánh Giá</TableHead>
-                                                <TableHead>Số điện thoại</TableHead>
-                                                <TableHead>Trạng Thái</TableHead>
-                                                <TableHead>Thao Tác</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {mockStaff.map((staff) => (
-                                                <TableRow key={staff.id}>
-                                                    <TableCell>{staff.name}</TableCell>
-                                                    <TableCell>{staff.role}</TableCell>
-                                                    <TableCell>{staff.rating}</TableCell>
-                                                    <TableCell>{staff.phone}</TableCell>
-                                                    <TableCell>
-                                                        <Badge variant="outline" className="bg-green-50">
-                                                            {staff.status}
-                                                        </Badge>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <Button variant="outline" size="sm">Chọn</Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                        <Users className="h-5 w-5" />
+                        Nhân Viên Sẵn Sàng
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        <div className="flex gap-2 justify-between">
+                            <div className="flex gap-2">
+                                <Input placeholder="Tìm kiếm nhân viên..." className="max-w-sm" />
+                                <Button variant="outline">
+                                    <Search className="h-4 w-4" />
+                                </Button>
                             </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg flex items-center gap-2">
-                            <BarChart3 className="h-5 w-5" />
-                            Theo Dõi Thống Kê
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="h-[300px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={mockChartData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="noDriver"
-                                        stroke="#8884d8"
-                                        name="Thiếu Tài Xế"
-                                    />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="noPorter"
-                                        stroke="#82ca9d"
-                                        name="Thiếu Nhân Viên Bốc Xếp"
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
+                            <Select 
+                                value={selectedShift}
+                                onValueChange={setSelectedShift}
+                            >
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder="Chọn ca" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Tất cả ca</SelectItem>
+                                    <SelectItem value="Ca 1">Ca 1 (6:00 - 14:00)</SelectItem>
+                                    <SelectItem value="Ca 2">Ca 2 (14:00 - 22:00)</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
-                    </CardContent>
-                </Card>
-            </div>
+
+                        <Tabs defaultValue="drivers" className="w-full">
+                            <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger value="drivers">Tài Xế</TabsTrigger>
+                                <TabsTrigger value="porters">Nhân Viên Bốc Xếp</TabsTrigger>
+                                <TabsTrigger value="evaluators">Nhân Viên Đánh Giá</TabsTrigger>
+                            </TabsList>
+                            
+                            <TabsContent value="drivers">
+                                <StaffTable data={mockDrivers} />
+                            </TabsContent>
+                            
+                            <TabsContent value="porters">
+                                <StaffTable data={mockPorters} />
+                            </TabsContent>
+                            
+                            <TabsContent value="evaluators">
+                                <StaffTable data={mockEvaluators} />
+                            </TabsContent>
+                        </Tabs>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                        <BarChart3 className="h-5 w-5" />
+                        Theo Dõi Thống Kê
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="h-[300px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={mockChartData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Line
+                                    type="monotone"
+                                    dataKey="noDriver"
+                                    stroke="#8884d8"
+                                    name="Thiếu Tài Xế"
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="noPorter"
+                                    stroke="#82ca9d"
+                                    name="Thiếu Nhân Viên Bốc Xếp"
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 };
