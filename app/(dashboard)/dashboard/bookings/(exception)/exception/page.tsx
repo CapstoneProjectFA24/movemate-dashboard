@@ -30,14 +30,77 @@ import {
     Users,
     Filter,
     Search,
-    BarChart3
+    BarChart3,
+    Wand2
 } from 'lucide-react';
+import { toast } from "@/components/ui/use-toast";
 
 const ExceptionDashboard: React.FC = () => {
     const [selectedShift, setSelectedShift] = useState('all');
     const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
     const [selectedBookingTime, setSelectedBookingTime] = useState<string | null>(null);
     const staffSectionRef = useRef<HTMLDivElement>(null);
+
+    const checkAvailableStaff = (request: any) => {
+        const [hour] = request.bookingAt.split(' ')[1].split(':').map(Number);
+        const requestShift = getShiftByHour(hour);
+        
+        const availableDrivers = mockDrivers.filter(driver => 
+            driver.shift === requestShift && 
+            driver.availableTime === request.bookingAt.split(' ')[1]
+        );
+        
+        const availablePorters = mockPorters.filter(porter => 
+            porter.shift === requestShift && 
+            porter.availableTime === request.bookingAt.split(' ')[1]
+        );
+
+        if (request.type.includes("Tài Xế")) {
+            return availableDrivers.length > 0;
+        } else if (request.type.includes("Bốc Xếp")) {
+            return availablePorters.length > 0;
+        }
+        return false;
+    };
+
+    const handleAutoAssign = (request: any) => {
+        const [hour] = request.bookingAt.split(' ')[1].split(':').map(Number);
+        const requestShift = getShiftByHour(hour);
+        
+        if (request.type.includes("Tài Xế")) {
+            const availableDriver = mockDrivers.find(driver => 
+                driver.shift === requestShift && 
+                driver.availableTime === request.bookingAt.split(' ')[1]
+            );
+            
+            if (availableDriver) {
+                toast({
+                    title: "Phân công thành công",
+                    description: `Đã phân công tài xế ${availableDriver.name} cho booking ${request.id}`,
+                });
+                return;
+            }
+        } else if (request.type.includes("Bốc Xếp")) {
+            const availablePorter = mockPorters.find(porter => 
+                porter.shift === requestShift && 
+                porter.availableTime === request.bookingAt.split(' ')[1]
+            );
+            
+            if (availablePorter) {
+                toast({
+                    title: "Phân công thành công",
+                    description: `Đã phân công nhân viên bốc xếp ${availablePorter.name} cho booking ${request.id}`,
+                });
+                return;
+            }
+        }
+        
+        toast({
+            variant: "destructive",
+            title: "Không thể phân công",
+            description: "Không tìm thấy nhân viên phù hợp cho thời gian này",
+        });
+    };
 
     const SHIFTS = {
         EARLY: 'Ca Sớm',
@@ -187,7 +250,6 @@ const ExceptionDashboard: React.FC = () => {
             const [bookingHour, bookingMinute] = selectedBookingTime.split(' ')[1].split(':').map(Number);
             const requestShift = getShiftByHour(bookingHour);
 
-            // Kiểm tra ca làm việc phù hợp
             if (staff.shift !== requestShift) {
                 return false;
             }
@@ -272,7 +334,6 @@ const ExceptionDashboard: React.FC = () => {
 
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-6">
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -314,7 +375,6 @@ const ExceptionDashboard: React.FC = () => {
                 </Card>
             </div>
 
-            {/* Filters */}
             <Card>
                 <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
@@ -396,7 +456,20 @@ const ExceptionDashboard: React.FC = () => {
                                         <TableCell>{request.phone}</TableCell>
                                         <TableCell>{request.customer}</TableCell>
                                         <TableCell>
-                                            <Button variant="outline" size="sm">Phân Công</Button>
+                                            <div className="flex gap-2">
+                                                <Button variant="outline" size="sm">Phân Công</Button>
+                                                {checkAvailableStaff(request) && (
+                                                    <Button 
+                                                        variant="outline" 
+                                                        size="sm"
+                                                        className="text-green-600 hover:text-green-700"
+                                                        onClick={() => handleAutoAssign(request)}
+                                                    >
+                                                        <Wand2 className="h-4 w-4 mr-1" />
+                                                        Tự động
+                                                    </Button>
+                                                )}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -495,7 +568,6 @@ const ExceptionDashboard: React.FC = () => {
                 </CardContent>
             </Card>
 
-            {/* Statistics Chart */}
             <Card>
                 <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
