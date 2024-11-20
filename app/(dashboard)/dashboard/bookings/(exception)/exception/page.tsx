@@ -44,14 +44,14 @@ const ExceptionDashboard: React.FC = () => {
     const checkAvailableStaff = (request: any) => {
         const [hour] = request.bookingAt.split(' ')[1].split(':').map(Number);
         const requestShift = getShiftByHour(hour);
-        
-        const availableDrivers = mockDrivers.filter(driver => 
-            driver.shift === requestShift && 
+
+        const availableDrivers = mockDrivers.filter(driver =>
+            driver.shift === requestShift &&
             driver.availableTime === request.bookingAt.split(' ')[1]
         );
-        
-        const availablePorters = mockPorters.filter(porter => 
-            porter.shift === requestShift && 
+
+        const availablePorters = mockPorters.filter(porter =>
+            porter.shift === requestShift &&
             porter.availableTime === request.bookingAt.split(' ')[1]
         );
 
@@ -66,13 +66,13 @@ const ExceptionDashboard: React.FC = () => {
     const handleAutoAssign = (request: any) => {
         const [hour] = request.bookingAt.split(' ')[1].split(':').map(Number);
         const requestShift = getShiftByHour(hour);
-        
+
         if (request.type.includes("Tài Xế")) {
-            const availableDriver = mockDrivers.find(driver => 
-                driver.shift === requestShift && 
+            const availableDriver = mockDrivers.find(driver =>
+                driver.shift === requestShift &&
                 driver.availableTime === request.bookingAt.split(' ')[1]
             );
-            
+
             if (availableDriver) {
                 toast({
                     title: "Phân công thành công",
@@ -81,11 +81,11 @@ const ExceptionDashboard: React.FC = () => {
                 return;
             }
         } else if (request.type.includes("Bốc Xếp")) {
-            const availablePorter = mockPorters.find(porter => 
-                porter.shift === requestShift && 
+            const availablePorter = mockPorters.find(porter =>
+                porter.shift === requestShift &&
                 porter.availableTime === request.bookingAt.split(' ')[1]
             );
-            
+
             if (availablePorter) {
                 toast({
                     title: "Phân công thành công",
@@ -94,7 +94,7 @@ const ExceptionDashboard: React.FC = () => {
                 return;
             }
         }
-        
+
         toast({
             variant: "destructive",
             title: "Không thể phân công",
@@ -459,8 +459,8 @@ const ExceptionDashboard: React.FC = () => {
                                             <div className="flex gap-2">
                                                 <Button variant="outline" size="sm">Phân Công</Button>
                                                 {checkAvailableStaff(request) && (
-                                                    <Button 
-                                                        variant="outline" 
+                                                    <Button
+                                                        variant="outline"
                                                         size="sm"
                                                         className="text-green-600 hover:text-green-700"
                                                         onClick={() => handleAutoAssign(request)}
