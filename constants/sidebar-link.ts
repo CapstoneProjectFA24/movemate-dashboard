@@ -79,7 +79,7 @@ export const routes: Route[] = [
     ],
   },
   {
-    label: "Quản lý đơn dọn nhà",
+    label: "Quản lý đơn ",
     icon: TbBrandBooking,
     activeIcon: TbBrandBooking,
     isParent: true,

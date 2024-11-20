@@ -15,7 +15,7 @@ export default auth((req) => {
   //change to ADMIN later
   const isAdminRole =
     req.auth?.user.roleName?.toUpperCase() === "ADMIN" ||
-    req.auth?.user.roleName?.toUpperCase() === "REVIEWER" || 
+    req.auth?.user.roleName?.toUpperCase() === "REVIEWER" ||
     req.auth?.user.roleName?.toUpperCase() === "MANAGER";
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -54,5 +54,3 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
-// roleName;
