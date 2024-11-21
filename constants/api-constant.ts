@@ -17,3 +17,8 @@ export const BOOKING_URL = {
   UPDATE_BOOKING_STATUS: "/bookings/reviewer/update-booking",
   UPDATE_BOOKING_SCHEDULE: "/bookings/reviewer/review-at"
 };
+
+
+export const ASSIGNMENT_URL = {
+  ASSIGNED_STAFF : "/assignments"
+}
