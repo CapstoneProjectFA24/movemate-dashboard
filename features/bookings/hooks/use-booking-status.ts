@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { IBooking } from "../type/booking-type";
+import { IBooking } from "../types/booking-type";
 
 export enum BookingStatus {
   PENDING = "PENDING",

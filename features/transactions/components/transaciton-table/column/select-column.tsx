@@ -1,6 +1,6 @@
 import { Row, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ITransaction } from "@/features/transactions/type/transaction-type";
+import { ITransaction } from "@/features/transactions/types/transaction-type";
 
 export const selectColumn = {
   id: "select",

@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { INotification } from "../type/notification-type";
+import { INotification } from "../types/notification-type";
 import {
   collection,
   query,

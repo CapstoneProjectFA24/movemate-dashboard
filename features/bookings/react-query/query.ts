@@ -1,6 +1,6 @@
 "use client";
 
-import { IService } from "@/features/services/type/services-type";
+import { IService } from "@/features/services/types/services-type";
 import { ApiListResponse } from "@/lib/api/api-handler/generic";
 import { useQuery } from "@tanstack/react-query";
 import { getServicesUpdateBooking } from "../action/services-update-booking";

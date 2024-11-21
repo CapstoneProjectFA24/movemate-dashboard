@@ -29,8 +29,8 @@ import { Button } from "@/components/ui/button";
 import {
   ServiceSchemaType,
   serviceSchema,
-} from "../../type/create-services-schema";
-import { ITruckCategory } from "../../type/services-type";
+} from "../../types/create-services-schema";
+import { ITruckCategory } from "../../types/services-type";
 import { createServices } from "../../action/create-service";
 import { toast } from "sonner";
 

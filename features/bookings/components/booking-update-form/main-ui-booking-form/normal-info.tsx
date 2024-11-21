@@ -1,5 +1,5 @@
 import React from "react";
-import { IBooking } from "../../../type/booking-type";
+import { IBooking } from "../../../types/booking-type";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";

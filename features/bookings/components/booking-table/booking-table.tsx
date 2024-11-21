@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
 import { getBookingsOff, getBookingsOnl } from "../../action/bookings";
-import { IBooking } from "../../type/booking-type";
+import { IBooking } from "../../types/booking-type";
 import { fetchBookingsTableColumnDefs } from "./booking-table-column-def";
 import { BookingStatusNames } from "../../enums/booking-state-enum";
 import { ProcessStatusNames } from "./colunm/process-status-column";

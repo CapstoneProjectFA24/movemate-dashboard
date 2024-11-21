@@ -11,7 +11,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetServicesToUpdateBooking } from "@/features/bookings/react-query/query";
 import { ServiceType } from "@/features/services/enums/service-enum";
-import { IService } from "@/features/services/type/services-type";
+import { IService } from "@/features/services/types/services-type";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";

@@ -2,7 +2,7 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { IBooking } from "../../type/booking-type";
+import { IBooking } from "../../types/booking-type";
 
 import selectColumn from "./colunm/select-column";
 import totalColumn from "./colunm/total-column";

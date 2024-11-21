@@ -1,6 +1,6 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
-import { ITransaction } from "@/features/transactions/type/transaction-type";
+import { ITransaction } from "@/features/transactions/types/transaction-type";
 
 export const transTypeColumn = {
   accessorKey: "transactionType",

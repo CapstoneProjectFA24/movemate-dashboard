@@ -1,5 +1,5 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { ITransaction } from "@/features/transactions/type/transaction-type";
+import { ITransaction } from "@/features/transactions/types/transaction-type";
 import { Row, type Column } from "@tanstack/react-table";
 import { CheckCircle2, XCircle, Clock, AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";

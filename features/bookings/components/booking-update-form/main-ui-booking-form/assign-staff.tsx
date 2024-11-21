@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { IBooking } from "@/features/bookings/type/booking-type";
+import { IBooking } from "@/features/bookings/types/booking-type";
 import { Truck } from "lucide-react";
 import React from "react";
 

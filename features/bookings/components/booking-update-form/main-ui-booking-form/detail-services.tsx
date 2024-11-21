@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { IBooking } from "../../../type/booking-type";
+import { IBooking } from "../../../types/booking-type";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarClock, Edit, Plus, Package } from "lucide-react";
 import { formatter } from "@/lib/utils";

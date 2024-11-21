@@ -2,7 +2,7 @@ import { type ColumnDef, Row } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Edit } from "lucide-react";
-import { IBooking } from "../../../type/booking-type";
+import { IBooking } from "../../../types/booking-type";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

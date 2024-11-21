@@ -1,5 +1,5 @@
 import { Row, Table } from "@tanstack/react-table";
-import { IBooking } from "../../../type/booking-type";
+import { IBooking } from "../../../types/booking-type";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const selectColumn = {

@@ -1,6 +1,6 @@
 import { Row, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { IUser } from "@/features/users/type.ts/user-type";
+import { IUser } from "@/features/users/types/user-type";
 
 export const selectColumn = {
   id: "select",

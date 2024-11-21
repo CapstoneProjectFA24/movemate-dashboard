@@ -10,7 +10,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 // import inverseParentColumn from "./column/inverse-parent-column";
 // import isActivedColumn from "./column/isActived-column";
 // import actionColumn from "./column/action-column";
-import { ITransaction } from "../../type/transaction-type";
+import { ITransaction } from "../../types/transaction-type";
 import selectColumn from "./column/select-column";
 import idColumn from "./column/id-column";
 import amountColumn from "./column/amount";

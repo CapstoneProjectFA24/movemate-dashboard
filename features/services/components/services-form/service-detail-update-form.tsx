@@ -27,12 +27,12 @@ import { Button } from "@/components/ui/button";
 import {
   IService,
   ITruckCategory,
-} from "@/features/services/type/services-type";
+} from "@/features/services/types/services-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ServiceSchemaType,
   serviceSchema,
-} from "@/features/services/type/update-services-schema";
+} from "@/features/services/types/update-services-schema";
 import { FaListCheck } from "react-icons/fa6";
 import Image from "next/image";
 import { Edit, Plus } from "lucide-react";

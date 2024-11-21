@@ -12,7 +12,7 @@ import {
 } from "@/lib/api/api-handler/generic";
 
 import { SearchParams } from "@/types/table";
-import { IService } from "../type/services-type";
+import { IService } from "../types/services-type";
 import { SERVICES_URL } from "@/constants/api-constant";
 
 export async function getServices(

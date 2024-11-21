@@ -1,6 +1,6 @@
 "use server";
 
-import { IHouse } from "../type/house-type";
+import { IHouse } from "../types/house-type";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { axiosAuth } from "@/lib/api/api-interceptor/api";
 import {

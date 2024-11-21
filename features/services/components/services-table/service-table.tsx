@@ -16,7 +16,7 @@ import { ServiceTypeNames } from "@/features/services/enums/service-enum";
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
 import { getServices } from "../../action/services";
 import { fetchServicesTableColumnDefs } from "./service-table-column-def";
-import { IService } from "../../type/services-type";
+import { IService } from "../../types/services-type";
 
 interface ServicesTableProps {
   servicesPromise: ReturnType<typeof getServices>;

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 import { ServiceTypeNames } from "@/features/services/enums/service-enum";
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
-import { ITransaction } from "../../type/transaction-type";
+import { ITransaction } from "../../types/transaction-type";
 import { getTransactions } from "../../action/transactions";
 import { fetchTransactionsTableColumnDefs } from "./transaction-table-column-def";
 

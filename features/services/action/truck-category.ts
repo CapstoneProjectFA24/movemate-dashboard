@@ -11,7 +11,7 @@ import {
 } from "@/lib/api/api-handler/generic";
 
 import { SearchParams } from "@/types/table";
-import { ITruckCategory } from "../type/services-type";
+import { ITruckCategory } from "../types/services-type";
 import { SERVICES_URL } from "@/constants/api-constant";
 
 export async function getTruckCategorys(): Promise<
