@@ -20,5 +20,7 @@ export const BOOKING_URL = {
 
 
 export const ASSIGNMENT_URL = {
-  ASSIGNED_STAFF : "/assignments"
+  ASSIGNED_STAFF : "/assignments",
+  CHECK_DRIVER_ASSIGNMENT : "/assignments/available-driver",
+  CHECK_PORTER_ASSIGNMENT : "/assignments/available-porter"
 }

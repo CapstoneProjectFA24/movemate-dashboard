@@ -1,4 +1,3 @@
-
 import { BookingDetail, IBooking } from "@/features/bookings/types/booking-type";
 import { IService, ITruckCategory } from "@/features/services/types/services-type";
 import { IUser } from "@/features/users/types/user-type";
@@ -12,6 +11,7 @@ export type ModalType =
   | "confirmEstimatedTimeModal"
   | "createServicesModal"
   | "chatWithStaffModal"
+  | "checkAssignmentModal"
 ;
 
 
