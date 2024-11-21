@@ -76,6 +76,7 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
       toast.error("Đã xảy ra lỗi khi xác nhận gán assignement");
     } finally {
       setLoading(false);
+      setOpenUpdateModal(false)
     }
   };
 

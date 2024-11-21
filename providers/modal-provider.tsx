@@ -8,6 +8,7 @@ import { UpdateBookingServicesModalSheet } from "@/components/modals/update-book
 import { useEffect, useState } from "react";
 import { CreateServicesModal } from "@/features/services/components/services-modal/create-services-modal";
 import { ChatModal } from "@/components/modals/chat-modal/chat-modal";
+import { CheckAssignmentModal } from "@/features/bookings/components/modal/check-assignment-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -26,6 +27,7 @@ export const ModalProvider = () => {
       <ConfirmEstimatedTimeModal/>
       <CreateServicesModal/>
       <ChatModal/>
+      <CheckAssignmentModal/>
     </>
   );
 };
