@@ -12,7 +12,7 @@ import {
 
 import { SearchParams } from "@/types/table";
 import { SERVICES_URL } from "@/constants/api-constant";
-import { IService } from "@/features/services/type/services-type";
+import { IService } from "@/features/services/types/services-type";
 import { ServiceType } from "@/features/services/enums/service-enum";
 
 export async function getServicesUpdateBooking(

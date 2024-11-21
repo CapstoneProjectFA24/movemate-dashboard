@@ -18,7 +18,7 @@ import {
   ServiceType,
   ServiceTypeIcons,
 } from "@/features/services/enums/service-enum";
-import { IService } from "@/features/services/type/services-type";
+import { IService } from "@/features/services/types/services-type";
 import { toast } from "sonner";
 import { updateBookingStatus } from "@/features/bookings/action/update-booking";
 import {

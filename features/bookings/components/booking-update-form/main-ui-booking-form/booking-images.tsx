@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Image } from "lucide-react";
-import { BookingTracker } from "../../../type/booking-type";
+import { BookingTracker } from "../../../types/booking-type";
 
 interface BookingImagesProps {
   bookingTrackers: BookingTracker[] | undefined;

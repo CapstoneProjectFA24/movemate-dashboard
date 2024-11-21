@@ -1,6 +1,7 @@
 
-import { BookingDetail, IBooking } from "@/features/bookings/type/booking-type";
-import { IService, ITruckCategory } from "@/features/services/type/services-type";
+import { BookingDetail, IBooking } from "@/features/bookings/types/booking-type";
+import { IService, ITruckCategory } from "@/features/services/types/services-type";
+import { IUser } from "@/features/users/types/user-type";
 import { create } from "zustand";
 
 
@@ -10,6 +11,7 @@ export type ModalType =
   | "createScheduleModal"
   | "confirmEstimatedTimeModal"
   | "createServicesModal"
+  | "chatWithStaffModal"
 ;
 
 
@@ -22,6 +24,9 @@ export interface ModalData{
   // services
   service?: IService,
   truckCategorys?: ITruckCategory[]
+
+  // user
+  user?: IUser;
 }
 
 interface ModalStore {

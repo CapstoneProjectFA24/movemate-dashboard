@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserRole, IUser } from "@/features/users/type.ts/user-type";
+import { UserRole, IUser } from "@/features/users/types/user-type";
 import { Suspense } from "react";
 import { UsersTable } from "./users-table";
 import { ApiListResponse } from "@/lib/api/api-handler/generic";

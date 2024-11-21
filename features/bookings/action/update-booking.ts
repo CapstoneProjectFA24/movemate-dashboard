@@ -12,7 +12,7 @@ import {
 } from "@/lib/api/api-handler/generic";
 
 import { SearchParams } from "@/types/table";
-import { IBooking } from "../type/booking-type";
+import { IBooking } from "../types/booking-type";
 import { BOOKING_URL } from "@/constants/api-constant";
 import { auth } from "@/lib/next-auth/auth";
 import { axiosAuth } from "@/lib/api/api-interceptor/api";

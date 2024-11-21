@@ -1,6 +1,6 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
-import { IBooking } from "../../../type/booking-type";
+import { IBooking } from "../../../types/booking-type";
 
 export const idColumn = {
   accessorKey: "id",

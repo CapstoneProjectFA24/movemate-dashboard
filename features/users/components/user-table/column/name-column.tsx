@@ -1,5 +1,5 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { IUser } from "@/features/users/type.ts/user-type";
+import { IUser } from "@/features/users/types/user-type";
 import { Row, type Column } from "@tanstack/react-table";
 
 export const nameColumn = {

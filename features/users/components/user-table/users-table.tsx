@@ -3,7 +3,7 @@
 import * as React from "react";
 import { getUsersByRole } from "../../action/users";
 import { ApiListResponse } from "@/lib/api/api-handler/generic";
-import { IUser } from "../../type.ts/user-type";
+import { IUser } from "../../types/user-type";
 import { ColumnDef } from "@tanstack/react-table";
 import { fetchUserTableColumnDefs } from "./user-table-column-def";
 import { useDataTable } from "@/hooks/use-data-table";

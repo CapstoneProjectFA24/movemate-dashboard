@@ -17,7 +17,7 @@ import {
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { CheckCircle2, Edit, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { IService } from "@/features/services/type/services-type";
+import { IService } from "@/features/services/types/services-type";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import {
   MdSystemUpdateAlt,

@@ -2,7 +2,7 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { IService } from "../../type/services-type";
+import { IService } from "../../types/services-type";
 import selectColumn from "./column/select-column";
 import imageUrlColumn from "./column/imageUrl-column";
 import idColumn from "./column/id-column";

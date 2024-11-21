@@ -1,7 +1,7 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
 import { formatter } from "@/lib/utils";
-import { ITransaction } from "@/features/transactions/type/transaction-type";
+import { ITransaction } from "@/features/transactions/types/transaction-type";
 import { TrendingDown, TrendingUp } from "lucide-react";
 
 export const amountColumn = {

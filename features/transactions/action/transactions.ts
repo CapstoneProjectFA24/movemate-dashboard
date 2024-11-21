@@ -11,7 +11,7 @@ import {
 } from "@/lib/api/api-handler/generic";
 import { SearchParams } from "@/types/table";
 import { BASIC_URL } from "@/constants/api-constant";
-import { ITransaction } from "../type/transaction-type";
+import { ITransaction } from "../types/transaction-type";
 
 export async function getTransactions(
   searchParams: SearchParams

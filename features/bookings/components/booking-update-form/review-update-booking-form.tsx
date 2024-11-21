@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 
-import { IBooking } from "../../type/booking-type";
-import { IHouse } from "@/features/services/type/house-type";
+import { IBooking } from "../../types/booking-type";
+import { IHouse } from "@/features/services/types/house-type";
 
 import BookingImages from "./main-ui-booking-form/booking-images";
 import NomarlInfo from "./main-ui-booking-form/normal-info";

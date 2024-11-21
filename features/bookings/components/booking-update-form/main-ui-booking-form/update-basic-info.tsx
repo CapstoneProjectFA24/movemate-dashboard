@@ -7,7 +7,7 @@ import FormFieldCustom from "@/components/form/form-field";
 import SelectFormField from "@/components/form/select-form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { IHouse } from "@/features/services/type/house-type";
+import { IHouse } from "@/features/services/types/house-type";
 import { useParams } from "next/navigation";
 import { updateBookingStatus } from "@/features/bookings/action/update-booking";
 import { toast } from "sonner";

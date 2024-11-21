@@ -1,5 +1,5 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { IUser, UserRole } from "@/features/users/type.ts/user-type";
+import { IUser, UserRole } from "@/features/users/types/user-type";
 import { AiOutlineUser } from "react-icons/ai";
 import { Row, type Column } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";

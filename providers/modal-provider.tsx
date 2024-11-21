@@ -7,6 +7,7 @@ import { CreateScheduleModal } from "@/features/bookings/components/modal/create
 import { UpdateBookingServicesModalSheet } from "@/components/modals/update-booking-services-modal";
 import { useEffect, useState } from "react";
 import { CreateServicesModal } from "@/features/services/components/services-modal/create-services-modal";
+import { ChatModal } from "@/components/modals/chat-modal/chat-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -24,6 +25,7 @@ export const ModalProvider = () => {
       <CreateScheduleModal/>
       <ConfirmEstimatedTimeModal/>
       <CreateServicesModal/>
+      <ChatModal/>
     </>
   );
 };

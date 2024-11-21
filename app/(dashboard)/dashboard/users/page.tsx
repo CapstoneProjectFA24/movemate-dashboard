@@ -2,7 +2,7 @@
 import { getUsersByRole } from "@/features/users/action/users";
 import { SearchParams } from "@/types/table";
 import { Shell } from "@/components/shared/custom-ui/shell";
-import { UserRole } from "@/features/users/type.ts/user-type";
+import { UserRole } from "@/features/users/types/user-type";
 import { UsersClientWrapper } from "@/features/users/components/user-table/users-client-wrapper";
 import { Suspense } from "react";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";

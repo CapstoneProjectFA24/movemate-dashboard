@@ -11,7 +11,7 @@ import {
 } from "@/lib/api/api-handler/generic";
 import { SearchParams } from "@/types/table";
 import { BASIC_URL } from "@/constants/api-constant";
-import { IUser, UserRole } from "../type.ts/user-type";
+import { IUser, UserRole } from "../types/user-type";
 
 export async function getUsers(
   searchParams: SearchParams

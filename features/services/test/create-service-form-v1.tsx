@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
-import { ITruckCategory } from "../type/services-type";
+import { ITruckCategory } from "../types/services-type";
 
 import {
   Form,
