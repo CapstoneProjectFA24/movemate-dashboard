@@ -258,6 +258,7 @@ export async function getOrCreateStaffConversation(
       otherStaffId
     );
 
+    console.log(`first ${currentUserId} + ${currentUserRole} + ${otherStaffId} + ${otherStaffRole}`);
     if (existingConversationId) {
       return existingConversationId;
     }

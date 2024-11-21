@@ -86,7 +86,7 @@ export const routes: Route[] = [
     children: [
       {
         label: "Đơn dọn nhà",
-        href: "/dashboard/bookings/booking",
+        href: "/dashboard/bookings",
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
       },
