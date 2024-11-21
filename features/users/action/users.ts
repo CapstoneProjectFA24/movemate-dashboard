@@ -8,6 +8,7 @@ import {
   ApiSingleResponse,
   apiRequest,
   fetchListData,
+  fetchSingleData,
 } from "@/lib/api/api-handler/generic";
 import { SearchParams } from "@/types/table";
 import { BASIC_URL } from "@/constants/api-constant";
@@ -46,5 +47,17 @@ export async function getUsersByRole(
     return { data: [], pageCount: 0, error: result.error };
   }
 
+  return result.data;
+}
+
+export async function getUsersById(params: string) : Promise<ApiSingleResponse<IUser>> {
+  noStore();
+
+  const result = await fetchSingleData<IUser>(`${BASIC_URL.GET_USERS}/${params}`)
+
+  if (!result.success) {
+    console.error("Failed to fetch user by id:", result.error);
+    return { data: null };
+  }
   return result.data;
 }
