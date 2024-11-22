@@ -13,7 +13,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "@/components/ui/dialog";
+} from "@/components/ui/dialog";
 import {
     Table,
     TableBody,
@@ -117,7 +117,7 @@ const ExceptionDashboard: React.FC = () => {
             name: string;
             phone: string;
             status: string;
-            reason?: string; 
+            reason?: string;
             shift: string;
         };
         porter: {
@@ -133,9 +133,51 @@ const ExceptionDashboard: React.FC = () => {
             shift: string;
         };
     };
-    
+
     const mockBookingDetails: Record<string, BookingDetails> = {
         "BOK001": {
+            driver: {
+                name: "Nguyễn Văn X",
+                phone: "0987654321",
+                status: "Sự cố",
+                reason: "Xe hỏng",
+                shift: "Ca 1",
+            },
+            porter: {
+                name: "Trần Văn Y",
+                phone: "0987654322",
+                status: "Bình thường",
+                shift: "Ca 1",
+            },
+            evaluator: {
+                name: "Lê Văn Z",
+                phone: "0987654323",
+                status: "Bình thường",
+                shift: "Ca 1",
+            },
+        },
+        "BOK002": {
+            driver: {
+                name: "Nguyễn Văn X",
+                phone: "0987654321",
+                status: "Sự cố",
+                reason: "Xe hỏng",
+                shift: "Ca 1",
+            },
+            porter: {
+                name: "Trần Văn Y",
+                phone: "0987654322",
+                status: "Bình thường",
+                shift: "Ca 1",
+            },
+            evaluator: {
+                name: "Lê Văn Z",
+                phone: "0987654323",
+                status: "Bình thường",
+                shift: "Ca 1",
+            },
+        },
+        "BOK003": {
             driver: {
                 name: "Nguyễn Văn X",
                 phone: "0987654321",
@@ -335,7 +377,7 @@ const ExceptionDashboard: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Trạng thái:</p>
-                                    <StaffStatusBadge 
+                                    <StaffStatusBadge
                                         status={selectedBooking.driver.status}
                                         reason={selectedBooking.driver.reason}
                                     />
@@ -359,7 +401,7 @@ const ExceptionDashboard: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Trạng thái:</p>
-                                    <StaffStatusBadge 
+                                    <StaffStatusBadge
                                         status={selectedBooking.porter.status}
                                         reason={selectedBooking.porter.reason}
                                     />
@@ -384,7 +426,7 @@ const ExceptionDashboard: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Trạng thái:</p>
-                                    <StaffStatusBadge 
+                                    <StaffStatusBadge
                                         status={selectedBooking.evaluator.status}
                                         reason={selectedBooking.evaluator.reason}
                                     />
@@ -578,7 +620,7 @@ const ExceptionDashboard: React.FC = () => {
                             <TableBody>
                                 {mockRequests.map((request) => (
                                     <TableRow key={request.id}>
-                                        <TableCell 
+                                        <TableCell
                                             className="cursor-pointer text-blue-600 hover:text-blue-800"
                                             onClick={() => handleBookingClick(request.id)}
                                         >
