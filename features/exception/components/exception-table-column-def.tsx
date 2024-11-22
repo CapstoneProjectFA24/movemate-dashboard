@@ -11,6 +11,7 @@ import statusColumn from "./column/status-column";
 import customerPhoneColumn from "./column/customer-phone-column";
 import customerNameColumn from "./column/customer-name-column";
 import actionColumn from "./column/action-column";
+import bookingIdColumn from "./column/bookingid-column";
 
 
 
@@ -18,6 +19,7 @@ export function fetchExceptionTableColumnDefs(): ColumnDef<IAssignment, unknown>
   return [
     selectColumn,
     idColumn,
+    bookingIdColumn,
     bookingAtColumn,
     typeColum,
     numberColumn,
