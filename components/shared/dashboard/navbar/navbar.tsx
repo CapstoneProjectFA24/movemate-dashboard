@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import SearchBar from "./search-bar";
 import UserProfileDropdown from "./user-profile-dropdown";
 import Notifications from "./notification";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
+  const router = useRouter();
   return (
     <nav className="bg-white dark:bg-muted/40 backdrop-filter backdrop-blur-lg px-6 flex items-center justify-between h-20 border-b-2 my-[1px] border-gray-300 dark:border-gray-600 sticky top-0 z-50">
       <div className="flex items-center gap-4">
@@ -30,6 +32,8 @@ export const Navbar = () => {
         <Button
           variant="ghost"
           size="icon"
+          type="button"
+          onClick={() => router.push("/dashboard/chat")}
           className="hover:bg-secondary/80 transition-colors"
         >
           <MessageSquare className="h-5 w-5" />

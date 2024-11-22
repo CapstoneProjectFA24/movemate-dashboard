@@ -101,35 +101,35 @@ export async function getOrCreateConversation(
   }
 }
 
-export async function getAllConversations(
-  bookingId: string
-): Promise<Conversation[]> {
-  try {
-    const conversationsRef = collection(
-      db, 
-      'bookings', 
-      bookingId, 
-      'conversations'
-    );
+// export async function getAllConversations(
+//   bookingId: string
+// ): Promise<Conversation[]> {
+//   try {
+//     const conversationsRef = collection(
+//       db, 
+//       'bookings', 
+//       bookingId, 
+//       'conversations'
+//     );
 
-    const q = query(
-      conversationsRef, 
-      orderBy('lastMessage.timestamp', 'desc')
-    );
+//     const q = query(
+//       conversationsRef, 
+//       orderBy('lastMessage.timestamp', 'desc')
+//     );
 
-    const snapshot = await getDocs(q);
+//     const snapshot = await getDocs(q);
 
-    return snapshot.docs.map(doc => 
-      FirestoreConverter.conversationFromFirestore({
-        id: doc.id, 
-        data: () => doc.data()
-      })
-    );
-  } catch (error) {
-    console.error('Get all conversations error:', error);
-    throw new Error('Failed to retrieve conversations');
-  }
-}
+//     return snapshot.docs.map(doc => 
+//       FirestoreConverter.conversationFromFirestore({
+//         id: doc.id, 
+//         data: () => doc.data()
+//       })
+//     );
+//   } catch (error) {
+//     console.error('Get all conversations error:', error);
+//     throw new Error('Failed to retrieve conversations');
+//   }
+// }
 
 export async function sendMessage(
   bookingId: string,

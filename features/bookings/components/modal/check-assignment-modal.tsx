@@ -51,7 +51,7 @@ export const CheckAssignmentModal = () => {
   const [selectedOption, setSelectedOption] = useState<
     "assignmentInBooking" | "staffInSlot" | "otherStaffs"
   >("assignmentInBooking");
-console.log(params)
+
   const { data: driverData, isLoading: driverDataIsLoading } =
     useGetCheckAvailableDriver(data.booking?.id.toString()!);
   const { data: porterData, isLoading: porterDataIsLoading } =
