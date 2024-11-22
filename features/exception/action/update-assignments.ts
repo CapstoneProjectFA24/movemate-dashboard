@@ -9,9 +9,9 @@ import { axiosAuth } from "@/lib/api/api-interceptor/api";
 
 export async function autoAssignDriver(params: string): Promise<Result<void>> {
   noStore();
-
+  console.log(params)
   const result = await apiRequest(() =>
-    axiosAuth.put(`${ASSIGNMENT_URL.AUTO_ASSINGED_DRIVER}/${params}`)
+    axiosAuth.patch(`${ASSIGNMENT_URL.AUTO_ASSINGED_DRIVER}/${params}`)
   );
   if (!result.success) {
     return { success: false, error: result.error };
@@ -26,7 +26,7 @@ export async function autoAssignPorter(params: string): Promise<Result<void>> {
   noStore();
 
   const result = await apiRequest(() =>
-    axiosAuth.put(`${ASSIGNMENT_URL.AUTO_ASSINGED_PORTER}/${params}`)
+    axiosAuth.patch(`${ASSIGNMENT_URL.AUTO_ASSINGED_PORTER}/${params}`)
   );
   if (!result.success) {
     return { success: false, error: result.error };
@@ -45,7 +45,7 @@ export async function manualAssignedStaff(
 
   console.log(data);
   const result = await apiRequest(() =>
-    axiosAuth.put(`${ASSIGNMENT_URL.MANUAL_ASSIGNED}/${params}`, data)
+    axiosAuth.patch(`${ASSIGNMENT_URL.MANUAL_ASSIGNED}/${params}`, data)
   );
   if (!result.success) {
     return { success: false, error: result.error };

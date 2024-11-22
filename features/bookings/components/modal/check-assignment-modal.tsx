@@ -42,7 +42,7 @@ const typeIcons = {
   [AvailableStaffType.DRIVER]: <Truck className="w-4 h-4" />,
 };
 export const CheckAssignmentModal = () => {
-  const params = useParams();
+
   const { isOpen, onClose, type, data } = useModal();
   const isOpenModal = isOpen && type === "checkAssignmentModal";
   const [activeTab, setActiveTab] = useState<AvailableStaffType>(

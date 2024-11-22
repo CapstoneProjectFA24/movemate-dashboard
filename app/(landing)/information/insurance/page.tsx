@@ -86,7 +86,7 @@ const InformationPage = () => {
               <section className="text-center mt-8">
                 <h2 className="text-lg font-bold mb-4 text-orange-500">Cách chọn mua bảo hiểm</h2>
                 <p className="text-sm text-gray-600">
-                  Bảo hiểm sẽ được thêm vào đơn hàng như sản phẩm mua kèm khi "Đặt dịch vụ". Trường hợp bạn chưa muốn mua kèm Bảo hiểm, có thể bỏ chọn.</p>
+                  Bảo hiểm sẽ được thêm vào đơn hàng như sản phẩm mua kèm khi Đặt dịch vụ. Trường hợp bạn chưa muốn mua kèm Bảo hiểm, có thể bỏ chọn.</p>
               </section>
               <section className="mt-8">
                 <h2 className="text-lg font-bold mb-4 text-orange-500 text-center">Câu hỏi thường gặp</h2>
