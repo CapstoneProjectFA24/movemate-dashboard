@@ -12,7 +12,7 @@ interface Route {
 export const links: Route[] = [
   { href: "/information/insurance", label: "Bảo hiểm thiết bị điện tử" },
   { href: "/hop-dong.docx", label: "Hợp đồng", isDownload: true },
-  { href: "/information/policy", label: "Chính sách bồi thường" },
+  { href: "/information/policy", label: "Chính sách sử dụng" },
 ];
 
 const SearchBox: React.FC = () => {
