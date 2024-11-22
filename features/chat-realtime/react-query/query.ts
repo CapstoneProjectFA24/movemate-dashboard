@@ -9,6 +9,7 @@ import {
   getStaffMessages,
   sendStaffMessage,
 } from "../actions/booking-chat";
+import { getAllUserConversations } from "../actions/get-all-chat";
 
 // export const useGetOrCreateStaffConversation = (
 //   currentUserId: string,
@@ -42,7 +43,6 @@ export const useGetOrCreateStaffConversation = (
         otherStaffId,
         otherStaffRole
       ),
-      
   });
 };
 
@@ -77,5 +77,15 @@ export const useGetStaffMessages = (conversationId: string) => {
   return useQuery({
     queryKey: ["staff-messages", conversationId],
     queryFn: () => getStaffMessages(conversationId),
+  });
+};
+
+export const useGetAllUserConversations = (
+  userId: string,
+  userRole: string
+) => {
+  return useQuery({
+    queryKey: ["GET_ALL_CONVERSATION", userId, userRole],
+    queryFn: () => getAllUserConversations(userId, userRole),
   });
 };
