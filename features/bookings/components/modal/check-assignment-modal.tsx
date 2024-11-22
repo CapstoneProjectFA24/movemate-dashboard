@@ -10,31 +10,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useGetCheckAvailableDriver,
   useGetCheckAvailablePorter,
-  useGetServicesToUpdateBooking,
 } from "@/features/bookings/react-query/query";
-import {
-  ServiceType,
-  ServiceTypeIcons,
-} from "@/features/services/enums/service-enum";
-import { IService } from "@/features/services/types/services-type";
-import { toast } from "sonner";
-import { updateBookingStatus } from "@/features/bookings/action/update-booking";
-import {
-  ChevronDown,
-  ChevronUp,
-  Package2,
-  Truck,
-  Settings,
-} from "lucide-react";
-import { MdBuildCircle } from "react-icons/md";
-import { AnimatePresence, motion } from "framer-motion";
-import { formatter } from "@/lib/utils";
+
+import { Package2, Truck } from "lucide-react";
+
 import {
   Select,
   SelectContent,
@@ -42,7 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
 import StaffInfoModal from "../booking-update-form/main-ui-booking-form/staff-info-modal";
 
 export enum AvailableStaffType {
@@ -68,11 +51,11 @@ export const CheckAssignmentModal = () => {
   const [selectedOption, setSelectedOption] = useState<
     "assignmentInBooking" | "staffInSlot" | "otherStaffs"
   >("assignmentInBooking");
-
+console.log(params)
   const { data: driverData, isLoading: driverDataIsLoading } =
-    useGetCheckAvailableDriver(params.id.toString());
+    useGetCheckAvailableDriver(data.booking?.id.toString()!);
   const { data: porterData, isLoading: porterDataIsLoading } =
-    useGetCheckAvailablePorter(params.id.toString());
+    useGetCheckAvailablePorter(data.booking?.id.toString()!);
 
   function renderStaffStats(staffType: AvailableStaffType) {
     const data =
