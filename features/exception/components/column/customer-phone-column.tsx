@@ -12,7 +12,7 @@ export const customerPhoneColumn = {
   ),
   cell: ({ row }: { row: Row<IAssignment> }) => {
     const user = row.getValue("users") as IUser;
-    console.log(user)
+
     if (!user) {
       return null;
     }

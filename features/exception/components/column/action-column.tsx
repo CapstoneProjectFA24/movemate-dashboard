@@ -4,24 +4,50 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
 import AlertModal from "@/components/modals/alert-modal";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import {
+  autoAssignDriver,
+  autoAssignPorter,
+} from "../../action/update-assignments";
+import { useModal } from "@/hooks/use-modal";
 
 interface ActionMenuProps {
   row: Row<IAssignment>;
 }
 
 const ActionMenu = ({ row }: ActionMenuProps) => {
+  const { onOpen } = useModal();
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const currentBookingId = row.original.bookingId;
+  const currentStaffType = row.original.type;
 
   const onConfirmAutoAssignedStaff = async () => {
     try {
       setLoading(true);
 
-      // to do
-
-      toast.success("Cập nhật trạng thái thành công");
+      startTransition(async () => {
+        if (currentStaffType === "TRUCK") {
+          const result = await autoAssignDriver(currentBookingId?.toString()!);
+          if (!result.success) {
+            toast.error(result.error);
+            return;
+          }
+          toast.success("Xác nhận gán nhân viên thành công!");
+        } else if (currentStaffType === "PORTER") {
+          const result = await autoAssignPorter(currentBookingId?.toString()!);
+          if (!result.success) {
+            toast.error(result.error);
+            return;
+          }
+          toast.success("Xác nhận gán nhân viên thành công!");
+        } else {
+          toast.error("Không thể tự động gán nhân viên cho loại này");
+        }
+      });
     } catch (error) {
       toast.error("Đã xảy ra lỗi khi gán tự động nhân viên mới");
     } finally {
@@ -29,6 +55,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
       setOpenUpdateModal(false);
     }
   };
+
   return (
     <>
       <AlertModal
@@ -42,7 +69,12 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
       />
 
       <div className="flex gap-2">
-        <Button variant="outline" size="sm">
+        <Button
+          type="button"
+          onClick={() => onOpen("exceptionModal", { assignment: row.original })}
+          variant="outline"
+          size="sm"
+        >
           Phân Công
         </Button>
         <Button

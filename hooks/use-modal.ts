@@ -1,5 +1,6 @@
 import { IStaff } from "@/features/bookings/types/assigment-available-type";
 import { BookingDetail, IBooking } from "@/features/bookings/types/booking-type";
+import { IAssignment } from "@/features/exception/types/assignemts-type";
 import { IService, ITruckCategory } from "@/features/services/types/services-type";
 import { IUser } from "@/features/users/types/user-type";
 import { create } from "zustand";
@@ -13,6 +14,7 @@ export type ModalType =
   | "createServicesModal"
   | "chatWithStaffModal"
   | "checkAssignmentModal"
+  | "exceptionModal"
 ;
 
 
@@ -21,6 +23,7 @@ export interface ModalData{
   bookingDetail?: BookingDetail,
   booking?: IBooking ,
   bookingDetails?: BookingDetail[]
+  assignment?: IAssignment;
 
   // services
   service?: IService,

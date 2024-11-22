@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { CreateServicesModal } from "@/features/services/components/services-modal/create-services-modal";
 import { ChatModal } from "@/components/modals/chat-modal/chat-modal";
 import { CheckAssignmentModal } from "@/features/bookings/components/modal/check-assignment-modal";
+import { ExceptionModal } from "@/features/exception/components/modal/exception-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -28,6 +29,7 @@ export const ModalProvider = () => {
       <CreateServicesModal/>
       <ChatModal/>
       <CheckAssignmentModal/>
+      <ExceptionModal/>
     </>
   );
 };
