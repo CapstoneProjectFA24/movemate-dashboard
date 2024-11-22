@@ -1,4 +1,9 @@
-import { MdBuildCircle, MdLocalShipping, MdPerson, MdSystemUpdateAlt } from "react-icons/md";
+import {
+  MdBuildCircle,
+  MdLocalShipping,
+  MdPerson,
+  MdSystemUpdateAlt,
+} from "react-icons/md";
 
 export enum ServiceType {
   SYSTEM = "SYSTEM",
@@ -20,4 +25,3 @@ export const ServiceTypeIcons = {
   [ServiceType.PORTER]: MdPerson,
   [ServiceType.TRUCK]: MdLocalShipping,
 };
-

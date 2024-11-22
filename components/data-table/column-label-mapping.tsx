@@ -17,6 +17,7 @@ export const COLUMN_LABEL_MAPPING: Record<string, string> = {
   isActived: "Trạng thái",
   inverseParentService: "Số dịch vụ con",
   select: "Chọn",
+  bookingAt: "Thời gian vận chuyển"
 };
 
 /**

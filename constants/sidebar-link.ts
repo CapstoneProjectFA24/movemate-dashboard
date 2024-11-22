@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, ShieldAlert } from "lucide-react";
 import { IconType } from "react-icons";
 import {
   GoCheckCircle,
@@ -89,6 +89,12 @@ export const routes: Route[] = [
         href: "/dashboard/bookings",
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
+      },
+      {
+        label: "Đơn chưa có nhân viên V1",
+        href: "/dashboard/bookings_exception",
+        icon: ShieldAlert,
+        activeIcon: ShieldAlert,
       },
       {
         label: "Đơn chưa có nhân viên",

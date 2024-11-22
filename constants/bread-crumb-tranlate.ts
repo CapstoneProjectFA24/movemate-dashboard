@@ -15,5 +15,6 @@ export const breadcrumbTranslations: { [key: string]: string } = {
     create_team: "Tạo tổ",
     schedule_list: "Tạo lịch làm việc",
     booking: "Đơn dọn nhà",
-    exception: "Đơn chưa có nhân viên"
+    exception: "Đơn chưa có nhân viên",
+    bookings_exception: "Đơn chưa có nhân viên"
   };
