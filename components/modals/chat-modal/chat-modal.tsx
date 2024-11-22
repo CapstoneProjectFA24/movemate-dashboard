@@ -37,7 +37,7 @@ export const ChatModal: React.FC = () => {
 
   const { data: session } = useSession();
 
-  const staffInfo = data.user;
+  const staffInfo = data.user || data.staff;
   const currentUserId = session?.user.id;
   const currentUserRole = session?.user.roleName.toLowerCase();
 
@@ -54,7 +54,7 @@ export const ChatModal: React.FC = () => {
       const unsubscribe = onSnapshot(q, (snapshot) => {
         snapshot.docs.forEach((doc) => {
           const participantIds = doc.data().participantIds || [];
-          if (participantIds.includes(staffInfo.id.toString())) {
+          if (participantIds.includes(staffInfo.id!.toString())) {
             setConversationId(doc.id);
             setIsLoading(false);
           }

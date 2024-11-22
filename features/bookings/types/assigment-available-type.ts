@@ -3,7 +3,7 @@ export type IAssigmentAvailable = {
   countStaffInslots?: number;
   countOtherStaff?: number;
   staffType?: string;
-  isSussed?: boolean;
+  isSuccessed?: boolean;
   assignmentInBooking?: IAssignmentInBooking[];
   staffInSlot?: IStaff[];
   otherStaffs?: IStaff[];

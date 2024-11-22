@@ -10,6 +10,7 @@ import { useGetOrCreateStaffConversation } from "@/features/chat-realtime/react-
 import AlertModal from "@/components/modals/alert-modal";
 import { toast } from "sonner";
 import { assignStaffToBooking } from "@/features/bookings/action/assignments";
+import Image from "next/image";
 
 type StaffType = "DRIVER" | "PORTER" | "REVIEWER";
 
@@ -61,6 +62,8 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
     (assignment.staffType === "DRIVER" || assignment.staffType === "PORTER") &&
     canAssignResponsible(assignment.staffType, groupedAssignments);
 
+  const isCanChat = (assignment.staffType === "DRIVER" || assignment.staffType === "PORTER")  
+
   const handleAssignReponsibility = async () => {
     try {
       setLoading(true);
@@ -76,7 +79,7 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
       toast.error("Đã xảy ra lỗi khi xác nhận gán assignement");
     } finally {
       setLoading(false);
-      setOpenUpdateModal(false)
+      setOpenUpdateModal(false);
     }
   };
 
@@ -98,11 +101,7 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
       />
       <div className="flex items-center space-x-3">
         {user.avatarUrl ? (
-          <img
-            src={user.avatarUrl}
-            alt={user.name}
-            className="w-10 h-10 rounded-full object-cover"
-          />
+          <Image width={40} height={40} src={user.avatarUrl} alt={user.name} className="rounded-full" />
         ) : (
           <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
             <User className="w-6 h-6 text-gray-500" />
@@ -135,7 +134,7 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
             Gán trách nhiệm
           </Button>
         )}
-        {isAssignmentAllowed && (
+        {isCanChat && (
           <Button
             variant="outline"
             size="sm"

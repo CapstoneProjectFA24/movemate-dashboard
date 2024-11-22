@@ -1,3 +1,4 @@
+import { IStaff } from "@/features/bookings/types/assigment-available-type";
 import { BookingDetail, IBooking } from "@/features/bookings/types/booking-type";
 import { IService, ITruckCategory } from "@/features/services/types/services-type";
 import { IUser } from "@/features/users/types/user-type";
@@ -27,6 +28,7 @@ export interface ModalData{
 
   // user
   user?: IUser;
+  staff?: IStaff;
 }
 
 interface ModalStore {
