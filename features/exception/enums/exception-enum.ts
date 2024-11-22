@@ -4,7 +4,7 @@ export enum AssignmentType {
 }
 
 export const AssignmentTypeNames = {
-  [AssignmentType.PORTER]: "Thiếu Nhân Viên Bốc Xếp",
+  [AssignmentType.PORTER]: "Thiếu Bốc Xếp",
   [AssignmentType.TRUCK]: "Thiếu Tài Xế",
 };
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AlertCircle, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-
+import { BsPatchQuestion } from "react-icons/bs";
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -10,7 +10,7 @@ interface AlertModalProps {
   loading?: boolean;
   title?: string;
   description?: string;
-  variant?: "warning" | "danger" | "success";
+  variant?: "warning" | "danger" | "success" | "info";
   confirmLabel?: string;
   cancelLabel?: string;
 }
@@ -24,7 +24,7 @@ const AlertModal: React.FC<AlertModalProps> = ({
   description = "Bạn có chắc chắn muốn thực hiện hành động này?",
   variant = "warning",
   confirmLabel = "Tiếp tục",
-  cancelLabel = "Hủy"
+  cancelLabel = "Hủy",
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -53,27 +53,25 @@ const AlertModal: React.FC<AlertModalProps> = ({
           icon: <AlertCircle className="w-12 h-12 text-amber-500" />,
           confirmButtonClass: "bg-amber-600 hover:bg-amber-700 text-white",
         };
+      case "info":
+        return {
+          icon: <BsPatchQuestion className="w-12 h-12 text-blue-500" />,
+          confirmButtonClass: "bg-blue-600 hover:bg-blue-700 text-white",
+          modalBgClass: "bg-blue-100",
+          modalTextClass: "text-blue-700",
+        };
     }
   };
 
   const { icon, confirmButtonClass } = getVariantStyles();
 
   return (
-    <Modal
-      title=""
-      description=""
-      isOpen={isOpen}
-      onClose={onClose}
-    >
+    <Modal title="" description="" isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col items-center p-6 text-center">
         {icon}
-        <h2 className="mt-4 text-xl font-semibold ">
-          {title}
-        </h2>
-        <p className="mt-2 text-sm ">
-          {description}
-        </p>
-        
+        <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
+        <p className="mt-2 text-sm ">{description}</p>
+
         <div className="mt-8 w-full space-x-3 flex items-center justify-center">
           <Button
             disabled={loading}
