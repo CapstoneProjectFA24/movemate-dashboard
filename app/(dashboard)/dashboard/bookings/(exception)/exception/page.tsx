@@ -8,6 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog";
+import {
     Table,
     TableBody,
     TableCell,
@@ -31,7 +38,8 @@ import {
     Filter,
     Search,
     BarChart3,
-    Wand2
+    Wand2,
+    AlertCircle
 } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
 
@@ -39,6 +47,8 @@ const ExceptionDashboard: React.FC = () => {
     const [selectedShift, setSelectedShift] = useState('all');
     const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
     const [selectedBookingTime, setSelectedBookingTime] = useState<string | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedBooking, setSelectedBooking] = useState<any>(null);
     const staffSectionRef = useRef<HTMLDivElement>(null);
 
     const checkAvailableStaff = (request: any) => {
@@ -102,6 +112,52 @@ const ExceptionDashboard: React.FC = () => {
         });
     };
 
+    type BookingDetails = {
+        driver: {
+            name: string;
+            phone: string;
+            status: string;
+            reason?: string; 
+            shift: string;
+        };
+        porter: {
+            name: string;
+            phone: string;
+            status: string;
+            shift: string;
+        };
+        evaluator: {
+            name: string;
+            phone: string;
+            status: string;
+            shift: string;
+        };
+    };
+    
+    const mockBookingDetails: Record<string, BookingDetails> = {
+        "BOK001": {
+            driver: {
+                name: "Nguyễn Văn X",
+                phone: "0987654321",
+                status: "Sự cố",
+                reason: "Xe hỏng",
+                shift: "Ca 1",
+            },
+            porter: {
+                name: "Trần Văn Y",
+                phone: "0987654322",
+                status: "Bình thường",
+                shift: "Ca 1",
+            },
+            evaluator: {
+                name: "Lê Văn Z",
+                phone: "0987654323",
+                status: "Bình thường",
+                shift: "Ca 1",
+            },
+        },
+    };
+
     const SHIFTS = {
         EARLY: 'Ca Sớm',
         SHIFT_1: 'Ca 1',
@@ -155,7 +211,6 @@ const ExceptionDashboard: React.FC = () => {
             customer: "Phạm Văn C",
         }
     ];
-
     const mockDrivers = [
         {
             id: 1,
@@ -231,6 +286,117 @@ const ExceptionDashboard: React.FC = () => {
         { name: '12:00', noDriver: 8, noPorter: 4 },
     ];
 
+    const handleBookingClick = (bookingId: string) => {
+        setSelectedBooking(mockBookingDetails[bookingId]);
+        setIsDialogOpen(true);
+    };
+
+    const StaffStatusBadge: React.FC<{ status: string, reason?: string }> = ({ status, reason }) => {
+        if (status === "Sự cố") {
+            return (
+                <div className="flex items-center gap-2">
+                    <Badge variant="destructive" className="flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {status}
+                    </Badge>
+                    {reason && (
+                        <span className="text-sm text-red-600">({reason})</span>
+                    )}
+                </div>
+            );
+        }
+        return <Badge variant="secondary">{status}</Badge>;
+    };
+
+    const BookingDetailsDialog: React.FC = () => {
+        if (!selectedBooking) return null;
+
+        return (
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className="max-w-3xl">
+                    <DialogHeader>
+                        <DialogTitle>Chi tiết nhân sự phân công</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-6">
+                        <div className="space-y-2">
+                            <h3 className="font-semibold">Tài xế</h3>
+                            <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                                <div>
+                                    <p className="text-sm text-gray-500">Tên:</p>
+                                    <p>{selectedBooking.driver.name}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Số điện thoại:</p>
+                                    <p>{selectedBooking.driver.phone}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Ca làm việc:</p>
+                                    <p>{selectedBooking.driver.shift}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Trạng thái:</p>
+                                    <StaffStatusBadge 
+                                        status={selectedBooking.driver.status}
+                                        reason={selectedBooking.driver.reason}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="font-semibold">Nhân viên bốc xếp</h3>
+                            <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                                <div>
+                                    <p className="text-sm text-gray-500">Tên:</p>
+                                    <p>{selectedBooking.porter.name}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Số điện thoại:</p>
+                                    <p>{selectedBooking.porter.phone}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Ca làm việc:</p>
+                                    <p>{selectedBooking.porter.shift}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Trạng thái:</p>
+                                    <StaffStatusBadge 
+                                        status={selectedBooking.porter.status}
+                                        reason={selectedBooking.porter.reason}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <h3 className="font-semibold">Nhân viên đánh giá</h3>
+                            <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                                <div>
+                                    <p className="text-sm text-gray-500">Tên:</p>
+                                    <p>{selectedBooking.evaluator.name}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Số điện thoại:</p>
+                                    <p>{selectedBooking.evaluator.phone}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Ca làm việc:</p>
+                                    <p>{selectedBooking.evaluator.shift}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500">Trạng thái:</p>
+                                    <StaffStatusBadge 
+                                        status={selectedBooking.evaluator.status}
+                                        reason={selectedBooking.evaluator.reason}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        );
+    };
+
     const handleBookingTimeClick = (request: any) => {
         const [hour, minute] = request.bookingAt.split(' ')[1].split(':').map(Number);
         const shift = getShiftByHour(hour);
@@ -266,33 +432,6 @@ const ExceptionDashboard: React.FC = () => {
         }
 
         return true;
-    };
-
-    const ShiftStatusBadge: React.FC<{ bookingTime: string }> = ({ bookingTime }) => {
-        const [hour] = bookingTime.split(':').map(Number);
-        const shift = getShiftByHour(hour);
-        let color = 'bg-gray-100';
-
-        switch (shift) {
-            case SHIFTS.EARLY:
-                color = 'bg-purple-100 text-purple-800';
-                break;
-            case SHIFTS.SHIFT_1:
-                color = 'bg-blue-100 text-blue-800';
-                break;
-            case SHIFTS.SHIFT_2:
-                color = 'bg-green-100 text-green-800';
-                break;
-            case SHIFTS.LATE:
-                color = 'bg-orange-100 text-orange-800';
-                break;
-        }
-
-        return (
-            <Badge variant="outline" className={color}>
-                {shift}
-            </Badge>
-        );
     };
 
     const StaffTable: React.FC<{ data: any[] }> = ({ data }) => (
@@ -439,7 +578,12 @@ const ExceptionDashboard: React.FC = () => {
                             <TableBody>
                                 {mockRequests.map((request) => (
                                     <TableRow key={request.id}>
-                                        <TableCell>{request.id}</TableCell>
+                                        <TableCell 
+                                            className="cursor-pointer text-blue-600 hover:text-blue-800"
+                                            onClick={() => handleBookingClick(request.id)}
+                                        >
+                                            {request.id}
+                                        </TableCell>
                                         <TableCell
                                             className="cursor-pointer hover:text-blue-500"
                                             onClick={() => handleBookingTimeClick(request)}
@@ -478,6 +622,8 @@ const ExceptionDashboard: React.FC = () => {
                     </div>
                 </CardContent>
             </Card>
+
+            <BookingDetailsDialog />
 
             <Card ref={staffSectionRef}>
                 <CardHeader>
