@@ -13,6 +13,7 @@ import {
   getCheckAvailableDriver,
   getCheckAvailablePorter,
 } from "../action/assignments";
+import axios from "axios";
 
 export const useGetServicesToUpdateBooking = (type?: ServiceType) => {
   return useQuery<ApiListResponse<IService>>({
@@ -31,5 +32,25 @@ export const useGetCheckAvailablePorter = (params: string) => {
   return useQuery<ApiSingleResponse<IAssigmentAvailable>>({
     queryKey: ["CHECK_PORTER_ASSIGNMENT", params],
     queryFn: () => getCheckAvailablePorter(params),
+  });
+};
+
+export const useGetDurationVietmap = (
+  pickupPoint: string,
+  deliveryPoint: string
+) => {
+  return useQuery({
+    queryKey: ["VIETMAP"],
+    queryFn: async () => {
+      if (!pickupPoint || !deliveryPoint) {
+        throw new Error("Start pickupPoint and end deliveryPoint are required");
+      }
+      // https://maps.vietmap.vn/api/matrix?api-version=1.1&apikey=be00f7e132bdd086ccd57e21460209836f5d37ce56beaa42&point=10.767782,106.611362&point=10.774934,106.623477
+
+      const { data } = await axios.get(
+        `/api/vietmap?pickupPoint=${pickupPoint}&deliveryPoint=${deliveryPoint}`
+      );
+      return data;
+    },
   });
 };
