@@ -57,7 +57,7 @@ export async function getOrCreateConversation(
   bookingId: string,
   customerId: string, 
   currentUserId: string, 
-  currentUserRole: StaffRole
+  currentUserRole: string
 ): Promise<string> {
   try {
     // Check existing conversation
@@ -66,7 +66,7 @@ export async function getOrCreateConversation(
       customerId, 
       currentUserId
     );
-
+    console.log(`first ${currentUserId} + ${currentUserRole} + ${bookingId} + ${customerId}`);
     if (existingConversationId) {
       return existingConversationId;
     }
@@ -91,6 +91,7 @@ export async function getOrCreateConversation(
           role: currentUserRole.toString(),
         },
       },
+      lastMessage: null,
       status: 'active',
     });
 
@@ -175,6 +176,7 @@ export async function sendMessage(
         ...message,
         id: docRef.id
       },
+      lastMessageAt: serverTimestamp(),
     });
 
     revalidatePath(`/bookings/${bookingId}/conversations/${conversationId}`);

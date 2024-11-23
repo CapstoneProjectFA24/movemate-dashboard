@@ -13,6 +13,7 @@ export type ModalType =
   | "confirmEstimatedTimeModal"
   | "createServicesModal"
   | "chatWithStaffModal"
+  | "chatWithUserModal"
   | "checkAssignmentModal"
   | "exceptionModal"
 ;

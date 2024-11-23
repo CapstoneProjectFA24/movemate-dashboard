@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronDown, Send } from "lucide-react";
+import { ChevronDown, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useModal } from "@/hooks/use-modal";
 import Image from "next/image";
-import { useSendStaffMessage } from "@/features/chat-realtime/react-query/query";
+import { useSendUserMessage } from "@/features/chat-realtime/react-query/query";
 import {
   Message,
   StaffRole,
@@ -17,7 +17,6 @@ import {
 import { useSession } from "next-auth/react";
 import {
   collection,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -25,55 +24,73 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import LoadingSpinner from "@/components/shared/custom-ui/loading-spinner";
+import { useGetUserById } from "@/features/users/react-query/query";
+import { Skeleton } from "@/components/ui/skeleton";
 import ChatMessage from "./chat-message";
 
-export const ChatModal: React.FC = () => {
+export const ChatUserModal = () => {
   const [newMessage, setNewMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const { isOpen, onClose, type, data } = useModal();
+  const isOpenModal = isOpen && type === "chatWithUserModal";
+
+  const { data: user, isLoading: userLoading } = useGetUserById(
+    data.booking?.userId?.toString()!
+  );
 
   const { data: session } = useSession();
 
-  const staffInfo = data.user || data.staff;
+  const userId = data.booking?.userId;
+  const bookingId = data.booking?.id;
+
   const currentUserId = session?.user.id;
   const currentUserRole = session?.user.roleName.toLowerCase();
 
   useEffect(() => {
-    if (currentUserId && staffInfo?.id) {
+    if (currentUserId && userId) {
       setIsLoading(true);
       setConversationId(null);
-      const conversationsRef = collection(db, "staff_conversations");
+
+      const conversationsRef = collection(
+        db,
+        "bookings",
+        bookingId?.toString()!,
+        "conversations"
+      );
+      console.log(conversationsRef);
+
       const q = query(
         conversationsRef,
-        where("participantIds", "array-contains", currentUserId.toString())
+        where("participants.staff.id", "==", currentUserId.toString()),
+        where("participants.user.id", "==", userId.toString())
       );
-
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          const participantIds = doc.data().participantIds || [];
-          if (participantIds.includes(staffInfo.id!.toString())) {
-            setConversationId(doc.id);
-            setIsLoading(false);
-          }
-        });
+        if (!snapshot.empty) {
+          const conversationDoc = snapshot.docs[0];
+          setConversationId(conversationDoc.id);
+        }
+        setIsLoading(false);
       });
 
       return unsubscribe;
     }
-  }, [currentUserId, staffInfo?.id]);
+  }, [currentUserId, userId, bookingId]);
 
   useEffect(() => {
     if (isOpenModal && conversationId) {
       setIsLoading(true);
       const messagesRef = collection(
         db,
-        "staff_conversations",
+        "bookings",
+        bookingId?.toString()!,
+        "conversations",
         conversationId,
         "messages"
       );
+
       const q = query(messagesRef, orderBy("timestamp", "desc"));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const messages = snapshot.docs.map((doc) =>
@@ -87,19 +104,18 @@ export const ChatModal: React.FC = () => {
       });
       return unsubscribe;
     }
-  }, [isOpen, conversationId]);
-
-  const { mutateAsync: sendMessage } = useSendStaffMessage();
-
-  const isOpenModal = isOpen && type === "chatWithStaffModal";
+  }, [isOpen, conversationId, isOpenModal, bookingId]);
 
   const handleClose = () => {
     onClose();
   };
 
+  const { mutateAsync: sendMessage } = useSendUserMessage();
+
   const handleSendMessage = async (): Promise<void> => {
     if (newMessage.trim() && conversationId) {
       await sendMessage({
+        bookingId: bookingId?.toString()!,
         conversationId: conversationId,
         messageData: {
           content: newMessage,
@@ -127,19 +143,46 @@ export const ChatModal: React.FC = () => {
       <Card className="shadow-xl">
         <CardHeader className="bg-primary text-primary-foreground flex flex-row items-center justify-between rounded-t-lg py-3 px-4">
           <div className="flex items-center space-x-3">
-            <Image
-              src={staffInfo?.avatarUrl!}
-              width={32}
-              height={32}
-              alt="staff info"
-              className="rounded-full"
-            />
-            <div>
-              <div className="font-medium">{staffInfo?.name}</div>
-              <div className="text-sm text-black">
-                Vai trò: {staffInfo?.roleName}
+            {userLoading ? (
+              <>
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </>
+            ) : user?.data ? (
+              <>
+                {user.data.avatarUrl ? (
+                  <Image
+                    src={user.data.avatarUrl}
+                    width={32}
+                    height={32}
+                    alt={`${user.data.name}'s avatar`}
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
+                    <User className="h-4 w-4" />
+                  </div>
+                )}
+                <div>
+                  <div className="font-medium">{user.data.name}</div>
+                  <div className="text-sm text-primary-foreground/80">
+                    Vai trò: {user.data.roleName}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
+                  <User className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="font-medium">Không có user</div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <Button
             variant="ghost"
@@ -191,5 +234,3 @@ export const ChatModal: React.FC = () => {
     </div>
   );
 };
-
-export default ChatModal;

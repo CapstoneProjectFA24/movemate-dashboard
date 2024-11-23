@@ -10,6 +10,7 @@ import { CreateServicesModal } from "@/features/services/components/services-mod
 import { ChatModal } from "@/components/modals/chat-modal/chat-modal";
 import { CheckAssignmentModal } from "@/features/bookings/components/modal/check-assignment-modal";
 import { ExceptionModal } from "@/features/exception/components/modal/exception-modal";
+import { ChatUserModal } from "@/components/modals/chat-modal/chat-user-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -28,6 +29,7 @@ export const ModalProvider = () => {
       <ConfirmEstimatedTimeModal/>
       <CreateServicesModal/>
       <ChatModal/>
+      <ChatUserModal/>
       <CheckAssignmentModal/>
       <ExceptionModal/>
     </>

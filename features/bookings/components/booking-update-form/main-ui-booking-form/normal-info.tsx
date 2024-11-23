@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { IBooking } from "../../../types/booking-type";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,9 @@ import { ArrowLeft, CalendarClock, MapPin } from "lucide-react";
 import { formatDate, formatter } from "@/lib/utils";
 import { useBookingStatus } from "@/features/bookings/hooks/use-booking-status";
 // import { BookingStatus } from "@/features/bookings/enums/booking-state-enum";
-
+import { useModal } from "@/hooks/use-modal";
+import { useSession } from "next-auth/react";
+import { useGetOrCreateUserConversation } from "@/features/chat-realtime/react-query/query";
 interface NomarlInfoProps {
   booking: IBooking | null;
   canReview: boolean;
@@ -16,6 +19,21 @@ interface NomarlInfoProps {
 const NomarlInfo = ({ booking, canReview }: NomarlInfoProps) => {
   const router = useRouter();
   const params = useParams();
+  const { onOpen } = useModal();
+  const { data: session } = useSession();
+  const { mutateAsync: getOrCreateConversation } =
+    useGetOrCreateUserConversation(
+      booking?.id.toString()!,
+      booking?.userId?.toString()!,
+      session?.user.id.toString()!,
+      session?.user.roleName.toLowerCase()!
+    );
+
+  const handleContact = () => {
+    getOrCreateConversation();
+
+    onOpen("chatWithUserModal", { booking: booking! });
+  };
   const {
     statusMessage,
     canReviewOffline,
@@ -37,6 +55,15 @@ const NomarlInfo = ({ booking, canReview }: NomarlInfoProps) => {
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Quay lại
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={handleContact}
+          className="mb-4"
+          type="button"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          CHAT
         </Button>
 
         <div className="flex items-center space-x-4">
