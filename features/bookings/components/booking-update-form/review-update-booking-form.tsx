@@ -32,6 +32,7 @@ const bookingSchema = z.object({
   isRoundTrip: z.boolean(),
   roomNumber: z.string(),
   floorsNumber: z.string(),
+  bookingAt: z.string(),
   bookingDetails: z.array(
     z.object({
       serviceId: z.number(),
@@ -87,6 +88,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
     isRoundTrip: booking?.isRoundTrip || false,
     roomNumber: booking?.roomNumber || "",
     floorsNumber: booking?.floorsNumber || "",
+    bookingAt: booking?.bookingAt || "",
     bookingDetails: (booking?.bookingDetails || []).map((detail) => ({
       serviceId: detail.serviceId ?? 0,
       quantity: detail.quantity ?? 1,
