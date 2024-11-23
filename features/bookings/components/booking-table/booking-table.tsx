@@ -58,7 +58,7 @@ export function BookingTable({ bookingPromise }: BookingTableProps) {
         value,
       })),
     },
-      // test mode
+    // test mode
     {
       id: "status",
       title: "Trạng thái đơn",
