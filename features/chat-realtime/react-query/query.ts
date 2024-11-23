@@ -5,8 +5,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   findExistingStaffConversation,
+  getOrCreateConversation,
   getOrCreateStaffConversation,
   getStaffMessages,
+  sendMessage,
   sendStaffMessage,
 } from "../actions/booking-chat";
 import { getAllUserConversations } from "../actions/get-all-chat";
@@ -28,6 +30,41 @@ import { getAllUserConversations } from "../actions/get-all-chat";
 //       ),
 //   });
 // };
+
+export const useGetOrCreateUserConversation = (
+  bookingId: string,
+  customerId: string,
+  currentUserId: string,
+  currentUserRole: string
+) => {
+  return useMutation({
+    mutationFn: () =>
+      getOrCreateConversation(
+        bookingId,
+        customerId,
+        currentUserId,
+        currentUserRole
+      ),
+  });
+};
+
+export const useSendUserMessage = () => {
+  return useMutation({
+    mutationFn: (variables: {
+      bookingId: string;
+      conversationId: string;
+      messageData: {
+        content: string;
+        senderId: string;
+        senderRole: string;
+        attachments?: string[];
+      };
+    }) => {
+      const { bookingId, conversationId, messageData } = variables;
+      return sendMessage(bookingId, conversationId, messageData);
+    },
+  });
+};
 
 export const useGetOrCreateStaffConversation = (
   currentUserId: string,
