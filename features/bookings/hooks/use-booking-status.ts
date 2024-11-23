@@ -15,15 +15,23 @@ export enum BookingStatus {
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
   REFUNDED = "REFUNDED",
+  CONFIRMED = "CONFIRMED",
 }
 
 export enum AssignmentStatus {
-  WAITING = "WAITING",
   ASSIGNED = "ASSIGNED",
-  ENROUTE = "ENROUTE",
+  INCOMING = "INCOMING",
   ARRIVED = "ARRIVED",
+  REVIEWING = "REVIEWING",
   SUGGESTED = "SUGGESTED",
   REVIEWED = "REVIEWED",
+  IN_PROGRESS = "IN_PROGRESS",
+  PACKING = "PACKING",
+  IN_TRANSIT = "IN_TRANSIT",
+  ONGOING = "ONGOING",
+  WAITING = "WAITING",
+  UNLOADED = "UNLOADED",
+  DELIVERED = "DELIVERED",
   COMPLETED = "COMPLETED",
 }
 
@@ -94,7 +102,7 @@ export const useBookingStatus = (
 
     const isStaffEnroute = hasAssignmentWithStatus(
       "REVIEWER",
-      AssignmentStatus.ENROUTE
+      AssignmentStatus.INCOMING
     );
     const isStaffArrived = hasAssignmentWithStatus(
       "REVIEWER",
@@ -103,6 +111,74 @@ export const useBookingStatus = (
     const isSuggested = hasAssignmentWithStatus(
       "REVIEWER",
       AssignmentStatus.SUGGESTED
+    );
+
+    // Driver states
+    const isDriverWaiting = hasAssignmentWithStatus(
+      "DRIVER",
+      AssignmentStatus.WAITING
+    );
+    const isDriverAssigned = hasAssignmentWithStatus(
+      "DRIVER",
+      AssignmentStatus.ASSIGNED
+    );
+    const isDriverIncoming = hasAssignmentWithStatus(
+      "DRIVER",
+      AssignmentStatus.INCOMING
+    );
+    const isDriverArrived = hasAssignmentWithStatus(
+      "DRIVER",
+      AssignmentStatus.ARRIVED
+    );
+    const isDriverInProgress = hasAssignmentWithStatus(
+      "DRIVER",
+      AssignmentStatus.IN_PROGRESS
+    );
+    const isDriverCompleted = hasAssignmentWithStatus(
+      "DRIVER",
+      AssignmentStatus.COMPLETED
+    );
+
+    // Porter states
+    const isPorterWaiting = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.WAITING
+    );
+    const isPorterAssigned = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.ASSIGNED
+    );
+    const isPorterIncoming = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.INCOMING
+    );
+    const isPorterArrived = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.ARRIVED
+    );
+    const isPorterInProgress = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.IN_PROGRESS
+    );
+    const isPorterPacking = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.PACKING
+    );
+    const isPorterOngoing = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.ONGOING
+    );
+    const isPorterDelivered = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.DELIVERED
+    );
+    const isPorterUnloaded = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.UNLOADED
+    );
+    const isPorterCompleted = hasAssignmentWithStatus(
+      "PORTER",
+      AssignmentStatus.COMPLETED
     );
 
     let canReviewOffline = false;
@@ -171,19 +247,26 @@ export const useBookingStatus = (
         statusMessage = "Đã đánh giá xong";
         break;
       case BookingStatus.COMING:
-        statusMessage = "Đang đến";
+        if (!isDriverAssigned && !isPorterAssigned) {
+          statusMessage = "Chờ phân công nhân viên vận chuyển";
+        } else if (isDriverAssigned && !isPorterAssigned) {
+          statusMessage = "Đã phân công tài xế - Chờ phân công porter";
+        } else if (!isDriverAssigned && isPorterAssigned) {
+          statusMessage = "Đã phân công porter - Chờ phân công tài xế";
+        } else {
+          statusMessage = "Đã phân công đầy đủ nhân viên vận chuyển";
+        }
         break;
+
       case BookingStatus.IN_PROGRESS:
-        statusMessage = "Đang thực hiện";
+        statusMessage = "Đang trong quá trình vận chuyển";
         break;
-      case BookingStatus.IN_TRANSIT:
-        statusMessage = "Đang vận chuyển";
-        break;
+
       case BookingStatus.DELIVERED:
         statusMessage = "Đã giao hàng";
         break;
       case BookingStatus.COMPLETED:
-        statusMessage = "Hoàn thành";
+        statusMessage = "Đã hoàn thành toàn bộ quy trình";
         break;
       case BookingStatus.CANCELLED:
         statusMessage = "Đã hủy";

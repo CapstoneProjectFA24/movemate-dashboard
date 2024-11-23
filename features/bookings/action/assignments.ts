@@ -57,7 +57,7 @@ export async function assignStaffToBooking(
   noStore();
 
   const result = await apiRequest(() =>
-    axiosAuth.patch(`${ASSIGNMENT_URL.ASSIGNMENTS_WAITING}/${params}`)
+    axiosAuth.patch(`${ASSIGNMENT_URL.ASSIGNMENTS}/${params}`)
   );
 
   if (!result.success) {
