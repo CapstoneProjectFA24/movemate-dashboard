@@ -7,7 +7,7 @@ import { BookingTracker } from "../../../types/booking-type";
 import { CldImage, CldVideoPlayer } from "next-cloudinary";
 
 import "next-cloudinary/dist/cld-video-player.css";
-import ImageLightbox from "./full-box-image";
+import ImageLightbox from "@/components/modals/full-box-image";
 
 interface BookingImagesAndVideosProps {
   bookingTrackers: BookingTracker[] | undefined;
@@ -16,8 +16,13 @@ interface BookingImagesAndVideosProps {
 const BookingImagesAndVideos = ({
   bookingTrackers,
 }: BookingImagesAndVideosProps) => {
+  // Filter for PENDING bookingTrackers
+  const pendingBookingTrackers = bookingTrackers?.filter(
+    (tracker) => tracker.type === "PENDING"
+  );
+
   const allImages =
-    bookingTrackers?.flatMap(
+    pendingBookingTrackers?.flatMap(
       (tracker) =>
         tracker.trackerSources?.filter(
           (source) => source.resourceUrl && source.type === "IMG"
@@ -25,7 +30,7 @@ const BookingImagesAndVideos = ({
     ) || [];
 
   const allVideos =
-    bookingTrackers?.flatMap(
+    pendingBookingTrackers?.flatMap(
       (tracker) =>
         tracker.trackerSources?.filter(
           (source) => source.resourceUrl && source.type === "VIDEO"
@@ -86,7 +91,6 @@ const BookingImagesAndVideos = ({
                       height="auto"
                       poster={video.resourceUrl}
                       id="overplay"
-                      // src="https://res.cloudinary.com/dkpnkjnxs/video/upload/v1732321402/movemate/videos/rftpo4kfc9dnm6my0wni.mp4"
                       src={video.resourceUrl}
                       className="object-cover w-full h-full hover:scale-105 transition-transform duration-200"
                     />
