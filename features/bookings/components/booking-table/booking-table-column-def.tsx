@@ -12,7 +12,7 @@ import actionColumn from "./colunm/action-column";
 // todo
 import processStatusColumn from "./colunm/process-status-column";
 import bookingTimeColumn from "./colunm/booking-at-column";
-import orderStatusColumn, { statusColum } from "./colunm/status-column";
+import orderStatusColumn from "./colunm/order-status-column";
 
 export function fetchBookingsTableColumnDefs(): ColumnDef<IBooking, unknown>[] {
   return [
@@ -20,7 +20,7 @@ export function fetchBookingsTableColumnDefs(): ColumnDef<IBooking, unknown>[] {
     idColumn,
     bookingTimeColumn,
     totalColumn,
-    statusColum,
+    // statusColum,
     orderStatusColumn,
     processStatusColumn,
     actionColumn,

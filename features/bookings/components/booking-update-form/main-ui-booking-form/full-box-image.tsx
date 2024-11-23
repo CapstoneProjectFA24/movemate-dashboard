@@ -8,7 +8,7 @@ interface ImageLightboxProps {
   alt: string;
 }
 
-const ImageLightbox: React.FC<ImageLightboxProps> = ({ src, alt }) => {
+const ImageLightbox = ({ src, alt }: ImageLightboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openLightbox = () => {

@@ -31,7 +31,7 @@ export const statusColum = {
               variant="outline"
               className={cn(
                 "flex items-center gap-1",
-                BookingStatusColors[status]
+                // BookingStatusColors[status]
               )}
             >
               {IconComponent && (

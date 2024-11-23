@@ -32,8 +32,6 @@ const BookingImagesAndVideos = ({
         ) || []
     ) || [];
 
-  //https://res.cloudinary.com/dkpnkjnxs/video/upload/v1732321402/movemate/videos/rftpo4kfc9dnm6my0wni.mp4
-
   return (
     <Card className="w-full">
       <CardHeader className="pb-3">
@@ -88,7 +86,8 @@ const BookingImagesAndVideos = ({
                       height="auto"
                       poster={video.resourceUrl}
                       id="overplay"
-                      src="https://res.cloudinary.com/dkpnkjnxs/video/upload/v1732321402/movemate/videos/rftpo4kfc9dnm6my0wni.mp4"
+                      // src="https://res.cloudinary.com/dkpnkjnxs/video/upload/v1732321402/movemate/videos/rftpo4kfc9dnm6my0wni.mp4"
+                      src={video.resourceUrl}
                       className="object-cover w-full h-full hover:scale-105 transition-transform duration-200"
                     />
                   ) : (
