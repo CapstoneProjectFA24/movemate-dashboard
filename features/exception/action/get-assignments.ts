@@ -28,7 +28,7 @@ export async function getAssignments(
     userId: userId,
   };
   const result = await fetchListData<IAssignment>(
-    ASSIGNMENT_URL.ASSIGNMENTS,
+    ASSIGNMENT_URL.ASSIGNMENTS_WAITING,
     modifiedSearchParams
   );
   if (!result.success) {

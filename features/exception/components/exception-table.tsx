@@ -10,11 +10,10 @@ import {
   DataTableSearchableColumn,
 } from "@/types/table";
 import { useDataTable } from "@/hooks/use-data-table";
-import { DataTable } from "@/components/data-table/data-table";
 import { fetchExceptionTableColumnDefs } from "./exception-table-column-def";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, Clock, Users } from "lucide-react";
-import { DataTableDark } from "@/components/data-table/data-table-dark";
+import { DataTableException } from "@/components/data-table/custom-table/data-table-exception";
 import { AssignmentTypeNames } from "../enums/exception-enum";
 
 interface ExceptionTableProps {
@@ -107,7 +106,7 @@ export function ExceptionTable({ assignmentPromise }: ExceptionTableProps) {
         </CardHeader>
 
         <CardContent>
-          <DataTableDark
+          <DataTableException
             dataTable={dataTable}
             columns={columns}
             searchableColumns={searchableColumns}

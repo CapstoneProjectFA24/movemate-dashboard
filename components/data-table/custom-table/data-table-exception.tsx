@@ -18,9 +18,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DataTableFloatingBar } from "./data-table-floating-bar";
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTableFloatingBar } from "../data-table-floating-bar";
+import { DataTablePagination } from "../data-table-pagination";
+import { DataTableToolbar } from "../data-table-toolbar";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   dataTable: TanstackTable<TData>;
@@ -34,7 +35,7 @@ interface DataTableProps<TData, TValue> {
   deleteRowsAction?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export function DataTableDark<TData, TValue>({
+export function DataTableException<TData, TValue>({
   dataTable,
   columns,
   searchableColumns = [],
@@ -92,7 +93,14 @@ export function DataTableDark<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length}>Không có dữ liệu</TableCell>
+                <TableCell colSpan={columns.length}>
+                  <div className="flex flex-col items-center p-6 space-y-2 text-center">
+                    <CheckCircle2 className="w-12 h-12 text-green-500" />
+                    <span className="text-gray-600">
+                      Hiện tại đang không có bất kì một đơn ngoại lệ nào
+                    </span>
+                  </div>
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
