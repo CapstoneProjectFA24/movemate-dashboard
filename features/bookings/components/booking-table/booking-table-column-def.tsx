@@ -13,6 +13,8 @@ import actionColumn from "./colunm/action-column";
 import processStatusColumn from "./colunm/process-status-column";
 import bookingTimeColumn from "./colunm/booking-at-column";
 import orderStatusColumn from "./colunm/order-status-column";
+import estimatedDistanceColumn from "./colunm/estimated-distance-column";
+import estimatedTimeColumn from "./colunm/estimated-time-column";
 
 export function fetchBookingsTableColumnDefs(): ColumnDef<IBooking, unknown>[] {
   return [
@@ -21,8 +23,10 @@ export function fetchBookingsTableColumnDefs(): ColumnDef<IBooking, unknown>[] {
     bookingTimeColumn,
     totalColumn,
     // statusColum,
-    orderStatusColumn,
+    estimatedDistanceColumn,
+    estimatedTimeColumn,
     processStatusColumn,
+    orderStatusColumn,
     actionColumn,
   ];
 }

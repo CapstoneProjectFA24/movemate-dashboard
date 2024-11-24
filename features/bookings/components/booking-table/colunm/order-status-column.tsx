@@ -11,69 +11,95 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import {
-  AssignmentStatus,
   BookingStatus,
 } from "@/features/bookings/hooks/use-booking-status";
 
-// Define status groupings
-const OrderStatus = {
-  NEW: [BookingStatus.PENDING, BookingStatus.ASSIGNED, BookingStatus.WAITING],
-  DEPOSITING: [BookingStatus.DEPOSITING],
-  IN_PROGRESS: [
-    BookingStatus.REVIEWING,
-    BookingStatus.IN_PROGRESS,
-    BookingStatus.COMING,
-  ],
-  // PAYMENT: [BookingStatus.IN_PROGRESS && AssignmentStatus. ],
-  COMPLETED: [BookingStatus.COMPLETED, BookingStatus.DELIVERED],
-  CANCELLED: [BookingStatus.CANCELLED, BookingStatus.REFUNDED],
+type OrderStatus =
+  | BookingStatus.PENDING
+  | BookingStatus.ASSIGNED
+  | BookingStatus.REVIEWING
+  | BookingStatus.REVIEWED
+  | BookingStatus.DEPOSITING
+  | BookingStatus.IN_PROGRESS
+  | BookingStatus.COMING
+  | BookingStatus.CONFIRMED
+  | BookingStatus.WAITING
+  | BookingStatus.REFUNDED
+  | BookingStatus.CANCELLED
+  | BookingStatus.COMPLETED
+  | "COMPENSATION"
+  | "CANCELED"
+  | "PAID"
+  | "NEW"
+  | "ADVANCE";
+
+type ReviewOnlineStatus = "true" | "false";
+
+export const OrderStatusMap: Record<ReviewOnlineStatus, Record<OrderStatus, string>> = {
+  "true": {
+    [BookingStatus.PENDING]: "Đơn mới",
+    [BookingStatus.ASSIGNED]: "Đơn mới",
+    [BookingStatus.REVIEWING]: "Đơn mới",
+    [BookingStatus.REVIEWED]: "Đơn mới",
+    [BookingStatus.DEPOSITING]: "Đơn mới",
+    [BookingStatus.IN_PROGRESS]: "Đã cọc",
+    [BookingStatus.COMING]: "Đã cọc",
+    [BookingStatus.CONFIRMED]: "Đã cọc",
+    [BookingStatus.WAITING]: "Đơn mới",
+    [BookingStatus.REFUNDED]: "Hoàn tiền",
+    [BookingStatus.CANCELLED]: "Đã hủy",
+    [BookingStatus.COMPLETED]: "Đã thanh toán",
+    COMPENSATION: "Hoàn tiền",
+    CANCELED: "Đã hủy",
+    PAID: "Đã thanh toán",
+    NEW: "Đơn mới",
+    ADVANCE: "Đã cọc",
+  },
+  "false": {
+    [BookingStatus.PENDING]: "Đơn mới",
+    [BookingStatus.ASSIGNED]: "Đơn mới",
+    [BookingStatus.WAITING]: "Đơn mới",
+    [BookingStatus.DEPOSITING]: "Đơn mới",
+    [BookingStatus.IN_PROGRESS]: "Đã cọc",
+    [BookingStatus.COMING]: "Đã cọc",
+    [BookingStatus.CONFIRMED]: "Đã cọc",
+    [BookingStatus.REVIEWING]: "Đã cọc",
+    [BookingStatus.REVIEWED]: "Đã cọc",
+    [BookingStatus.REFUNDED]: "Hoàn tiền",
+    [BookingStatus.CANCELLED]: "Đã hủy",
+    [BookingStatus.COMPLETED]: "Đã thanh toán",
+    COMPENSATION: "Hoàn tiền",
+    CANCELED: "Đã hủy",
+    PAID: "Đã thanh toán",
+    NEW: "Đơn mới",
+    ADVANCE: "Đã cọc",
+  },
 };
-
-// Vietnamese status names for each group
-export const OrderStatusNames = {
-  NEW: "Đơn mới",
-  DEPOSITING: "Chờ khách đặt cọc",
-  // PAYMENT: "Chờ khách thanh toán",
-  IN_PROGRESS: "Đang xử lý",
-  COMPLETED: "Hoàn thành",
-  CANCELLED: "Đã hủy",
-};
-
-
 
 // Helper function to get group from status
-const getOrderStatusGroup = (status: BookingStatus) => {
-  for (const [group, statuses] of Object.entries(OrderStatus)) {
-    if (statuses.includes(status)) {
-      return group as keyof typeof OrderStatusNames;
-    }
-  }
-  return "NEW";
+const getOrderStatusGroup = (status: OrderStatus, isReviewOnline: boolean): string => {
+  return OrderStatusMap[isReviewOnline ? "true" : "false"][status] || status;
 };
-
 // Column definitions
 export const orderStatusColumn = {
   accessorKey: "status",
+  id: "orderStatusColumn",
   header: ({ column }: { column: Column<any, unknown> }) => (
     <DataTableColumnHeader column={column} title="Trạng thái đơn hàng" />
   ),
   cell: ({ row }: { row: Row<IBooking> }) => {
-    const status = row.getValue("status") as BookingStatus;
+    const status = row.getValue("status") as OrderStatus;
+    const isReviewOnline = row.getValue("isReviewOnline") as boolean;
     if (!status) return null;
 
-    const statusGroup = getOrderStatusGroup(status);
+    const statusGroup = getOrderStatusGroup(status, isReviewOnline);
 
     return (
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <Badge
-              variant="outline"
-              className={cn(
-                "flex items-center gap-1",
-              )}
-            >
-              {OrderStatusNames[statusGroup]}
+            <Badge variant="outline" className={cn("flex items-center gap-1")}>
+              {statusGroup}
             </Badge>
           </TooltipTrigger>
         </Tooltip>
@@ -83,4 +109,5 @@ export const orderStatusColumn = {
   enableSorting: false,
   enableHiding: false,
 } as const;
+
 export default orderStatusColumn;
