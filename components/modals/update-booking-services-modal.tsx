@@ -26,7 +26,10 @@ export const UpdateBookingServicesModalSheet = () => {
   const { isOpen, onClose, type, data } = useModal();
   const isOpenModal = isOpen && type === "updateBookingServicesModalSheet";
   const { data: services, isLoading } = useGetServicesToUpdateBooking(
-    data.bookingDetail?.type as ServiceType
+    data.bookingDetail?.type as ServiceType,
+    data.booking?.houseTypeId,
+    data.booking?.floorsNumber,
+    data.booking?.estimatedDistance
   );
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);

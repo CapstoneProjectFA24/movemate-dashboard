@@ -15,10 +15,16 @@ import {
 } from "../action/assignments";
 import axios from "axios";
 
-export const useGetServicesToUpdateBooking = (type?: ServiceType) => {
+export const useGetServicesToUpdateBooking = (
+  type?: ServiceType,
+  houseTypeId?: number,
+  floorsNumber?: string,
+  estimatedDistance?: string
+) => {
   return useQuery<ApiListResponse<IService>>({
-    queryKey: ["SERVICES_BOOKING", type],
-    queryFn: () => getServicesUpdateBooking(type),
+    queryKey: ["SERVICES_BOOKING", type, houseTypeId, floorsNumber, estimatedDistance],
+    queryFn: () =>
+      getServicesUpdateBooking(type, houseTypeId, floorsNumber, estimatedDistance),
   });
 };
 

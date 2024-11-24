@@ -4,9 +4,9 @@ import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ImagePlus, Video } from "lucide-react";
 import { BookingTracker } from "../../../types/booking-type";
-import { CldImage, CldVideoPlayer } from "next-cloudinary";
+// import { CldImage, CldVideoPlayer } from "next-cloudinary";
 
-import "next-cloudinary/dist/cld-video-player.css";
+// import "next-cloudinary/dist/cld-video-player.css";
 import ImageLightbox from "@/components/modals/full-box-image";
 
 interface BookingImagesAndVideosProps {
@@ -66,7 +66,7 @@ const BookingImagesAndVideos = ({
           ))}
         </div>
       </CardContent>
-      {allVideos.length > 0 && (
+      {/* {allVideos.length > 0 && (
         <>
           <CardHeader className="pb-3 mt-4">
             <CardTitle className="flex items-center text-base font-medium">
@@ -104,7 +104,7 @@ const BookingImagesAndVideos = ({
             </div>
           </CardContent>
         </>
-      )}
+      )} */}
     </Card>
   );
 };

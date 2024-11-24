@@ -34,6 +34,7 @@ const DetailServices = ({ booking, canReview }: DetailServicesProps) => {
               onClick={() =>
                 onOpen("createNewServicesBookingModal", {
                   bookingDetails: booking?.bookingDetails,
+                  booking: booking
                 })
               }
               variant="secondary"
@@ -94,6 +95,7 @@ const DetailServices = ({ booking, canReview }: DetailServicesProps) => {
                           onOpen("updateBookingServicesModalSheet", {
                             bookingDetail: detail,
                             bookingDetails: booking.bookingDetails,
+                            booking: booking
                           })
                         }
                       >
