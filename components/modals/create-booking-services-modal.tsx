@@ -36,8 +36,13 @@ export const CreateNewServicesBookingModal = () => {
   const [isPending, startTransition] = useTransition();
   const { isOpen, onClose, type, data } = useModal();
   const isOpenModal = isOpen && type === "createNewServicesBookingModal";
-  const { data: services, isLoading } = useGetServicesToUpdateBooking();
-  console.log(services);
+  const { data: services, isLoading } = useGetServicesToUpdateBooking(
+    undefined,
+    data.booking?.houseTypeId,
+    data.booking?.floorsNumber,
+    data.booking?.estimatedDistance
+  );
+
   const bookingDetails = data.bookingDetails;
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
@@ -298,16 +303,10 @@ export const CreateNewServicesBookingModal = () => {
                       <p className="text-sm text-gray-600">
                         {childService.description}
                       </p>
-                      {childService.truckCategory ? (
-                        <p className="text-sm font-medium mt-1 text-orange-600">
-                          Giá:{" "}
-                          {formatter.format(childService.truckCategory.price)}
-                        </p>
-                      ) : (
+                 
                         <p className="text-sm font-medium mt-1 text-orange-600">
                           Giá: {formatter.format(childService.amount)}
                         </p>
-                      )}
                     </div>
                     {isSelected && renderQuantityControls(childService)}
                   </div>

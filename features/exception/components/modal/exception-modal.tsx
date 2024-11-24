@@ -32,7 +32,7 @@ export const ExceptionModal = () => {
   const isOpenModal = isOpen && type === "exceptionModal";
 
   const assignment = data.assignment;
-  console.log(assignment);
+
 
   const { data: driverData, isLoading: driverDataIsLoading } =
     useGetCheckAvailableDriver(assignment?.bookingId?.toString()!);
