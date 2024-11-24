@@ -20,33 +20,34 @@ import {
 } from "lucide-react";
 
 type ProcessStatusKeys =
-  | "PENDING.ASSIGNED"
-  | "WAITING.DEPOSITING.REVIEWED"
-  | "REVIEWING"
-  | "IN_PROGRESS.COMING.CONFIRMED"
-  | "COMPLETED";
+  | "HOLD"
+  | "VALIDATION"
+  | "EVALUATING"
+  | "PROGRESSING"
+  | "DONE";
 
 const ProcessStatus: Record<ProcessStatusKeys, BookingStatus[]> = {
-  "PENDING.ASSIGNED": [BookingStatus.PENDING, BookingStatus.ASSIGNED],
-  "WAITING.DEPOSITING.REVIEWED": [
+  HOLD: [BookingStatus.PENDING, BookingStatus.ASSIGNED],
+  VALIDATION: [
     BookingStatus.WAITING,
     BookingStatus.DEPOSITING,
     BookingStatus.REVIEWED,
   ],
-  REVIEWING: [BookingStatus.REVIEWING],
-  "IN_PROGRESS.COMING.CONFIRMED": [
+  EVALUATING: [BookingStatus.REVIEWING],
+  PROGRESSING: [
     BookingStatus.IN_PROGRESS,
     BookingStatus.COMING,
+    BookingStatus.CONFIRMED,
   ],
-  COMPLETED: [BookingStatus.COMPLETED],
+  DONE: [BookingStatus.COMPLETED],
 };
 
 export const ProcessStatusNames: Record<ProcessStatusKeys, string> = {
-  "PENDING.ASSIGNED": "Chờ kiểm tra",
-  "WAITING.DEPOSITING.REVIEWED": "Chờ khách xác nhận",
-  REVIEWING: "Đang kiểm tra",
-  "IN_PROGRESS.COMING.CONFIRMED": "Đang thực hiện",
-  COMPLETED: "Hoàn thành",
+  HOLD: "Chờ kiểm tra",
+  VALIDATION: "Chờ khách xác nhận",
+  EVALUATING: "Đang kiểm tra",
+  PROGRESSING: "Đang thực hiện",
+  DONE: "Hoàn thành",
 };
 
 const StatusConfig: Record<
@@ -57,29 +58,38 @@ const StatusConfig: Record<
     icon: React.ReactNode;
   }
 > = {
-  "PENDING.ASSIGNED": {
+  HOLD: {
     lightMode: "bg-yellow-500 text-white border-blue-300 hover:bg-blue-200/80",
-    darkMode: "dark:bg-blue-900 dark:text-blue-200 dark:border-blue-700 dark:hover:bg-blue-800/90",
+    darkMode:
+      "dark:bg-blue-900 dark:text-blue-200 dark:border-blue-700 dark:hover:bg-blue-800/90",
     icon: <Clock className="w-3.5 h-3.5" />,
   },
-  "WAITING.DEPOSITING.REVIEWED": {
-    lightMode: "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200/80",
-    darkMode: "dark:bg-amber-900 dark:text-amber-200 dark:border-amber-700 dark:hover:bg-amber-800/90",
+  VALIDATION: {
+    lightMode:
+      "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200/80",
+    darkMode:
+      "dark:bg-amber-900 dark:text-amber-200 dark:border-amber-700 dark:hover:bg-amber-800/90",
     icon: <UserCheck className="w-3.5 h-3.5" />,
   },
-  REVIEWING: {
-    lightMode: "bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-200/80",
-    darkMode: "dark:bg-purple-900 dark:text-purple-200 dark:border-purple-700 dark:hover:bg-purple-800/90",
+  EVALUATING: {
+    lightMode:
+      "bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-200/80",
+    darkMode:
+      "dark:bg-purple-900 dark:text-purple-200 dark:border-purple-700 dark:hover:bg-purple-800/90",
     icon: <Search className="w-3.5 h-3.5" />,
   },
-  "IN_PROGRESS.COMING.CONFIRMED": {
-    lightMode: "bg-indigo-100 text-indigo-800 border-indigo-300 hover:bg-indigo-200/80",
-    darkMode: "dark:bg-indigo-900 dark:text-indigo-200 dark:border-indigo-700 dark:hover:bg-indigo-800/90",
+  PROGRESSING: {
+    lightMode:
+      "bg-indigo-100 text-indigo-800 border-indigo-300 hover:bg-indigo-200/80",
+    darkMode:
+      "dark:bg-indigo-900 dark:text-indigo-200 dark:border-indigo-700 dark:hover:bg-indigo-800/90",
     icon: <PlayCircle className="w-3.5 h-3.5" />,
   },
-  COMPLETED: {
-    lightMode: "bg-green-500 text-white border-emerald-300 hover:bg-emerald-200/80",
-    darkMode: "dark:bg-emerald-900 dark:text-emerald-200 dark:border-emerald-700 dark:hover:bg-emerald-800/90",
+  DONE: {
+    lightMode:
+      "bg-green-500 text-white border-emerald-300 hover:bg-emerald-200/80",
+    darkMode:
+      "dark:bg-emerald-900 dark:text-emerald-200 dark:border-emerald-700 dark:hover:bg-emerald-800/90",
     icon: <CheckCircle2 className="w-3.5 h-3.5" />,
   },
 };
@@ -90,7 +100,7 @@ const getProcessStatusGroup = (status: BookingStatus): ProcessStatusKeys => {
       return group as ProcessStatusKeys;
     }
   }
-  return "PENDING.ASSIGNED";
+  return "HOLD";
 };
 
 // Timeline component
@@ -142,7 +152,6 @@ const getProcessStatusGroup = (status: BookingStatus): ProcessStatusKeys => {
 
 export const processStatusColumn = {
   accessorKey: "status",
-  id: "processStatusColumn",
   header: ({ column }: { column: Column<any, unknown> }) => (
     <DataTableColumnHeader column={column} title="Trạng thái xử lý" />
   ),

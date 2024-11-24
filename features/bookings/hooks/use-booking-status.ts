@@ -188,7 +188,11 @@ export const useBookingStatus = (
     let canUpdateServices = false;
     let canConfirmArrival = false;
     let canConfirmMoving = false;
-    let canConfirmSuggestion = status !== BookingStatus.REVIEWED;
+    let canConfirmSuggestion =
+      status !== BookingStatus.REVIEWED &&
+      status !== BookingStatus.COMING &&
+      status !== BookingStatus.IN_PROGRESS &&
+      status !== BookingStatus.COMPLETED;
 
     if (!isReviewOnline) {
       switch (status) {

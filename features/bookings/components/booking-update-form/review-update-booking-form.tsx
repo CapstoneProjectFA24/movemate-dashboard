@@ -208,7 +208,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
                   onClick={() =>
                     onOpen("createScheduleModal", { booking: booking! })
                   }
-                  className="bg-secondary hover:bg-secondary/90"
+                  className="dark:bg-secondary dark:hover:bg-secondary/90"
                 >
                   Xếp lịch với khách
                 </Button>
@@ -220,7 +220,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
                   onClick={() =>
                     onOpen("confirmEstimatedTimeModal", { booking: booking! })
                   }
-                  className="bg-secondary hover:bg-secondary/90"
+                  className="dark:bg-secondary dark:hover:bg-secondary/90"
                 >
                   Xác nhận đề xuất
                 </Button>
@@ -232,7 +232,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
                     disabled={isButtonDisabled}
                     type="button"
                     onClick={() => setOpenUpdateModal(true)}
-                    className="bg-secondary hover:bg-secondary/90"
+                    className="dark:bg-secondary dark:hover:bg-secondary/90"
                   >
                     {getUpdateButtonLabel()}
                   </Button>
