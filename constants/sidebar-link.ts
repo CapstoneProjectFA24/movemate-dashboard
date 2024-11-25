@@ -91,17 +91,12 @@ export const routes: Route[] = [
         activeIcon: FaListAlt,
       },
       {
-        label: "Đơn chưa có nhân viên V1",
+        label: "Đơn chưa có nhân viên",
         href: "/dashboard/bookings_exception",
         icon: ShieldAlert,
         activeIcon: ShieldAlert,
       },
-      {
-        label: "Đơn chưa có nhân viên",
-        href: "/dashboard/bookings/exception",
-        icon: BadgePlus,
-        activeIcon: BadgePlus,
-      },
+
     ],
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
