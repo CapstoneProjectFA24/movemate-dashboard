@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useModal } from "@/hooks/use-modal";
 import {
   Dialog,
@@ -31,287 +31,19 @@ import {
   DragStartEvent,
 } from "@dnd-kit/core";
 import { Button } from "@/components/ui/button";
+import { completeReportAvailable, manualAssignedStaff } from "../../action/update-assignments";
+import { toast } from "sonner";
+import { CldOgImage } from "next-cloudinary";
+import { AssignmentSection } from "./modal-children/assignment-section";
+import StaffListSection from "./modal-children/staff-list-section";
+import StaffCardContent from "./modal-children/staff-card-content";
 
-interface DraggableStaffCardProps {
-  staff: IStaff;
-  isAssigned?: boolean;
-  onRemove?: () => void;
-}
 
-const DraggableStaffCard: React.FC<DraggableStaffCardProps> = ({
-  staff,
-  isAssigned = false,
-  onRemove,
-}) => {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: staff.id!.toString(),
-    data: { ...staff, isAssigned },
-  });
-
-  return (
-    <div
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      className={`flex items-center p-3 bg-background rounded-lg border shadow-sm 
-        transition-all hover:shadow-md cursor-grab active:cursor-grabbing relative
-        ${isDragging ? "opacity-50 scale-105" : ""}`}
-    >
-      <StaffCardContent staff={staff} />
-      {isAssigned && onRemove && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-destructive hover:bg-destructive/90"
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove();
-          }}
-        >
-          <X className="h-4 w-4 text-white" />
-        </Button>
-      )}
-    </div>
-  );
-};
-
-// Staff Card Content Component
-interface StaffCardContentProps {
-  staff: IStaff;
-}
-
-const StaffCardContent: React.FC<StaffCardContentProps> = ({ staff }) => {
-  // console.log(staff);
-  return (
-    <div className="flex items-center gap-4 w-full">
-      {staff.avatarUrl ? (
-        <img
-          src={staff.avatarUrl}
-          alt={staff.name || "Avatar"}
-          className="h-12 w-12 rounded-full object-cover border-2 border-border"
-        />
-      ) : (
-        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-          <User2 className="h-6 w-6 text-muted-foreground" />
-        </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <p className="font-medium truncate">{staff.name || "N/A"}</p>
-          <Badge variant="outline" className="text-xs shrink-0">
-            {staff.roleName}
-          </Badge>
-        </div>
-        <p className="text-sm text-muted-foreground truncate">
-          {staff.phone || "Chưa có SĐT"}
-        </p>
-        {staff.email && (
-          <p className="text-xs text-muted-foreground truncate">
-            {staff.email}
-          </p>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Assignment Section Component
-interface AssignmentSectionProps {
-  assignment: IAssignmentInBooking;
-  assignedStaff: IStaff | null;
-  onUnassign: (assignmentId: string, staff: IStaff) => void;
-  onConfirm: (assignmentId: string, staff: IStaff) => void;
-}
-
-const AssignmentSection: React.FC<AssignmentSectionProps> = ({
-  assignment,
-  assignedStaff,
-  onUnassign,
-  onConfirm,
-}) => {
-  const { setNodeRef, isOver } = useDroppable({
-    id: `assignment-${assignment.id}`,
-  });
-
-  const handleUnassign = () => {
-    if (assignedStaff && assignment.id) {
-      onUnassign(assignment.id.toString()!, assignedStaff);
-    }
-  };
-
-  const handleConfirm = () => {
-    if (assignedStaff && assignment.id) {
-      onConfirm(assignment.id.toString()!, assignedStaff);
-    }
-  };
-
-  // Waiting status layout - more compact
-  if (assignment.status === "WAITING") {
-    return (
-      <div className="p-3 rounded-lg border bg-background">
-        <div className="flex items-center gap-4">
-          {/* Assignment Info */}
-          <div className="flex items-center gap-3 flex-1">
-            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center shrink-0">
-              <User2 className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="font-medium text-sm">ID: {assignment.userId}</p>
-                <Badge variant="outline" className="text-xs">
-                  {assignment.staffType}
-                </Badge>
-              </div>
-              {assignment.isResponsible && (
-                <p className="text-xs text-muted-foreground">
-                  Người chịu trách nhiệm
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Assigned Staff - Compact View */}
-          {assignedStaff && (
-            <div className="flex items-center gap-3 px-3 py-2 bg-accent/5 rounded-lg flex-1">
-              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                {assignedStaff.avatarUrl ? (
-                  <img
-                    src={assignedStaff.avatarUrl}
-                    alt={assignedStaff.name || "Avatar"}
-                    className="h-full w-full rounded-full object-cover"
-                  />
-                ) : (
-                  <User2 className="h-4 w-4 text-muted-foreground" />
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-medium text-sm truncate">
-                  {assignedStaff.name}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {assignedStaff.phone || "Chưa có SĐT"}
-                </p>
-              </div>
-              <Badge variant="outline" className="text-xs shrink-0">
-                {assignment.status}
-              </Badge>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Failed status layout - original layout with drag and drop
-  return (
-    <div className="p-4 rounded-lg border bg-background">
-      <div className="grid grid-cols-2 gap-6">
-        {/* Left Column - Assignment Info */}
-        <div>
-          <div className="flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-              <User2 className="h-6 w-6 text-muted-foreground" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="font-medium">ID: {assignment.userId}</p>
-                {!assignedStaff && (
-                  <Badge variant="destructive" className="text-xs shrink-0">
-                    Cần thêm nhân viên
-                  </Badge>
-                )}
-              </div>
-              <div className="flex gap-2 items-center text-sm text-muted-foreground">
-                <Badge variant="outline" className="text-xs">
-                  {assignment.staffType}
-                </Badge>
-                <span>•</span>
-                <span>Status: {assignment.status}</span>
-              </div>
-              {assignment.isResponsible && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Người chịu trách nhiệm
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column - Staff Assignment */}
-        <div
-          ref={setNodeRef}
-          className={`rounded-lg transition-all h-full ${
-            isOver ? "ring-2 ring-primary" : ""
-          }`}
-        >
-          {assignedStaff ? (
-            <div className="p-3 rounded-lg border bg-accent/5 h-full">
-              <DraggableStaffCard
-                staff={assignedStaff}
-                isAssigned={true}
-                onRemove={handleUnassign}
-              />
-            </div>
-          ) : (
-            <div
-              className={`p-4 rounded-lg border-2 border-dashed h-full flex items-center justify-center
-              ${
-                isOver
-                  ? "bg-accent/20 border-primary"
-                  : "border-muted-foreground/20 hover:border-muted-foreground/40"
-              }`}
-            >
-              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <Plus className="h-4 w-4" />
-                <span>Kéo thả nhân viên vào đây</span>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      {!assignedStaff && (
-        <div className="flex justify-end mt-4">
-          <Button onClick={handleConfirm}>Xác nhận</Button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Staff List Section Component
-interface StaffListSectionProps {
-  title: string;
-  staffs: IStaff[];
-  noStaffMessage?: string;
-}
-
-const StaffListSection: React.FC<StaffListSectionProps> = ({
-  title,
-  staffs,
-  noStaffMessage = "Không có nhân viên",
-}) => (
-  <div className="space-y-4">
-    <div className="flex items-center justify-between">
-      <h3 className="font-medium">{title}</h3>
-      <Badge variant="outline">{staffs.length} nhân viên</Badge>
-    </div>
-    <div className="space-y-3">
-      {staffs.length > 0 ? (
-        staffs.map((staff) => (
-          <DraggableStaffCard key={staff.id} staff={staff} />
-        ))
-      ) : (
-        <p className="text-sm text-muted-foreground text-center py-4">
-          {noStaffMessage}
-        </p>
-      )}
-    </div>
-  </div>
-);
 
 export const ExceptionModal: React.FC = () => {
   const { isOpen, onClose, type, data } = useModal();
   const isOpenModal = isOpen && type === "exceptionModal";
+  const [isPending, startTransition] = useTransition();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [draggedStaff, setDraggedStaff] = useState<IStaff | null>(null);
   const [assignmentReviewers, setAssignmentReviewers] = useState<
@@ -331,6 +63,8 @@ export const ExceptionModal: React.FC = () => {
   const typeStaffAssignment = assignment?.type;
   const [loadingKey, setLoadingKey] = useState<number>(0);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     if (isOpenModal) {
       setLoadingKey((prevKey) => prevKey + 1);
@@ -344,6 +78,35 @@ export const ExceptionModal: React.FC = () => {
 
   const staffData = typeStaffAssignment === "TRUCK" ? driverData : porterData;
   const isLoading = isLoadingDriver || isLoadingPorter;
+
+  const remainingStaffCount =
+    staffData?.data?.assignmentInBooking!.length! -
+    staffData?.data?.assignmentInBooking!.filter(staff => staff.status === 'FAILED').length!;
+  // console.log(remainingStaffCount)
+  // check valid to show button to confirm to resolve report
+  const canResolveReport = staffData?.data?.bookingNeedStaffs! <= remainingStaffCount;
+  // console.log(canResolveReport)
+
+  const handleCompleteReport = async () => {
+    if (canResolveReport) {
+      setIsSubmitting(true);
+      startTransition(async () => {
+        try {
+          const result = await completeReportAvailable(assignment?.id.toString()!);
+          if (!result.success) {
+            toast.error(result.error);
+            return;
+          }
+          onClose();
+          toast.success("Giải quyết sự cố thành công");
+        } catch (error) {
+          toast.error("Có lỗi xảy ra");
+        } finally {
+          setIsSubmitting(false);
+        }
+      });
+    }
+  }
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -571,6 +334,8 @@ export const ExceptionModal: React.FC = () => {
               <AssignmentSection
                 key={assignment.id}
                 assignment={assignment}
+                enalble={canResolveReport}
+                setLoadingKey={setLoadingKey}
                 assignedStaff={assignmentReviewers[assignment.id!] || null}
                 onUnassign={handleUnassign}
                 onConfirm={handleConfirmAssignment}
@@ -622,16 +387,35 @@ export const ExceptionModal: React.FC = () => {
     <Dialog open={isOpenModal} onOpenChange={handleCloseModal}>
       <DialogContent className="max-w-7xl">
         <DialogHeader>
-          <div className="flex items-center gap-2">
-            {typeStaffAssignment === "TRUCK" ? (
-              <Truck className="h-5 w-5" />
-            ) : (
-              <Package2 className="h-5 w-5" />
+          <div className="flex w-full items-center gap-8">
+            <div className="flex items-center gap-2">
+              {typeStaffAssignment === "TRUCK" ? (
+                <Truck className="h-5 w-5" />
+              ) : (
+                <Package2 className="h-5 w-5" />
+              )}
+              <DialogTitle className="text-2xl font-semibold">
+                Kiểm tra {typeStaffAssignment === "TRUCK" ? "tài xế" : "bốc vác"}{" "}
+                gặp vấn đề
+              </DialogTitle>
+            </div>
+            {canResolveReport && (
+              <Button
+                variant="secondary"
+                onClick={handleCompleteReport}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                    Đang xử lý...
+                  </div>
+                ) : (
+                  "Xác nhận đã xử lý sự cố"
+                )}
+              </Button>
             )}
-            <DialogTitle className="text-2xl font-semibold">
-              Kiểm tra {typeStaffAssignment === "TRUCK" ? "tài xế" : "bốc vác"}{" "}
-              gặp vấn đề
-            </DialogTitle>
+
           </div>
           <DialogDescription className="mt-2">
             <span>
@@ -643,9 +427,6 @@ export const ExceptionModal: React.FC = () => {
         <div className="h-[60vh] overflow-hidden">
           <ScrollArea className="h-full pr-4">{renderContent()}</ScrollArea>
         </div>
-        {/* <div className="flex justify-end mt-4">
-      <Button onClick={handleSaveAssignments}>Lưu</Button>
-    </div> */}
       </DialogContent>
     </Dialog>
   );

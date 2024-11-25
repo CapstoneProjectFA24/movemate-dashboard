@@ -16,7 +16,7 @@ export const BOOKING_URL = {
   UPDATE_ROLL_BACK_REVIEWING: "/bookings/back",
   UPDATE_DETAILS_STATUS: "/bookingdetails/reviewer/update-status",
   UPDATE_BOOKING_STATUS: "/bookings/reviewer/update-booking",
-  UPDATE_BOOKING_SCHEDULE: "/bookings/reviewer/review-at"
+  UPDATE_BOOKING_SCHEDULE: "/bookings/reviewer/review-at",
 };
 
 
@@ -27,5 +27,6 @@ export const ASSIGNMENT_URL = {
   AUTO_ASSINGED_PORTER: "assignments/assign-auto-by-manual-porter",
   MANUAL_ASSIGNED: "/assignments/assign-manual-staff",
   CHECK_DRIVER_ASSIGNMENT : "/assignments/available-driver",
-  CHECK_PORTER_ASSIGNMENT : "/assignments/available-porter"
+  CHECK_PORTER_ASSIGNMENT : "/assignments/available-porter",
+  UPDATE_BOOKING_DETAIL_AVAILABLE: "/bookingdetails/available"
 }
