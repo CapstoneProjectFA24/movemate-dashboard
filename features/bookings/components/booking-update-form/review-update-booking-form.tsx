@@ -128,6 +128,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
       toast.error("Đã xảy ra lỗi khi xác nhận đánh giá");
     } finally {
       setLoading(false);
+      setOpenRollBackModal(false);
     }
   };
 

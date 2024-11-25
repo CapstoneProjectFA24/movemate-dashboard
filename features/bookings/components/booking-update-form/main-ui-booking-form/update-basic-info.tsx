@@ -35,7 +35,7 @@ interface UpdateBasicInfoProps {
   canReview: boolean;
 }
 
-const AVAILABLE_HOURS = Array.from({ length: 12 }, (_, i) => i + 7);
+const AVAILABLE_HOURS = Array.from({ length: 15 }, (_, i) => i + 5);
 const AVAILABLE_MINUTES = ["00", "15", "30", "45"];
 
 const UpdateBasicInfo = ({
@@ -63,11 +63,43 @@ const UpdateBasicInfo = ({
     if (!bookingDate) return;
 
     const newDate = new Date(bookingDate);
-    if (type === "hour") {
-      newDate.setHours(parseInt(value));
+    const currentDate = new Date();
+    const isToday = newDate.toDateString() === currentDate.toDateString();
+
+    if (isToday) {
+      // Validate time for today
+      if (type === "hour") {
+        const hour = parseInt(value);
+        const currentHour = currentDate.getHours();
+        
+        // Ensure selected hour is not before current hour
+        if (hour < currentHour) {
+          toast.error(`Giờ phải từ ${currentHour} trở đi`);
+          return;
+        }
+        newDate.setHours(hour);
+      } else {
+        const hour = newDate.getHours();
+        const minute = parseInt(value);
+        const currentHour = currentDate.getHours();
+        const currentMinute = currentDate.getMinutes();
+
+        // Validate minutes if selecting the current hour
+        if (hour === currentHour && minute < currentMinute) {
+          toast.error(`Phút phải từ ${currentMinute} trở đi`);
+          return;
+        }
+        newDate.setMinutes(minute);
+      }
     } else {
-      newDate.setMinutes(parseInt(value));
+      // For future dates, just set the time normally
+      if (type === "hour") {
+        newDate.setHours(parseInt(value));
+      } else {
+        newDate.setMinutes(parseInt(value));
+      }
     }
+
     setValue("bookingAt", newDate);
   };
 
@@ -269,7 +301,12 @@ const UpdateBasicInfo = ({
                       }}
                       onSelect={handleDateSelect}
                       initialFocus
-                      disabled={(date) => date < new Date()}
+                      disabled={(date) => {
+                        // Disable dates before today
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0); // Reset time to start of day
+                        return date < today;
+                      }}
                     />
                   </div>
                 </PopoverContent>
