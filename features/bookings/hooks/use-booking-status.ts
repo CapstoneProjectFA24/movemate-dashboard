@@ -248,7 +248,7 @@ export const useBookingStatus = (
         }
         break;
       case BookingStatus.REVIEWED:
-        statusMessage = "Đã đánh giá xong";
+        statusMessage = "Đã đánh giá xong đang chờ khách hàng xác nhận";
         break;
       case BookingStatus.COMING:
         if (!isDriverAssigned && !isPorterAssigned) {

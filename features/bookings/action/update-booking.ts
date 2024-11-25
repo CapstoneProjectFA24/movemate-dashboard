@@ -78,4 +78,19 @@ export async function updateSchedule(
 }
 
 
+export async function rollBackToReviewing(  params: string,): Promise<Result<void>>{
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.patch(`${BOOKING_URL.UPDATE_ROLL_BACK_REVIEWING}/${params}`)
+  );
+
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/bookings/${params}`);
+  return { success: true, data: undefined };
+}
+
 
