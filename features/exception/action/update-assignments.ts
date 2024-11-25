@@ -55,3 +55,18 @@ export async function manualAssignedStaff(
 
   return { success: true, data: undefined };
 }
+
+export async function completeReportAvailable(bookingDeatilId: string): Promise<Result<void>> {
+  noStore();
+  console.log(bookingDeatilId)
+  const result = await apiRequest(() =>
+    axiosAuth.patch(`${ASSIGNMENT_URL.UPDATE_BOOKING_DETAIL_AVAILABLE}/${bookingDeatilId}`)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/bookings_exception/${bookingDeatilId}`);
+
+  return { success: true, data: undefined };
+}
