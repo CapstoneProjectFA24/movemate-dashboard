@@ -228,7 +228,7 @@ export const UpdateBookingServicesModalSheet = () => {
           <CardContent>
             <p className="text-gray-600">{child.description}</p>
             <p className="font-medium">
-              Giá: {formatter.format(child.truckCategory?.price ?? 0)}
+              Giá: {formatter.format(child.amount ?? 0)}
             </p>
             {isSelected && child.isQuantity && (
               <div className="flex items-center gap-2 mt-4">

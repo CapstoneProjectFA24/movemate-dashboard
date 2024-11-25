@@ -48,7 +48,7 @@ export const routes: Route[] = [
     icon: FaUserPen,
     activeIcon: FaUserCheck,
     isParent: true,
-     allowsRoles: [UserRole.ADMIN, UserRole.MANAGER],
+    allowsRoles: [UserRole.ADMIN, UserRole.MANAGER],
     children: [
       {
         label: "Danh sách nhân sự",
@@ -105,13 +105,7 @@ export const routes: Route[] = [
     ],
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
-  {
-    label: "Quản lý thanh toán",
-    icon: GrTransaction,
-    activeIcon: GrTransaction,
-    href: "/dashboard/transactions",
-    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
-  },
+
   {
     label: "Quản lý lịch làm việc",
     icon: FaCalendar,
@@ -137,6 +131,13 @@ export const routes: Route[] = [
         activeIcon: FaUserPlus,
       },
     ],
+  },
+  {
+    label: "Quản lý giao dịch",
+    icon: GrTransaction,
+    activeIcon: GrTransaction,
+    href: "/dashboard/transactions",
+    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
   {
     label: "Phản hồi",
