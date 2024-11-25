@@ -28,16 +28,22 @@ export const useGetServicesToUpdateBooking = (
   });
 };
 
-export const useGetCheckAvailableDriver = (params: string) => {
+export const useGetCheckAvailableDriver = (params: string, loadingKey?: number) => {
   return useQuery<ApiSingleResponse<IAssigmentAvailable>>({
-    queryKey: ["CHECK_DRIVER_ASSIGNMENT", params],
+    queryKey: ["CHECK_DRIVER_ASSIGNMENT", params,, loadingKey],
     queryFn: () => getCheckAvailableDriver(params),
+    staleTime: 0,  // Đánh dấu dữ liệu là cũ ngay lập tức
+    refetchOnWindowFocus: true,  // Fetch lại dữ liệu mỗi khi tab trở lại
+    refetchOnMount: true,  // Fetch lại dữ liệu mỗi lần component mount lại
   });
 };
-export const useGetCheckAvailablePorter = (params: string) => {
+export const useGetCheckAvailablePorter = (params: string, loadingKey?: number) => {
   return useQuery<ApiSingleResponse<IAssigmentAvailable>>({
-    queryKey: ["CHECK_PORTER_ASSIGNMENT", params],
+    queryKey: ["CHECK_PORTER_ASSIGNMENT", params,, loadingKey],
     queryFn: () => getCheckAvailablePorter(params),
+    staleTime: 0,  // Đánh dấu dữ liệu là cũ ngay lập tức
+    refetchOnWindowFocus: true,  // Fetch lại dữ liệu mỗi khi tab trở lại
+    refetchOnMount: true,  // Fetch lại dữ liệu mỗi lần component mount lại
   });
 };
 

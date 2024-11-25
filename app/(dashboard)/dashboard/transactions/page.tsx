@@ -8,12 +8,12 @@ import { TransactionsTable } from "@/features/transactions/components/transacito
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  ArrowDownIcon, 
-  ArrowUpIcon, 
-  BarChart3, 
-  DollarSign, 
-  LineChart 
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  BarChart3,
+  DollarSign,
+  LineChart,
 } from "lucide-react";
 
 interface StatCardProps {
@@ -27,7 +27,13 @@ interface StatCardProps {
   };
 }
 
-const StatCard = ({ title, value, icon, description, trend }: StatCardProps) => (
+const StatCard = ({
+  title,
+  value,
+  icon,
+  description,
+  trend,
+}: StatCardProps) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium">{title}</CardTitle>
@@ -37,8 +43,16 @@ const StatCard = ({ title, value, icon, description, trend }: StatCardProps) => 
       <div className="text-2xl font-bold">{value}</div>
       <div className="flex items-center space-x-2">
         {trend && (
-          <span className={`flex items-center text-xs ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`}>
-            {trend.isPositive ? <ArrowUpIcon className="h-4 w-4" /> : <ArrowDownIcon className="h-4 w-4" />}
+          <span
+            className={`flex items-center text-xs ${
+              trend.isPositive ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {trend.isPositive ? (
+              <ArrowUpIcon className="h-4 w-4" />
+            ) : (
+              <ArrowDownIcon className="h-4 w-4" />
+            )}
             {trend.value}
           </span>
         )}
