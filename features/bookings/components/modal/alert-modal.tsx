@@ -88,7 +88,7 @@ const AlertModal: React.FC<AlertModalProps> = ({
             onClick={onConfirm}
             className={`min-w-[100px] ${confirmButtonClass}`}
           >
-            {confirmLabel}
+            {loading? "Đang loading..." :confirmLabel}
           </Button>
         </div>
       </div>

@@ -33,6 +33,7 @@ import {
 import { ITruckCategory } from "../../types/services-type";
 import { createServices } from "../../action/create-service";
 import { toast } from "sonner";
+import { Loader } from "lucide-react";
 
 interface CreateServiceFormProps {
   truckCategorys: ITruckCategory[] | null;
@@ -326,8 +327,14 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
             <Button type="button" variant="outline">
               Hủy
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Đang xử lý..." : "Tạo dịch vụ"}
+            <Button type="submit" disabled={isLoading} className="relative">
+              {isPending ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Loader className="animate-spin h-5 w-5 text-white" />
+                </div>
+              ) : (
+                "Tạo dịch vụ"
+              )}
             </Button>
           </div>
         </form>
