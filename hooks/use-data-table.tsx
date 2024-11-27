@@ -164,7 +164,7 @@ export function useDataTable<TData, TValue>({
         : null,
     });
 
-    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`);
+    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`,{ scroll: false,});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting]);
@@ -224,7 +224,7 @@ export function useDataTable<TData, TValue>({
 
     // After cumulating all the changes, push new params
     const queryString = createQueryString(newParamsObject);
-    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`);
+    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`,{ scroll: false,});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
