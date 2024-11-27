@@ -15,6 +15,8 @@ import {
   DollarSign,
   LineChart,
 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FlexibleDatePicker } from "@/components/data-table/custom-table/date-range-picker";
 
 interface StatCardProps {
   title: string;
@@ -105,7 +107,19 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="lg:w-3/4">
-          <Shell className="h-full">
+          <Shell className="h-full gap-y-2">
+            <React.Suspense fallback={<Skeleton className="h-7 w-52" />}>
+              <FlexibleDatePicker
+                mode="single"
+                defaultDate={new Date()}
+                triggerSize="sm"
+                triggerClassName="ml-auto w-56 sm:w-60"
+                align="end"
+                shallow={false}
+              />
+              {/* // Date range picker */}
+              {/* <FlexibleDatePicker mode="range" defaultDateRange={{ from: new Date(), to: new Date() }} /> */}
+            </React.Suspense>
             <React.Suspense
               fallback={
                 <DataTableSkeleton

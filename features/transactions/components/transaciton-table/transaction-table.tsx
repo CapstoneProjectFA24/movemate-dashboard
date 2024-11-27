@@ -17,6 +17,7 @@ import { generateColumnLabels } from "@/components/data-table/column-label-mappi
 import { ITransaction } from "../../types/transaction-type";
 import { getTransactions } from "../../action/transactions";
 import { fetchTransactionsTableColumnDefs } from "./transaction-table-column-def";
+import { PayemntMethodType } from "../../enums/transaction-enum";
 
 interface TransactionsTableProps {
   transactionsPromise: ReturnType<typeof getTransactions>;
@@ -42,9 +43,9 @@ export function TransactionsTable({
 
   const filterableColumns: DataTableFilterableColumn<ITransaction>[] = [
     {
-      id: "id",
-      title: "Loại giao dịch",
-      options: Object.entries(ServiceTypeNames).map(([value, label]) => ({
+      id: "paymentMethod",
+      title: "Phương thức thanh toán",
+      options: Object.entries(PayemntMethodType).map(([value, label]) => ({
         label,
         value,
       })),

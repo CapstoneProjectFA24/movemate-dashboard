@@ -71,7 +71,7 @@ export const bookingTimeColumn = {
 
     return <BookingTimeDisplay bookingTime={bookingTime} status={status} />;
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 
