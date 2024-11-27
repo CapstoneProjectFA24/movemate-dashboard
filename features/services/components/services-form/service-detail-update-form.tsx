@@ -35,7 +35,7 @@ import {
 } from "@/features/services/types/update-services-schema";
 import { FaListCheck } from "react-icons/fa6";
 import Image from "next/image";
-import { Edit, Plus } from "lucide-react";
+import { Edit, Loader, Plus } from "lucide-react";
 import { useModal } from "@/hooks/use-modal";
 import { useParams } from "next/navigation";
 import { updateService } from "../../action/update-service";
@@ -397,8 +397,18 @@ const ServiceDetailUpdateForm = ({
                   <Button variant="outline" type="button" disabled={isLoading}>
                     Hủy
                   </Button>
-                  <Button type="submit" disabled={isLoading}>
-                    Lưu thay đổi
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="relative"
+                  >
+                    {isPending ? (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Loader className="animate-spin h-5 w-5 text-white" />
+                      </div>
+                    ) : (
+                      "Lưu thay đổi"
+                    )}
                   </Button>
                 </div>
               </div>

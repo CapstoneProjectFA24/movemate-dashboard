@@ -131,7 +131,7 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
             className="flex items-center"
           >
             <UserPlus className="w-4 h-4 mr-2" />
-            Gán trách nhiệm
+             {isPending ? "Đang xử lý..." : "Gán trách nhiệm"}
           </Button>
         )}
         {isCanChat && (
