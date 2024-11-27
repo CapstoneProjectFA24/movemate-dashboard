@@ -51,8 +51,9 @@ export function useDataTable<TData, TValue>({
   const perPageAsNumber = Number(per_page);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
 
-  const sort = searchParams?.get("sort");
-  const [column, order] = sort?.split(".") ?? [];
+  const sortColumn = searchParams?.get("sortcolumn") ?? "";
+  const sortDir = searchParams?.get("sortdir") ?? "0";
+
   const globalSearch = searchParams?.get("search") ?? "";
   // create query string
   const createQueryString = useCallback(
@@ -153,18 +154,19 @@ export function useDataTable<TData, TValue>({
   }, [pageIndex, pageSize]);
 
   const [sorting, setSorting] = useState<SortingState>([
-    { id: column ?? "", desc: order === "desc" },
+    { id: sortColumn, desc: sortDir === "1" },
   ]);
 
   useEffect(() => {
     const queryString = createQueryString({
       page,
-      sort: sorting[0]?.id
-        ? `${sorting[0]?.id}.${sorting[0]?.desc ? "desc" : "asc"}`
-        : null,
+      sortcolumn: sorting[0]?.id,
+      sortdir: sorting[0]?.desc ? "1" : "0",
     });
 
-    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`,{ scroll: false,});
+    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`, {
+      scroll: false,
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting]);
@@ -224,7 +226,9 @@ export function useDataTable<TData, TValue>({
 
     // After cumulating all the changes, push new params
     const queryString = createQueryString(newParamsObject);
-    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`,{ scroll: false,});
+    router.push(`${pathname}${queryString ? `?${queryString}` : ""}`, {
+      scroll: false,
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

@@ -13,7 +13,7 @@ export const totalColumn = {
     const formatted = formatter.format(total);
     return <div className="font-medium">{formatted}</div>;
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 
