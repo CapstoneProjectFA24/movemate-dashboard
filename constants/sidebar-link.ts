@@ -15,7 +15,9 @@ import {
   FaEnvelope,
   FaEnvelopeOpen,
   FaListAlt,
+  FaMoneyBillAlt,
   FaRegListAlt,
+  FaRegMoneyBillAlt,
   FaUserCheck,
   FaUserPlus,
 } from "react-icons/fa";
@@ -133,6 +135,12 @@ export const routes: Route[] = [
     activeIcon: GrTransaction,
     href: "/dashboard/transactions",
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+  },
+  {
+    label: "Quản lý bồi thường",
+    icon: FaRegMoneyBillAlt,
+    activeIcon: FaMoneyBillAlt,
+    href: "/dashboard/refund",
   },
   {
     label: "Phản hồi",
