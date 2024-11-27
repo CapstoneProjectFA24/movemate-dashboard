@@ -18,7 +18,7 @@ import DetailServices from "./main-ui-booking-form/detail-services";
 import UpdateBasicInfo from "./main-ui-booking-form/update-basic-info";
 import AssignStaff from "./main-ui-booking-form/assign-staff";
 import { useBookingStatus } from "../../hooks/use-booking-status";
-import { updateDetailStatus } from "../../action/update-booking";
+import { rollBackToReviewing, updateDetailStatus } from "../../action/update-booking";
 import AlertModal from "../modal/alert-modal";
 import { useModal } from "@/hooks/use-modal";
 
@@ -54,6 +54,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [openRollBackModal, setOpenRollBackModal] = useState(false);
   const { onOpen } = useModal();
 
   const {
@@ -111,23 +112,23 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
     }
   };
 
-  const onConfirmReview = async () => {
+  const onConfirmRollBack = async () => {
     try {
       setLoading(true);
-      if (canConfirmReview) {
+     
         startTransition(async () => {
-          const result = await updateDetailStatus(params.toString());
+          const result = await rollBackToReviewing(params.id.toString());
           if (!result.success) {
             toast.error(result.error);
             return;
           }
-          toast.success("Xác nhận đánh giá thành công!");
+          toast.success("Xác nhận quay lại trạng thái reviewing để cập nhật lại thành công!");
         });
-      }
     } catch (error) {
       toast.error("Đã xảy ra lỗi khi xác nhận đánh giá");
     } finally {
       setLoading(false);
+      setOpenRollBackModal(false);
     }
   };
 
@@ -174,12 +175,21 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
   const isButtonDisabled =
     loading || isWaitingCustomer || isWaitingPayment || isCompleted;
 
+
   return (
     <>
       <AlertModal
         isOpen={openUpdateModal}
         onClose={() => setOpenUpdateModal(false)}
         onConfirm={onConfirmUpdate}
+        loading={loading}
+        title="Cập nhật trạng thái"
+        description="Bạn có chắc chắn muốn cập nhật trạng thái này?"
+      />
+      <AlertModal
+        isOpen={openRollBackModal}
+        onClose={() => setOpenRollBackModal(false)}
+        onConfirm={onConfirmRollBack}
         loading={loading}
         title="Cập nhật trạng thái"
         description="Bạn có chắc chắn muốn cập nhật trạng thái này?"
@@ -211,6 +221,16 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
                   className="dark:bg-secondary dark:hover:bg-secondary/90"
                 >
                   Xếp lịch với khách
+                </Button>
+              )}
+              {isReviewed && (
+                <Button
+                  disabled={!isReviewed}
+                  type="button"
+                  className="dark:bg-secondary dark:hover:bg-secondary/90"
+                  onClick={() => setOpenRollBackModal(true)}
+                >
+                    Quay lại chế độ đánh giá
                 </Button>
               )}
               {canConfirmSuggestion && !isReviewed && !canCreateSchedule && (
