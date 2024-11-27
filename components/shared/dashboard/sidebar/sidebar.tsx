@@ -7,9 +7,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import AlertModal from "@/components/modals/alert-modal";
+
+// import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
+
 export const Sidebar = () => {
   const router = useRouter();
   const [openUpdateModal, setOpenUpdateModal] = useState(false);

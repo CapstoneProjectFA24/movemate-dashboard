@@ -1,5 +1,4 @@
 import { type ColumnDef, Row } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Edit } from "lucide-react";
 import { IBooking } from "../../../types/booking-type";
@@ -16,6 +15,9 @@ import { BookingStatus } from "@/features/bookings/enums/booking-state-enum";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { updateDetailStatus } from "@/features/bookings/action/update-booking";
+
+// import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 
 interface ActionMenuProps {
   row: Row<IBooking>;

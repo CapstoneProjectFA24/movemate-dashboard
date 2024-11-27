@@ -12,6 +12,8 @@ import SessionProviders from "@/providers/session-provider";
 import { ModalProvider } from "@/providers/modal-provider";
 import { QueryProvider } from "@/providers/query-provider";
 
+import NextTopLoader from "nextjs-toploader";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -54,6 +56,7 @@ export default function RootLayout({
           fontMono.variable
         )}
       >
+       <NextTopLoader height={5} color="#E87931"/>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
