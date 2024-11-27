@@ -4,7 +4,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import gif from "@/public/images/gif/dribbble_1.gif";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 
 export default function NotFound() {
   const router = useRouter();

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
   Popover,
@@ -16,6 +15,9 @@ import {
   LayoutDashboard
 } from "lucide-react";
 import UserAvatar from "./user-avatar";
+
+// import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 
 interface FormPopoverUserProps {
   children: React.ReactNode;
