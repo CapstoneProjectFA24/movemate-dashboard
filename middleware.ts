@@ -3,6 +3,7 @@ import { auth } from "./lib/next-auth/auth";
 
 import {
   apiAuthPrefix,
+  apiUploadPrefix,
   publicRoutes,
   authRoutes,
   dashboardRoute,
@@ -19,6 +20,7 @@ export default auth((req) => {
     req.auth?.user.roleName?.toUpperCase() === "MANAGER";
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isApiUploadthingRoute = nextUrl.pathname.startsWith(apiUploadPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
@@ -32,6 +34,9 @@ export default auth((req) => {
   const isAuthWithRoute = hasMatchingPattern(nextUrl.pathname, dashboardRoute);
 
   if (isApiAuthRoute) {
+    return NextResponse.next();
+  }
+  if (isApiUploadthingRoute) {
     return NextResponse.next();
   }
 
