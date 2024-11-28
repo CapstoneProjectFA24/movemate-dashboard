@@ -360,6 +360,7 @@ const ServiceDetailUpdateForm = ({
                                   width={50}
                                   height={50}
                                   className="rounded-lg"
+                                  unoptimized
                                 />
                               </div>
                               <div>
