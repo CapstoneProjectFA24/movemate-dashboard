@@ -63,6 +63,6 @@ export const paymentMethodColumn = {
 
     return getPaymentBadge(paymentMethod);
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;

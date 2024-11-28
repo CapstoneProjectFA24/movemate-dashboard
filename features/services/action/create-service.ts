@@ -17,6 +17,6 @@ export async function createServices(data: any): Promise<Result<void>> {
     return { success: false, error: result.error };
   }
 
-  revalidatePath(`/services`);
+  revalidatePath(`/dashboard/services`);
   return { success: true, data: undefined };
 }

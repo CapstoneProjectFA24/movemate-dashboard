@@ -106,7 +106,7 @@ export const orderStatusColumn = {
       </TooltipProvider>
     );
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 

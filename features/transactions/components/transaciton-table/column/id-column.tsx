@@ -10,7 +10,7 @@ export const idColumn = {
   cell: ({ row }: { row: Row<ITransaction> }) => (
     <div className="w-[80px]">#{row.getValue("id")}</div>
   ),
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 

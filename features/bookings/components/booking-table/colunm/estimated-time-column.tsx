@@ -41,7 +41,7 @@ export const estimatedTimeColumn = {
       );
     }
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 

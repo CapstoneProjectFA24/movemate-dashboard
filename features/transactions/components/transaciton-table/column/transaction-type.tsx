@@ -10,6 +10,6 @@ export const transTypeColumn = {
   cell: ({ row }: { row: Row<ITransaction> }) => {
     return <div className="w-[80px]">{row.getValue("transactionType")}</div>;
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;

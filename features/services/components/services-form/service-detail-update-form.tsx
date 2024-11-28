@@ -68,7 +68,9 @@ const ServiceDetailUpdateForm = ({
   const isQuantity = watch("isQuantity");
   const isLoading = form.formState.isLoading;
   const { onOpen } = useModal();
+  console.log(service)
   const onSubmit = async (data: ServiceSchemaType) => {
+    console.log(data)
     try {
       startTransition(async () => {
         const result = await updateService(data, params.id.toString());
@@ -403,7 +405,6 @@ const ServiceDetailUpdateForm = ({
                   </Button>
                   <Button
                     type="submit"
-                    disabled={isLoading}
                     className="relative"
                   >
                     {isPending ? (

@@ -24,7 +24,7 @@ export const selectColumn = {
       className="translate-y-[2px] dark:text-white"
     />
   ),
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 

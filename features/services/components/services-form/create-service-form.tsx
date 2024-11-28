@@ -37,7 +37,7 @@ import { Loader } from "lucide-react";
 import { FileUpload } from "@/components/image-uploadthing/file-upload";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-
+import { useRouter } from 'nextjs-toploader/app';
 // Dynamic import for React Quill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -54,7 +54,7 @@ const serviceTypes = [
 ];
 const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
   const [isPending, startTransition] = useTransition();
-
+  const router = useRouter();
   const form = useForm<ServiceSchemaType>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
@@ -80,6 +80,7 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
         } else {
           form.reset();
           toast.success("Cập nhật dịch vụ thành công !");
+          router.push("/dashboard/services")
         }
       });
     } catch (error) {
@@ -308,8 +309,24 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
                   />
                 )}
               </div>
-
               <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mô tả</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Mô tả chi tiết về dịch vụ"
+                              className="h-32"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+              {/* <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
@@ -337,7 +354,7 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </CardContent>
           </Card>
           <div className="flex justify-end space-x-4">
