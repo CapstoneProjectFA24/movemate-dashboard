@@ -116,8 +116,13 @@ export const CreateServicesModal = () => {
     console.log("form data :", data);
   };
   const isLoading = form.formState.isLoading;
+
+  const handleClose = () =>{
+    form.reset();
+    onClose();
+  }
   return (
-<Dialog open={isOpenModal} onOpenChange={onClose}>
+<Dialog open={isOpenModal} onOpenChange={handleClose}>
   <DialogContent className="max-w-7xl">
     <DialogHeader>
       <DialogTitle className="text-2xl font-semibold">
