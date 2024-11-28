@@ -65,58 +65,55 @@ const Dashboard = () => {
     currentYearData: { year: "2024", steps: 12453 },
     previousYearData: { year: "2023", steps: 10103 },
   };
+  const now = new Date();
 
+  const time = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const date = new Intl.DateTimeFormat("vi-VN", { dateStyle: "full" }).format(
+    now
+  );
   return (
-    <div className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md">
-      <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
-        <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">
-          <StepsChart data={stepsData} />
-          <HeartRateChart data={heartRateData} />
-        </div>
-        <div className="grid w-full flex-1 gap-6 lg:max-w-[20rem]">
-          <ProgressChart
-            currentYearData={progressData.currentYearData}
-            previousYearData={progressData.previousYearData}
-          />
-
-          <WalkingDistanceChart data={stepsData} averageDistance={12.5} />
-
-          <ActivityChart data={activityData} />
-        </div>
-        <div className="grid w-full flex-1 gap-6">
-          <CircleChart data={activityData} />
-          <ActiveEnergyChart energyData={stepsData} />
-          <TimeChart sleepData={sleepData} />
+    <section className="flex size-full flex-col gap-5 text-white">
+      <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
+        <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
+          {/* <h2 className="glassmorphism max-w-[273px] rounded py-2 text-center text-base font-normal">
+            Upcoming Meeting at: 12:30 PM
+          </h2> */}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-4xl font-extrabold lg:text-7xl">{time}</h1>
+            <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
+          </div>
+          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-center text-base font-normal ">
+            Bạn có 10 đơn trong hôm nay
+          </h2>
         </div>
       </div>
+      <div className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md">
+        <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
+          <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">
+            <StepsChart data={stepsData} />
+            <HeartRateChart data={heartRateData} />
+          </div>
+          <div className="grid w-full flex-1 gap-6 lg:max-w-[20rem]">
+            <ProgressChart
+              currentYearData={progressData.currentYearData}
+              previousYearData={progressData.previousYearData}
+            />
 
-      <div className="bg-white dark:bg-muted/40 p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold mb-2">Danh sách người dùng</h2>
-        <table className="min-w-full border-collapse border border-gray-200 dark:border-gray-700">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 p-2 text-left">Tên</th>
-              <th className="border border-gray-300 p-2 text-left">Email</th>
-              <th className="border border-gray-300 p-2 text-left">
-                Trạng thái
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="border border-gray-300 p-2">Nguyễn Văn A</td>
-              <td className="border border-gray-300 p-2">vana@example.com</td>
-              <td className="border border-gray-300 p-2">Hoạt động</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Trần Thị B</td>
-              <td className="border border-gray-300 p-2">btran@example.com</td>
-              <td className="border border-gray-300 p-2">Ngừng hoạt động</td>
-            </tr>
-          </tbody>
-        </table>
+            <WalkingDistanceChart data={stepsData} averageDistance={12.5} />
+
+            <ActivityChart data={activityData} />
+          </div>
+          <div className="grid w-full flex-1 gap-6">
+            <CircleChart data={activityData} />
+            <ActiveEnergyChart energyData={stepsData} />
+            <TimeChart sleepData={sleepData} />
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

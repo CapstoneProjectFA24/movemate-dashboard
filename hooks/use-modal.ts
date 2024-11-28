@@ -12,6 +12,7 @@ export type ModalType =
   | "createScheduleModal"
   | "confirmEstimatedTimeModal"
   | "createServicesModal"
+  | "updateServicesModal"
   | "chatWithStaffModal"
   | "chatWithUserModal"
   | "checkAssignmentModal"
