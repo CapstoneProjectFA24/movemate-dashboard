@@ -35,6 +35,11 @@ import { createServices } from "../../action/create-service";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { FileUpload } from "@/components/image-uploadthing/file-upload";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+
+// Dynamic import for React Quill
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface CreateServiceFormProps {
   truckCategorys: ITruckCategory[] | null;
@@ -96,7 +101,7 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
-            <FormField
+              <FormField
                 control={form.control}
                 name="imageUrl"
                 render={({ field }) => (
@@ -311,10 +316,22 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
                   <FormItem className="col-span-2">
                     <FormLabel>Mô tả</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Nhập mô tả dịch vụ"
-                        {...field}
-                        rows={4}
+                      <ReactQuill
+                        theme="snow"
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="border-2 border-orange-800 rounded-lg p-1 min-h-[60px] border-input bg-transparent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder="Nhập mô tả..."
+                        
+                        style={{}}
+                        modules={{
+                          toolbar: [
+                            [{ header: [1, 2, false] }],
+                            ["bold", "italic", "underline"],
+                            ["image", "code-block"],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                          ],
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

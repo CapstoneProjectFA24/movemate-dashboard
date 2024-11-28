@@ -378,7 +378,10 @@ const ServiceDetailUpdateForm = ({
                                 variant="outline"
                                 type="button"
                                 className="hover:bg-primary/10"
-                                onClick={() => {}}
+                                onClick={() => onOpen("updateServicesModal", {
+                                  service: service!,
+                                  truckCategorys: truckCategorys!,
+                                })}
                               >
                                 <Edit className="h-4 w-4 text-primary" />
                               </Button>

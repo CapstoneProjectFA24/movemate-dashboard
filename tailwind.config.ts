@@ -98,6 +98,9 @@ const config: Config = {
         "fade-in": "fade-in 0.5s linear forwards",
         flashing: "flashing 1.4s infinite linear",
       },
+      backgroundImage: {
+        hero: "url('/images/hero-background.png')",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
