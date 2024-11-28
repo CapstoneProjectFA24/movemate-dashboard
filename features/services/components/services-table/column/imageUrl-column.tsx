@@ -17,6 +17,7 @@ export const imageUrlColumn = {
           alt={row.getValue("name") as string}
           fill
           sizes="40px"
+          unoptimized
           className="rounded-md object-cover"
           onError={(e) => {
             const target = e.target as HTMLImageElement;

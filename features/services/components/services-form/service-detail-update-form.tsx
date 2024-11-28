@@ -40,6 +40,7 @@ import { useModal } from "@/hooks/use-modal";
 import { useParams } from "next/navigation";
 import { updateService } from "../../action/update-service";
 import { toast } from "sonner";
+import { FileUpload } from "@/components/image-uploadthing/file-upload";
 interface ServiceDetailUpdateFormProps {
   truckCategorys: ITruckCategory[] | null;
   service: IService | null;
@@ -98,24 +99,23 @@ const ServiceDetailUpdateForm = ({
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <FormField
-                      control={form.control}
-                      name="imageUrl"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Hình ảnh</FormLabel>
-                          <FormControl>
-                            <ImageUploadOne
-                              value={field.value}
-                              disabled={isLoading}
-                              onChange={(imageUrl) => field.onChange(imageUrl)}
-                              onRemove={() => field.onChange(null)}
-                            />
-                          </FormControl>
-                          <FormMessage className="dark:text-yellow-300" />
-                        </FormItem>
-                      )}
-                    />
+                  <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Hình ảnh</FormLabel>
+                    <FormControl>
+                      <FileUpload
+                        endpoint="serverImage"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
                   </CardContent>
                 </Card>
 

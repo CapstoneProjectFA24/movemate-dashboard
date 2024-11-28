@@ -34,6 +34,7 @@ import { ITruckCategory } from "../../types/services-type";
 import { createServices } from "../../action/create-service";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
+import { FileUpload } from "@/components/image-uploadthing/file-upload";
 
 interface CreateServiceFormProps {
   truckCategorys: ITruckCategory[] | null;
@@ -95,21 +96,20 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
-              <FormField
+            <FormField
                 control={form.control}
                 name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Hình ảnh</FormLabel>
                     <FormControl>
-                      <ImageUploadOne
+                      <FileUpload
+                        endpoint="serverImage"
                         value={field.value}
-                        disabled={isLoading}
-                        onChange={(imageUrl) => field.onChange(imageUrl)}
-                        onRemove={() => field.onChange(null)}
+                        onChange={field.onChange}
                       />
                     </FormControl>
-                    <FormMessage className="dark:text-yellow-300" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
