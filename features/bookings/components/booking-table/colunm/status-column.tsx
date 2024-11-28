@@ -47,7 +47,7 @@ export const statusColum = {
       </TooltipProvider>
     );
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
   filterFn: (
     row: Row<IBooking>,

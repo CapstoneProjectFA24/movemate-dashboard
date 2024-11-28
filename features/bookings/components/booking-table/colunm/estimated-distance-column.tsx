@@ -16,7 +16,7 @@ export const estimatedDistanceColumn = {
       </div>
     );
   },
-  enableSorting: false,
+  enableSorting: true,
   enableHiding: false,
 } as const;
 

@@ -11,13 +11,18 @@ export const amountColumn = {
   ),
   cell: ({ row }: { row: Row<ITransaction> }) => {
     const amount = row.getValue("amount") as number;
+    const isCredit = row.original.isCredit;
     const formatted = formatter.format(Math.abs(amount));
-    const isPositive = amount >= 0;
 
     return (
-      <div>
-        <span className="tabular-nums tracking-tight">
-          {isPositive ? '+' : '-'}{formatted}
+      <div className="flex items-center gap-2">
+        {isCredit ? (
+          <TrendingUp className="h-4 w-4 text-green-500" />
+        ) : (
+          <TrendingDown className="h-4 w-4 text-red-500" />
+        )}
+        <span className={`tabular-nums tracking-tight ${isCredit ? 'text-green-600' : 'text-red-600'}`}>
+          {isCredit ? '+' : '-'}{formatted}
         </span>
       </div>
     );
