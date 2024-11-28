@@ -9,4 +9,5 @@ export type ITransaction = {
   transactionCode: string;
   transactionType: string;
   isCredit: boolean;
+  createdAt?: Date;
 };

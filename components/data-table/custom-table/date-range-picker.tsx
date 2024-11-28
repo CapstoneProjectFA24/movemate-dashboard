@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { type DateRange } from "react-day-picker"
+import * as React from "react";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { type DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { Button, type ButtonProps } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button, type ButtonProps } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { usePathname, useSearchParams } from "next/navigation"
+} from "@/components/ui/popover";
+import { usePathname, useSearchParams } from "next/navigation";
 
-type PickerMode = "single" | "range"
+type PickerMode = "single" | "range";
 
 interface FlexibleDatePickerProps
   extends React.ComponentPropsWithoutRef<typeof PopoverContent> {
-  mode?: PickerMode
-  defaultDateRange?: DateRange
-  defaultDate?: Date
-  placeholder?: string
-  triggerVariant?: Exclude<ButtonProps["variant"], "destructive" | "link">
-  triggerSize?: Exclude<ButtonProps["size"], "icon">
-  triggerClassName?: string
-  shallow?: boolean
-  numberOfMonths?: number
+  mode?: PickerMode;
+  defaultDateRange?: DateRange;
+  defaultDate?: Date;
+  placeholder?: string;
+  triggerVariant?: Exclude<ButtonProps["variant"], "destructive" | "link">;
+  triggerSize?: Exclude<ButtonProps["size"], "icon">;
+  triggerClassName?: string;
+  shallow?: boolean;
+  numberOfMonths?: number;
 }
 
 export function FlexibleDatePicker({
@@ -43,84 +43,89 @@ export function FlexibleDatePicker({
   className,
   ...props
 }: FlexibleDatePickerProps) {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const from = searchParams?.get("from") ?? ""
-  const to = searchParams?.get("to") ?? ""
-  const singleDate = searchParams?.get("date") ?? ""
+  const from = searchParams?.get("from") ?? "";
+  const to = searchParams?.get("to") ?? "";
+  const singleDate = searchParams?.get("date") ?? "";
 
   const date = React.useMemo(() => {
     function parseDate(dateString: string | null) {
-      if (!dateString) return undefined
-      const parsedDate = new Date(dateString)
-      return isNaN(parsedDate.getTime()) ? undefined : parsedDate
+      if (!dateString) return undefined;
+      const parsedDate = new Date(dateString);
+      return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
     }
 
     if (mode === "single") {
-      return parseDate(singleDate) ?? defaultDate
+      return parseDate(singleDate) ?? defaultDate;
     }
 
     return {
       from: parseDate(from) ?? defaultDateRange?.from,
       to: parseDate(to) ?? defaultDateRange?.to,
-    }
-  }, [from, to, singleDate, defaultDateRange, defaultDate, mode])
+    };
+  }, [from, to, singleDate, defaultDateRange, defaultDate, mode]);
 
   const handleDateChange = React.useCallback(
     (newDate: Date | DateRange | undefined) => {
-      const newParams = new URLSearchParams(searchParams?.toString())
+      const newParams = new URLSearchParams(searchParams?.toString());
 
       if (mode === "single") {
         if (newDate instanceof Date) {
-          newParams.set("date", newDate.toISOString())
+          newParams.set("date", newDate.toISOString());
         } else {
-          newParams.delete("date")
+          newParams.delete("date");
         }
-        newParams.delete("from")
-        newParams.delete("to")
+        newParams.delete("from");
+        newParams.delete("to");
       } else {
-        const dateRange = newDate as DateRange | undefined
+        const dateRange = newDate as DateRange | undefined;
         if (dateRange?.from) {
-          newParams.set("from", dateRange.from.toISOString())
+          newParams.set("from", dateRange.from.toISOString());
         } else {
-          newParams.delete("from")
+          newParams.delete("from");
         }
         if (dateRange?.to) {
-          newParams.set("to", dateRange.to.toISOString())
+          newParams.set("to", dateRange.to.toISOString());
         } else {
-          newParams.delete("to")
+          newParams.delete("to");
         }
-        newParams.delete("date")
+        newParams.delete("date");
       }
 
-      const newQueryString = newParams.toString()
-      const url = `${pathname}${newQueryString ? `?${newQueryString}` : ""}`
-      window.history.pushState({}, "", url)
+      const newQueryString = newParams.toString();
+      const url = `${pathname}${newQueryString ? `?${newQueryString}` : ""}`;
+      window.history.pushState({}, "", url);
     },
     [mode, pathname, searchParams]
-  )
+  );
 
-  const defaultMonths = mode === "single" ? 1 : 2
-  const actualNumberOfMonths = numberOfMonths ?? defaultMonths
+  const defaultMonths = mode === "single" ? 1 : 2;
+  const actualNumberOfMonths = numberOfMonths ?? defaultMonths;
 
   const renderSelectedDate = () => {
     if (mode === "single") {
-      return date instanceof Date ? format(date, "LLL dd, y") : <span>{placeholder}</span>
+      return date instanceof Date ? (
+        format(date, "LLL dd, y")
+      ) : (
+        <span>{placeholder}</span>
+      );
     }
 
-    const dateRange = date as DateRange
+    const dateRange = date as DateRange;
     if (dateRange?.from) {
       return dateRange.to ? (
         <>
-          {format(dateRange.from, "LLL dd, y")} - {format(dateRange.to, "LLL dd, y")}
+          {format(dateRange.from, "LLL dd, y")} -{" "}
+          {format(dateRange.to, "LLL dd, y")}
         </>
       ) : (
         format(dateRange.from, "LLL dd, y")
-      )
+      );
     }
-    return <span>{placeholder}</span>
-  }
+    return <span>{placeholder}</span>;
+  };
 
   return (
     <div className="grid gap-2">
@@ -155,12 +160,14 @@ export function FlexibleDatePicker({
               mode="range"
               defaultMonth={(date as DateRange)?.from}
               selected={date as DateRange}
-              onSelect={handleDateChange as (date: DateRange | undefined) => void}
+              onSelect={
+                handleDateChange as (date: DateRange | undefined) => void
+              }
               numberOfMonths={actualNumberOfMonths}
             />
           )}
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
