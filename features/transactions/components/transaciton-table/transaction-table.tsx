@@ -18,6 +18,8 @@ import { ITransaction } from "../../types/transaction-type";
 import { getTransactions } from "../../action/transactions";
 import { fetchTransactionsTableColumnDefs } from "./transaction-table-column-def";
 import { PayemntMethodType } from "../../enums/transaction-enum";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FlexibleDatePicker } from "@/components/data-table/custom-table/date-range-picker";
 
 interface TransactionsTableProps {
   transactionsPromise: ReturnType<typeof getTransactions>;
@@ -62,6 +64,9 @@ export function TransactionsTable({
 
   return (
     <div className="h-full flex flex-col">
+      <React.Suspense
+        fallback={<Skeleton className="h-7 w-52" />}
+      ></React.Suspense>
       <DataTable
         dataTable={dataTable}
         columns={columns}

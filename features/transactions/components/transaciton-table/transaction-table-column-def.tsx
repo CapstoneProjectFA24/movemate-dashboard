@@ -17,6 +17,7 @@ import amountColumn from "./column/amount";
 import {transTypeColumn} from "./column/transaction-type";
 import { paymentMethodColumn } from "./column/payment-method";
 import statusColumn from "./column/status-column";
+import createdAtColumn from "./column/createAt-column";
 
 
 export function fetchTransactionsTableColumnDefs(): ColumnDef<ITransaction, unknown>[] {
@@ -27,6 +28,7 @@ export function fetchTransactionsTableColumnDefs(): ColumnDef<ITransaction, unkn
     transTypeColumn,
     paymentMethodColumn,
     statusColumn,
+    // createdAtColumn
     // typeColum,
     // inverseParentColumn,
     // isActivedColumn,
