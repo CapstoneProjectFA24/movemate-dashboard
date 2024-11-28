@@ -14,7 +14,7 @@ export const publicRoutes = [
   "/information",
   "/information/insurance",
   "/information/policy",
-
+  "/api/uploadthing"
 ];
 
 /**
@@ -45,6 +45,7 @@ export const dashboardRoute = ["/dashboard"];
  */
 
 export const apiAuthPrefix = "/api/auth";
+export const apiUploadPrefix = "/api/uploadthing";
 
 /**
  * The default path invoke

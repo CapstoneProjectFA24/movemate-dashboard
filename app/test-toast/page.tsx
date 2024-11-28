@@ -1,8 +1,8 @@
 "use client";
-import { DateRangePicker } from "@/components/data-table/custom-table/date-range-picker";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CldVideoPlayer } from "next-cloudinary";
+import Image from "next/image";
 import React from "react";
 import { toast } from "sonner";
 
@@ -15,14 +15,8 @@ const HomePage = () => {
     <div>
       <h1>Trang Chính</h1>
       <Button onClick={handleClick}>Hiển thị Toast</Button>
-      <React.Suspense fallback={<Skeleton className="h-7 w-52" />}>
-              <DateRangePicker
-                triggerSize="sm"
-                triggerClassName="ml-auto w-56 sm:w-60"
-                align="end"
-                shallow={false}
-              />
-            </React.Suspense>
+      <Image src="https://utfs.io/f/yYv3QHy7AjsNUWZ8fGuiAVar1IbnQdiWl8OqP2Z4U05YFBGK" alt="img" width={80} height={80} unoptimized />
+      
       {/* <CldVideoPlayer
   id="sea-turtle-color"
   width="1920"
