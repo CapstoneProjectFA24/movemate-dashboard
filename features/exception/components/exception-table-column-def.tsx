@@ -2,8 +2,8 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { IAssignment } from "../types/assignemts-type";
-import selectColumn from "./column/select-column";
-import idColumn from "./column/id-column";
+import selectColumn from "../../refund/components/column/select-column";
+import idColumn from "../../refund/components/column/id-column";
 import bookingAtColumn from "./column/booking-at-column";
 import typeColum from "./column/type-column";
 import numberColumn from "./column/number-colum";
