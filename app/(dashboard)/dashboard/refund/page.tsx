@@ -1,3 +1,37 @@
+// import React from "react";
+// import { SearchParams } from "@/types/table";
+// import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
+// import { Shell } from "@/components/shared/custom-ui/shell";
+// import { getRefunds } from "@/features/refund/actions/refund";
+// import { RefundTable } from "@/features/refund/components/refund-table";
+// export interface IndexPageProps {
+//   searchParams: SearchParams;
+// }
+// const RefundPage = ({ searchParams }: IndexPageProps) => {
+//   const refundPromise = getRefunds(searchParams);
+//   return (
+//     <div className="min-w-full">
+//       <Shell>
+//         <React.Suspense
+//           fallback={
+//             <DataTableSkeleton
+//               columnCount={5}
+//               searchableColumnCount={1}
+//               filterableColumnCount={2}
+//               cellWidths={["10rem", "40rem", "12rem", "12rem", "8rem"]}
+//               shrinkZero
+//             />
+//           }
+//         >
+//           <RefundTable refundPromise={refundPromise} />
+//         </React.Suspense>
+//       </Shell>
+//     </div>
+//   );
+// };
+
+// export default RefundPage;
+
 'use client';
 import React from "react";
 import { useState, useEffect } from "react";

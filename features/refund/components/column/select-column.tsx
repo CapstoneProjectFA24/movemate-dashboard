@@ -1,10 +1,10 @@
 import { Row, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { IAssignment } from "../../types/assignemts-type";
+import { IRefund } from "../../types/refund-type";
 
 export const selectColumn = {
   id: "select",
-  header: ({ table }: { table: Table<IAssignment> }) => (
+  header: ({ table }: { table: Table<IRefund> }) => (
     <Checkbox
       checked={table.getIsAllPageRowsSelected()}
       onCheckedChange={(value) => {
@@ -14,7 +14,7 @@ export const selectColumn = {
       className="translate-y-[2px] dark:text-white"
     />
   ),
-  cell: ({ row }: { row: Row<IAssignment> }) => (
+  cell: ({ row }: { row: Row<IRefund> }) => (
     <Checkbox
       checked={row.getIsSelected()}
       onCheckedChange={(value) => {
