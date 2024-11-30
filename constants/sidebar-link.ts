@@ -21,7 +21,7 @@ import {
   FaUserCheck,
   FaUserPlus,
 } from "react-icons/fa";
-import { Settings, User, BadgePlus } from "lucide-react";
+import { Settings, User, BadgePlus, FileCog } from "lucide-react";
 import { FaMailchimp, FaUserPen } from "react-icons/fa6";
 import { TbBrandBooking } from "react-icons/tb";
 import { UserRole } from "@/lib/enums/user-role-enum";
@@ -73,6 +73,12 @@ export const routes: Route[] = [
         activeIcon: FaListAlt,
       },
       {
+        label: "Danh sách phí dịch vụ",
+        href: "/dashboard/fee",
+        icon: FileCog,
+        activeIcon: FileCog,
+      },
+      {
         label: "Tạo mới dịch vụ",
         href: "/dashboard/services/create_service",
         icon: BadgePlus,
@@ -98,7 +104,6 @@ export const routes: Route[] = [
         icon: ShieldAlert,
         activeIcon: ShieldAlert,
       },
-
     ],
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },

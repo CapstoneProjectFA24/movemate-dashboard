@@ -30,3 +30,7 @@ export const ASSIGNMENT_URL = {
   CHECK_PORTER_ASSIGNMENT : "/assignments/available-porter",
   UPDATE_BOOKING_DETAIL_AVAILABLE: "/bookingdetails/available"
 }
+
+export const FEE_URL = {
+  GET_FEES : "/fees/system"
+}
