@@ -137,19 +137,6 @@ const FeeDetailUpdateForm = ({
     }
   };
 
-  // {
-  //     id: 78,
-  //     serviceId: 3,
-  //     houseTypeId: 4,
-  //     name: 'test',
-  //     description: 'test',
-  //     amount: 1,
-  //     isActived: true,
-  //     type: 'PORTER',
-  //     unit: null,
-  //     floorPercentage: 12
-  //   }
-
   return (
     <div className="p-6">
       <div className="w-full">

@@ -8,9 +8,7 @@ import nameColumn from "./column/name-column";
 import amountColumn from "./column/amount-column";
 import typeColumn from "./column/type-column";
 import isActivedColumn from "./column/isActived-column";
-
-
-
+import actionColumn from "./column/action-column";
 
 export function fetchFeeTableColumnDefs(): ColumnDef<IFee, unknown>[] {
   return [
@@ -19,6 +17,7 @@ export function fetchFeeTableColumnDefs(): ColumnDef<IFee, unknown>[] {
     nameColumn,
     amountColumn,
     typeColumn,
-    isActivedColumn
+    isActivedColumn,
+    actionColumn,
   ];
 }
