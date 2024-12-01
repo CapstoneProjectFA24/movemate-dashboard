@@ -26,6 +26,10 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FeeLable, FeeType } from "../../enums/fee-enum";
+import { createFee } from "../../actions/create-fee";
+import { toast } from "sonner";
+import { feeSchema, FeeSchemaType } from "../../types/create-fee-schema";
+import { useRouter } from "nextjs-toploader/app";
 
 interface CreateFeeFormProps {
   services: IService[];
@@ -42,21 +46,11 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
   const [filteredServices, setFilteredServices] = useState<FilteredService[]>(
     []
   );
-
-  const feeSchema = z.object({
-    type: z.string(),
-    name: z.string(),
-    description: z.string(),
-    amount: z.number(),
-    floorPercentage: z.number(),
-    serviceId: z.number(),
-    houseTypeId: z.number(),
-  });
-
-  const form = useForm<z.infer<typeof feeSchema>>({
+  const router = useRouter();
+  const form = useForm<FeeSchemaType>({
     resolver: zodResolver(feeSchema),
     defaultValues: {
-      type: "",
+      type: undefined,
       name: "",
       description: "",
       amount: 0,
@@ -66,7 +60,7 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
     },
   });
 
-  const { watch, resetField } = form;
+  const { watch, resetField, setValue } = form;
   const type = watch("type");
 
   const isChooseService =
@@ -87,6 +81,19 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
     }
   }
 
+  function getUnitByFeeType(type: string): string | null {
+    switch (type) {
+      case FeeType.TRUCK:
+        return "KM";
+      case FeeType.SYSTEM:
+        return "PERCENT";
+      case FeeType.DRIVER || FeeType.PORTER:
+        return "FLOOR";
+      default:
+        return null;
+    }
+  }
+
   useEffect(() => {
     const filteredParentServices = filterServices(services, type);
     const filteredChildrenServices = filteredParentServices.reduce<
@@ -104,11 +111,31 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
   }, [services, type]);
 
   useEffect(() => {
+    const unit = getUnitByFeeType(type);
+    setValue("unit", unit);
+  }, [type, setValue]);
+
+  useEffect(() => {
     resetField("serviceId");
   }, [type, resetField]);
 
   const onSubmit = async (data: z.infer<typeof feeSchema>) => {
     console.log(data);
+    try {
+      startTransition(async () => {
+        const result = await createFee(data);
+
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          form.reset();
+          toast.success("Tạo mới phí dịch vụ thành công !");
+          router.push("/dashboard/fee");
+        }
+      });
+    } catch (error) {
+      console.error("có lỗi khi trong quá trình submit form:", error);
+    }
   };
 
   return (
@@ -186,7 +213,9 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)} // Chuyển đổi sang số, nếu không phải số thì mặc định là 0
+                        onChange={(e) =>
+                          field.onChange(parseFloat(e.target.value) || 0)
+                        } // Chuyển đổi sang số, nếu không phải số thì mặc định là 0
                         placeholder="Nhập số tiền"
                       />
                     </FormControl>
@@ -301,7 +330,6 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
             </Card>
           )}
 
-
           <div className="flex justify-end space-x-4">
             <Button type="button" variant="outline">
               Hủy
@@ -312,7 +340,7 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
                   <Loader className="animate-spin h-5 w-5 text-white" />
                 </div>
               ) : (
-                "Tạo dịch vụ"
+                "Tạo mới"
               )}
             </Button>
           </div>
