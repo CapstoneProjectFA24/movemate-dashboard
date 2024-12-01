@@ -40,3 +40,18 @@ export async function getFees(
     return result.data;
   }
   
+
+  export async function getFeeById(
+    params: string
+  ): Promise<ApiSingleResponse<IFee>> {
+    const result = await fetchSingleData<IFee>(
+      `${FEE_URL.FEES}/${params}`
+    );
+    if (!result.success) {
+      console.error("Failed to fetch detail IFee:", result.error);
+      return { data: null, error: result.error };
+    }
+  
+    return result.data;
+  }
+  
