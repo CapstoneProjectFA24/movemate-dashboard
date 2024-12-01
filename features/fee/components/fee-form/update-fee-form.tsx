@@ -128,7 +128,6 @@ const FeeDetailUpdateForm = ({
         if (!result.success) {
           toast.error(result.error);
         } else {
-          form.reset();
           toast.success("Câp nhật phí dịch vụ thành công !");
         }
       });
