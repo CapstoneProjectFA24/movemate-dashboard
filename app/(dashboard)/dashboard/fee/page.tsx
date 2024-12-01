@@ -2,7 +2,7 @@ import React from "react";
 import { SearchParams } from "@/types/table";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Shell } from "@/components/shared/custom-ui/shell";
-import { FeeTable } from "@/features/fee/components/fee-table";
+import { FeeTable } from "@/features/fee/components/fee-table/fee-table";
 import { getFees } from "@/features/fee/actions/fees";
 
 export interface IndexPageProps {

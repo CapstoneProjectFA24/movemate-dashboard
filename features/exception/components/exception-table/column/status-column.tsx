@@ -1,12 +1,10 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
 
-import { IAssignment } from "../../types/assignemts-type";
-import {
-    AssignmentStatus,
-    AssignmentStatusName,
-} from "../../enums/exception-enum";
+import { IAssignment } from "@/features/exception/types/assignemts-type";
+
 import { Badge } from "@/components/ui/badge";
+import { AssignmentStatus, AssignmentStatusName } from "@/features/exception/enums/exception-enum";
 
 export const statusColumn = {
   accessorKey: "status",

@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@/components/shared/custom-ui/loading-spinner";
-import ServiceFormSkeleton from "../../../../../../components/shared/dashboard/loading-skeleton/service-form-skeleton";
+import ServiceFormSkeleton from "@/components/shared/dashboard/loading-skeleton/service-form-skeleton";
 
 export default function loading() {
   return (

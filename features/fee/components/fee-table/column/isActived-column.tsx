@@ -3,7 +3,7 @@ import { Row, type Column } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "next-themes";
-import { IFee } from "../../types/fee-type";
+import { IFee } from "../../../types/fee-type";
 
 const StatusBadge = ({ isActived }: { isActived: boolean }) => {
   const { theme } = useTheme();

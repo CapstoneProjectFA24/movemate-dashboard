@@ -1,7 +1,7 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { IFee } from "../types/fee-type";
+import { IFee } from "../../types/fee-type";
 import selectColumn from "./column/select-column";
 import idColumn from "./column/id-column";
 import nameColumn from "./column/name-column";

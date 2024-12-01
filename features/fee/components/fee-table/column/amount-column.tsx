@@ -1,7 +1,7 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
 import { formatter } from "@/lib/utils";
-import { IFee } from "../../types/fee-type";
+import { IFee } from "../../../types/fee-type";
 
 export const amountColumn = {
   accessorKey: "amount",

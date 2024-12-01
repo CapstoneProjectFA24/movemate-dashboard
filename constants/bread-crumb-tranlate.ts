@@ -17,5 +17,5 @@ export const breadcrumbTranslations: { [key: string]: string } = {
   bookings_exception: "Đơn chưa có nhân vi  ên",
   refund: "Bồi thường",
   fee: "Quản lý phí",
-  create_fee: "Tạo mới phí",
+  create_fees: "Tạo mới phí",
 };

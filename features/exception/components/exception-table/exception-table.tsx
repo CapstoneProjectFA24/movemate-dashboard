@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { getAssignments } from "../action/get-assignments";
+import { getAssignments } from "../../action/get-assignments";
 import { ColumnDef } from "@tanstack/react-table";
-import { IAssignment } from "../types/assignemts-type";
+import { IAssignment } from "../../types/assignemts-type";
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
 import {
   DataTableFilterableColumn,
@@ -14,7 +14,7 @@ import { fetchExceptionTableColumnDefs } from "./exception-table-column-def";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, Clock, Users } from "lucide-react";
 import { DataTableException } from "@/components/data-table/custom-table/data-table-exception";
-import { AssignmentTypeNames } from "../enums/exception-enum";
+import { AssignmentTypeNames } from "../../enums/exception-enum";
 
 interface ExceptionTableProps {
   assignmentPromise: ReturnType<typeof getAssignments>;

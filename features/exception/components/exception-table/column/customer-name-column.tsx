@@ -1,7 +1,7 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
 
-import { IAssignment } from "../../types/assignemts-type";
+import { IAssignment } from "@/features/exception/types/assignemts-type";
 
 import { IUser } from "@/features/users/types/user-type";
 
