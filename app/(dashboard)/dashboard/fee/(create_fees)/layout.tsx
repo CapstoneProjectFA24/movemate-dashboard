@@ -1,11 +1,11 @@
 import ServiceFormSkeleton from "@/components/shared/dashboard/loading-skeleton/service-form-skeleton";
 import { Suspense } from "react";
 
-interface CreateServicesLayoutProps {
+interface FeeLayoutProps {
   children: React.ReactNode;
 }
 
-const CreateServicesLayout = ({ children }: CreateServicesLayoutProps) => {
+const FeeLayout = ({ children }: FeeLayoutProps) => {
   return (
     <Suspense
       fallback={
@@ -25,4 +25,4 @@ const CreateServicesLayout = ({ children }: CreateServicesLayoutProps) => {
   );
 };
 
-export default CreateServicesLayout;
+export default FeeLayout;

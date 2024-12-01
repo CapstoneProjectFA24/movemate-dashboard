@@ -8,8 +8,8 @@ import {
   MdLocalShipping,
 } from "react-icons/md";
 import { CheckCircle2, Edit, XCircle } from "lucide-react";
-import { FeeType, FeeTypeName } from "../../enums/fee-enum";
-import { IFee } from "../../types/fee-type";
+import { FeeType, FeeTypeName } from "../../../enums/fee-enum";
+import { IFee } from "../../../types/fee-type";
 
 // Object map type sang icon tương ứng
 const feeTypeIcons = {

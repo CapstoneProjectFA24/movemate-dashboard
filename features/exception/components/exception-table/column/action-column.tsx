@@ -1,16 +1,14 @@
 import { Column, ColumnDef, Row } from "@tanstack/react-table";
-import { IAssignment } from "../../types/assignemts-type";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
 import AlertModal from "@/components/modals/alert-modal";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import {
-  autoAssignDriver,
-  autoAssignPorter,
-} from "../../action/update-assignments";
+
 import { useModal } from "@/hooks/use-modal";
+import { autoAssignDriver, autoAssignPorter } from "@/features/exception/action/update-assignments";
+import { IAssignment } from "@/features/exception/types/assignemts-type";
 
 interface ActionMenuProps {
   row: Row<IAssignment>;

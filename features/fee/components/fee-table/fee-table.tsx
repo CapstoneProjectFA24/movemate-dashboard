@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "@/components/data-table/data-table";
 import { fetchFeeTableColumnDefs } from "./fee-table-column-def";
-import { getFees } from "../actions/fees";
-import { IFee } from "../types/fee-type";
+import { getFees } from "../../actions/fees";
+import { IFee } from "../../types/fee-type";
 
 interface FeeTableProps {
   feePromise: ReturnType<typeof getFees>;

@@ -1,7 +1,7 @@
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Shell } from "@/components/shared/custom-ui/shell";
 import { getAssignments } from "@/features/exception/action/get-assignments";
-import { ExceptionTable } from "@/features/exception/components/exception-table";
+import { ExceptionTable } from "@/features/exception/components/exception-table/exception-table";
 import { SearchParams } from "@/types/table";
 import React from "react";
 export interface IndexPageProps {

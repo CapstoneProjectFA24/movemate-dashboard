@@ -1,6 +1,6 @@
 import { Row, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { IFee } from "../../types/fee-type";
+import { IFee } from "../../../types/fee-type";
 
 
 export const selectColumn = {

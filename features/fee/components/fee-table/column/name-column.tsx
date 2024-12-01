@@ -1,6 +1,6 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
-import { IFee } from "../../types/fee-type";
+import { IFee } from "../../../types/fee-type";
 
 export const nameColumn = {
   accessorKey: "name",
