@@ -120,7 +120,7 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
   }, [type, resetField]);
 
   const onSubmit = async (data: z.infer<typeof feeSchema>) => {
-    console.log(data);
+    
     try {
       startTransition(async () => {
         const result = await createFee(data);
