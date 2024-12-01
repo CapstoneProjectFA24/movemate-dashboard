@@ -32,5 +32,6 @@ export const ASSIGNMENT_URL = {
 }
 
 export const FEE_URL = {
-  GET_FEES : "/fees/system"
+  GET_FEES : "/fees/system",
+  FEES: "/FEES"
 }
