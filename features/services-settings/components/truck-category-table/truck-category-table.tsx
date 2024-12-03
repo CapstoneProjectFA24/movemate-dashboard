@@ -44,6 +44,7 @@ export function TruckCategoryTable({ data }: TruckCategoryTableProps) {
         columns={columns}
         searchableColumns={searchableColumns}
         // filterableColumns={filterableColumns}
+         newRowLink="/dashboard/services_setting/create_truck_category"
         columnLabels={labels}
       />
     </div>
