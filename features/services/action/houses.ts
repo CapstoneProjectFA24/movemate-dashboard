@@ -38,3 +38,22 @@ export async function getHousesSearchParams(
   }
   return result.data;
 }
+
+
+export async function updateHouses(
+  data: any,
+  params: string
+): Promise<Result<void>> {
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.put(`${SERVICES_URL.GET_HOUSE_TYPE}/${params}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/services_setting`);
+
+  return { success: true, data: undefined };
+}
