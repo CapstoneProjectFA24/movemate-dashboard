@@ -9,6 +9,7 @@ import maxloadColumn from "./column/max-load-column";
 import estimatedLengthColumn from "./column/estimated-length-column";
 import estimatedWidthColumn from "./column/estimated-width-column";
 import estimatedHeightColumn from "./column/estimated-height-column";
+import actionColumn from "./column/action-column";
 
 
 
@@ -20,6 +21,7 @@ export function fetchTruckCategoryTableColumnDefs(): ColumnDef<ITruckCategory, u
     maxloadColumn,
     estimatedLengthColumn,
     estimatedWidthColumn,
-    estimatedHeightColumn
+    estimatedHeightColumn,
+    actionColumn
   ];
 }
