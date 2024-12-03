@@ -12,6 +12,8 @@ import { Loader, Plus, User2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import DraggableStaffCard from "./draggable-staff-card";
+import { useGetUserById } from "@/features/users/react-query/query";
+import Image from "next/image";
 
 interface AssignmentSectionProps {
   assignment: IAssignmentInBooking;
@@ -36,11 +38,21 @@ export const AssignmentSection: React.FC<AssignmentSectionProps> = ({
   setNewAssignments,
   isCreateNew = false,
 }) => {
- 
   const [isPending, startTransition] = useTransition();
   const { setNodeRef, isOver } = useDroppable({
     id: `assignment-${assignment.id}`,
   });
+
+  const { data: userInfo, isLoading: userLoading } = useGetUserById(
+    assignment.userId?.toString()!
+  );
+  
+  type AssignmentStatus = "WAITING" | "FAILED" | "ASSIGNED";
+  const assignmentStatusType: Record<AssignmentStatus, string> = {
+    WAITING: "Đang chờ",
+    FAILED: "Gặp sự cố",
+    ASSIGNED: "Đã gán",
+  };
 
   const handleUnassign = () => {
     if (assignedStaff && assignment.id) {
@@ -84,14 +96,32 @@ export const AssignmentSection: React.FC<AssignmentSectionProps> = ({
           {/* Assignment Info */}
           <div className="flex items-center gap-3 flex-1">
             <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center shrink-0">
-              <User2 className="h-5 w-5 text-muted-foreground" />
+              <Image
+                src={userInfo?.data?.avatarUrl!}
+                alt="user-info"
+                width={48}
+                height={48}
+                className="text-muted-foreground rounded-full"
+              />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <p className="font-medium text-sm">ID: {assignment.userId}</p>
-                <Badge variant="outline" className="text-xs">
-                  {assignment.staffType}
-                </Badge>
+                <div>
+                  <div className="flex space-x-2">
+                    <p className="text-sm font-medium  ">
+                      {userInfo?.data?.name}
+                    </p>
+                    <Badge variant="outline" className="text-xs shrink-0">
+                      {assignment.staffType}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground truncate">
+                    {userInfo?.data?.phone || "Chưa có SĐT"}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {userInfo?.data?.email}
+                  </p>
+                </div>
               </div>
               {assignment.isResponsible && (
                 <p className="text-xs text-muted-foreground">
@@ -106,7 +136,7 @@ export const AssignmentSection: React.FC<AssignmentSectionProps> = ({
             <div className="flex items-center gap-3 px-3 py-2 bg-accent/5 rounded-lg flex-1">
               <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0">
                 {assignedStaff.avatarUrl ? (
-                  <img
+                  <Image
                     src={assignedStaff.avatarUrl}
                     alt={assignedStaff.name || "Avatar"}
                     className="h-full w-full rounded-full object-cover"
@@ -124,7 +154,8 @@ export const AssignmentSection: React.FC<AssignmentSectionProps> = ({
                 </p>
               </div>
               <Badge variant="outline" className="text-xs shrink-0">
-                {assignment.status}
+                {/* {assignment.status} */}
+                {assignmentStatusType[assignment.status]}
               </Badge>
             </div>
           )}
@@ -142,23 +173,46 @@ export const AssignmentSection: React.FC<AssignmentSectionProps> = ({
           <div>
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-                <User2 className="h-6 w-6 text-muted-foreground" />
+                <Image
+                  src={userInfo?.data?.avatarUrl!}
+                  alt="user-info"
+                  width={48}
+                  height={48}
+                  className="text-muted-foreground rounded-full"
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="font-medium">ID: {assignment.userId}</p>
                   {!assignedStaff && !enalble && (
                     <Badge variant="destructive" className="text-xs shrink-0">
                       Cần thêm nhân viên
                     </Badge>
                   )}
                 </div>
+                <div className="flex space-x-2">
+                  <p className="text-sm font-medium  ">
+                    {userInfo?.data?.name}
+                  </p>
+                  <p className="text-sm text-muted-foreground truncate">
+                    {userInfo?.data?.phone || "Chưa có SĐT"}
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground truncate">
+                  {userInfo?.data?.email}
+                </p>
                 <div className="flex gap-2 items-center text-sm text-muted-foreground">
                   <Badge variant="outline" className="text-xs">
                     {assignment.staffType}
                   </Badge>
                   <span>•</span>
-                  <span>Status: {assignment.status}</span>
+                  <span className="space-x-2">
+                    <span> Trạng thái:</span>
+                    <span>
+                      {assignmentStatusType[
+                        assignment.status as keyof typeof assignmentStatusType
+                      ] ?? "Không xác định"}
+                    </span>
+                  </span>
                 </div>
                 {assignment.isResponsible && (
                   <p className="text-xs text-muted-foreground mt-1">
