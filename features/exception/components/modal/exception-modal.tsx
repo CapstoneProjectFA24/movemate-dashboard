@@ -142,6 +142,8 @@ const AssignmentSection: React.FC<AssignmentSectionProps> = ({
   const handleConfirm = () => {
     if (assignedStaff && assignment.id) {
       onConfirm(assignment.id.toString()!, assignedStaff);
+      console.log(assignment.id.toString()!);
+      console.log(assignedStaff);
     }
   };
 
@@ -269,7 +271,7 @@ const AssignmentSection: React.FC<AssignmentSectionProps> = ({
           )}
         </div>
       </div>
-      {!assignedStaff && (
+      {assignedStaff && (
         <div className="flex justify-end mt-4">
           <Button onClick={handleConfirm}>Xác nhận</Button>
         </div>
@@ -341,7 +343,23 @@ export const ExceptionModal: React.FC = () => {
 
   const { data: porterData, isLoading: isLoadingPorter } =
     useGetCheckAvailablePorter(bookingId, loadingKey);
+  const [newAssignments, setNewAssignments] = useState<IAssignmentInBooking[]>(
+    []
+  );
+  const addNewAssignment = () => {
+    const newId = Date.now() + Math.floor(Math.random() * 1000);
+    // Create a new assignment object
+    const newAssignment: IAssignmentInBooking = {
+      id: newId,// Generate a unique ID for the new assignment
+      bookingId: assignment?.bookingId,
+      staffType: typeStaffAssignment === "TRUCK" ? "DRIVER" : "PORTER",
+      status: "FAILED",
+      isResponsible: false,
+    };
 
+    // Add the new assignment to the list of assignments
+    setNewAssignments((prev) => [...prev, newAssignment]);
+  };
   const staffData = typeStaffAssignment === "TRUCK" ? driverData : porterData;
   const isLoading = isLoadingDriver || isLoadingPorter;
 
@@ -380,12 +398,17 @@ export const ExceptionModal: React.FC = () => {
         ([_, staff]) => staff?.id === draggedStaffData.id
       )?.[0];
 
+      // Check if the target assignment is a new one
+      const isNewAssignment = newAssignments.some(
+        (assignment) => assignment.id === parseInt(targetAssignmentId)
+      );
+
       if (targetAssignmentId === sourceAssignmentId) {
         // Dropped on the same assignment, no changes needed
         return;
       }
 
-      // Nếu assignment cũ đã có nhân viên, cần xóa nhân viên cũ ra khỏi danh sách
+      // If the old assignment had a staff assigned, remove them from the available lists
       if (sourceAssignmentId && assignmentReviewers[sourceAssignmentId]) {
         const oldAssignedStaff = assignmentReviewers[sourceAssignmentId];
         if (
@@ -416,6 +439,17 @@ export const ExceptionModal: React.FC = () => {
         [targetAssignmentId]: draggedStaffData,
         [sourceAssignmentId!]: null,
       }));
+
+      // If it's a new assignment, update the newAssignments state
+      if (isNewAssignment) {
+        setNewAssignments((prev) =>
+          prev.map((assignment) =>
+            assignment.id === parseInt(targetAssignmentId)
+              ? { ...assignment, assignedStaff: draggedStaffData }
+              : assignment
+          )
+        );
+      }
 
       // Add the previously assigned staff back to the appropriate available list
       if (sourceAssignmentId) {
@@ -467,7 +501,13 @@ export const ExceptionModal: React.FC = () => {
       ...prev,
       [assignmentId]: null,
     }));
-
+    setNewAssignments((prev) =>
+      prev.map((assignment) =>
+        assignment.id === parseInt(assignmentId)
+          ? { ...assignment, assignedStaff: null }
+          : assignment
+      )
+    );
     // Đưa nhân viên trở lại danh sách phù hợp
     if (staffData?.data?.staffInSlot?.some((s) => s.id === staff.id)) {
       // Nếu nhân viên thuộc danh sách staffInSlot ban đầu
@@ -487,7 +527,13 @@ export const ExceptionModal: React.FC = () => {
       ...prev,
       [assignmentId]: staff,
     }));
-
+    setNewAssignments((prev) =>
+      prev.map((assignment) =>
+        assignment.id === parseInt(assignmentId)
+          ? { ...assignment, assignedStaff: staff }
+          : assignment
+      )
+    );
     // Cập nhật danh sách nhân viên khả dụng
     if (staffData?.data?.staffInSlot?.some((s) => s.id === staff.id)) {
       setAvailableStaffInSlot((prev) => prev.filter((s) => s.id !== staff.id));
@@ -576,6 +622,19 @@ export const ExceptionModal: React.FC = () => {
                 onConfirm={handleConfirmAssignment}
               />
             ))}
+            {newAssignments.map((assignment) => (
+              <AssignmentSection
+                key={assignment.id}
+                assignment={assignment}
+                assignedStaff={assignmentReviewers[assignment.id!] || null}
+                onUnassign={handleUnassign}
+                onConfirm={handleConfirmAssignment}
+                
+              />
+            ))}
+            <Button onClick={addNewAssignment} className="mb-4">
+              Thêm vùng chứa nhân viên
+            </Button>
           </div>
 
           {/* Right Column - Available Staff */}
