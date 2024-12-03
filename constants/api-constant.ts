@@ -9,6 +9,8 @@ export const SERVICES_URL = {
   UPDATE_SERVICES: "/services/manager",
   GET_HOUSE_TYPE: "/housetypes",
   GET_TRUCK_CATEGORY: "/truckcategorys",
+  MANAGE_TRUCK_CATEGORY: "/truckcategorys/manager/truck-category",
+  DELETE_TRUCK_CATEGORY : "/truckcategorys/manager/deleted"
 };
 
 export const BOOKING_URL = {
