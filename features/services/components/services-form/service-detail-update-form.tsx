@@ -68,9 +68,9 @@ const ServiceDetailUpdateForm = ({
   const isQuantity = watch("isQuantity");
   const isLoading = form.formState.isLoading;
   const { onOpen } = useModal();
-  console.log(service)
+  console.log(service);
   const onSubmit = async (data: ServiceSchemaType) => {
-    console.log(data)
+    console.log(data);
     try {
       startTransition(async () => {
         const result = await updateService(data, params.id.toString());
@@ -101,23 +101,23 @@ const ServiceDetailUpdateForm = ({
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                  <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Hình ảnh</FormLabel>
-                    <FormControl>
-                      <FileUpload
-                        endpoint="serverImage"
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    <FormField
+                      control={form.control}
+                      name="imageUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Hình ảnh</FormLabel>
+                          <FormControl>
+                            <FileUpload
+                              endpoint="serverImage"
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </CardContent>
                 </Card>
 
@@ -380,10 +380,12 @@ const ServiceDetailUpdateForm = ({
                                 variant="outline"
                                 type="button"
                                 className="hover:bg-primary/10"
-                                onClick={() => onOpen("updateServicesModal", {
-                                  service: service!,
-                                  truckCategorys: truckCategorys!,
-                                })}
+                                onClick={() =>
+                                  onOpen("updateServicesModal", {
+                                    service: service!,
+                                    truckCategorys: truckCategorys!,
+                                  })
+                                }
                               >
                                 <Edit className="h-4 w-4 text-primary" />
                               </Button>
@@ -403,10 +405,7 @@ const ServiceDetailUpdateForm = ({
                   <Button variant="outline" type="button" disabled={isLoading}>
                     Hủy
                   </Button>
-                  <Button
-                    type="submit"
-                    className="relative"
-                  >
+                  <Button type="submit" className="relative">
                     {isPending ? (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <Loader className="animate-spin h-5 w-5 text-white" />
