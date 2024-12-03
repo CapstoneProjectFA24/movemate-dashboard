@@ -39,7 +39,6 @@ export async function getHousesSearchParams(
   return result.data;
 }
 
-
 export async function updateHouses(
   data: any,
   params: string
@@ -48,6 +47,21 @@ export async function updateHouses(
 
   const result = await apiRequest(() =>
     axiosAuth.put(`${SERVICES_URL.GET_HOUSE_TYPE}/${params}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/services_setting`);
+
+  return { success: true, data: undefined };
+}
+
+export async function createHouses(data: any): Promise<Result<void>> {
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.post(`${SERVICES_URL.GET_HOUSE_TYPE}`, data)
   );
   if (!result.success) {
     return { success: false, error: result.error };
