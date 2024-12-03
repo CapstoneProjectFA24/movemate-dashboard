@@ -9,7 +9,8 @@ import { UsersTable } from "./users-table";
 import { ApiListResponse } from "@/lib/api/api-handler/generic";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Users, Truck, Briefcase, LucideIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 interface UsersClientWrapperProps {
   initialData: {

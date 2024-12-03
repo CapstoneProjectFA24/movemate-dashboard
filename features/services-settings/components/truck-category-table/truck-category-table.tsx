@@ -1,32 +1,33 @@
 "use client";
 
 import * as React from "react";
-import { getUsersByRole } from "../../action/users";
+
 import { ApiListResponse } from "@/lib/api/api-handler/generic";
-import { IUser } from "../../types/user-type";
+
 import { ColumnDef } from "@tanstack/react-table";
-import { fetchUserTableColumnDefs } from "./user-table-column-def";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableSearchableColumn } from "@/types/table";
 import { generateColumnLabels } from "@/components/data-table/column-label-mapping";
+import { ITruckCategory } from "@/features/services/types/services-type";
+import { fetchTruckCategoryTableColumnDefs } from "./truck-category-column-def";
 
 interface TruckCategoryTableProps {
-  data: ApiListResponse<IUser>;
+  data: ApiListResponse<ITruckCategory>;
 }
 
-export function UsersTable({ data }: TruckCategoryTableProps) {
+export function TruckCategoryTable({ data }: TruckCategoryTableProps) {
   const { data: userData, pageCount } = data;
 
-  const columns = React.useMemo<ColumnDef<IUser, unknown>[]>(
-    () => fetchUserTableColumnDefs(),
+  const columns = React.useMemo<ColumnDef<ITruckCategory, unknown>[]>(
+    () => fetchTruckCategoryTableColumnDefs(),
     []
   );
-  const searchableColumns: DataTableSearchableColumn<IUser>[] = [
-    {
-      id: "name",
-      title: "Tên",
-    },
+  const searchableColumns: DataTableSearchableColumn<ITruckCategory>[] = [
+    // {
+    //   id: "categoryName",
+    //   title: "Tên",
+    // },
   ];
   const labels = generateColumnLabels(columns);
   const { dataTable } = useDataTable({
