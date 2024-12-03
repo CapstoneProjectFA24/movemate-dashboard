@@ -23,3 +23,18 @@ export async function getHouses(): Promise<ApiListResponse<IHouse>> {
   }
   return result.data;
 }
+export async function getHousesSearchParams(
+  searchParams: SearchParams
+): Promise<ApiListResponse<IHouse>> {
+  noStore();
+
+  const result = await fetchListData<IHouse>(
+    SERVICES_URL.GET_HOUSE_TYPE,
+    searchParams
+  );
+  if (!result.success) {
+    console.error("Failed to fetch housetypes:", result.error);
+    return { data: [], pageCount: 0, error: result.error };
+  }
+  return result.data;
+}

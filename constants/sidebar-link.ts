@@ -79,6 +79,12 @@ export const routes: Route[] = [
         activeIcon: FileCog,
       },
       {
+        label: "Cài đặt chung",
+        href: "/dashboard/services_setting",
+        icon: FileCog,
+        activeIcon: FileCog,
+      },
+      {
         label: "Tạo mới dịch vụ",
         href: "/dashboard/services/create_service",
         icon: BadgePlus,

@@ -1,4 +1,3 @@
-// app/users/page.tsx
 import { getUsersByRole } from "@/features/users/action/users";
 import { SearchParams } from "@/types/table";
 import { Shell } from "@/components/shared/custom-ui/shell";

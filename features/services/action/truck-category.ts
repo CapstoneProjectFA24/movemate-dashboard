@@ -27,3 +27,17 @@ export async function getTruckCategorys(): Promise<
   }
   return result.data;
 }
+export async function getTruckCategorysSearchParams(searchParams: SearchParams): Promise<
+  ApiListResponse<ITruckCategory>
+> {
+  noStore();
+  const result = await fetchListData<ITruckCategory>(
+    SERVICES_URL.GET_TRUCK_CATEGORY,
+    searchParams
+  );
+  if (!result.success) {
+    console.error("Failed to fetch truck categories:", result.error);
+    return { data: [], pageCount: 0, error: result.error };
+  }
+  return result.data;
+}
