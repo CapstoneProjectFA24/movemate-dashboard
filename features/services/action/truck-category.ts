@@ -8,6 +8,7 @@ import {
   ApiSingleResponse,
   apiRequest,
   fetchListData,
+  fetchSingleData,
 } from "@/lib/api/api-handler/generic";
 
 import { SearchParams } from "@/types/table";
@@ -27,9 +28,9 @@ export async function getTruckCategorys(): Promise<
   }
   return result.data;
 }
-export async function getTruckCategorysSearchParams(searchParams: SearchParams): Promise<
-  ApiListResponse<ITruckCategory>
-> {
+export async function getTruckCategorysSearchParams(
+  searchParams: SearchParams
+): Promise<ApiListResponse<ITruckCategory>> {
   noStore();
   const result = await fetchListData<ITruckCategory>(
     SERVICES_URL.GET_TRUCK_CATEGORY,
@@ -39,5 +40,19 @@ export async function getTruckCategorysSearchParams(searchParams: SearchParams):
     console.error("Failed to fetch truck categories:", result.error);
     return { data: [], pageCount: 0, error: result.error };
   }
+  return result.data;
+}
+
+export async function getTruckCategoryById(
+  params: string
+): Promise<ApiSingleResponse<ITruckCategory>> {
+  const result = await fetchSingleData<ITruckCategory>(
+    `${SERVICES_URL.GET_TRUCK_CATEGORY}/${params}`
+  );
+  if (!result.success) {
+    console.error("Failed to fetch detail truck categories:", result.error);
+    return { data: null, error: result.error };
+  }
+
   return result.data;
 }
