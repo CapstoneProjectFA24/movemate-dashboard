@@ -31,14 +31,15 @@ import {
   DragStartEvent,
 } from "@dnd-kit/core";
 import { Button } from "@/components/ui/button";
-import { completeReportAvailable, manualAssignedStaff } from "../../action/update-assignments";
+import {
+  completeReportAvailable,
+  manualAssignedStaff,
+} from "../../action/update-assignments";
 import { toast } from "sonner";
 import { CldOgImage } from "next-cloudinary";
 import { AssignmentSection } from "./modal-children/assignment-section";
 import StaffListSection from "./modal-children/staff-list-section";
 import StaffCardContent from "./modal-children/staff-card-content";
-
-
 
 export const ExceptionModal: React.FC = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -49,6 +50,11 @@ export const ExceptionModal: React.FC = () => {
   const [assignmentReviewers, setAssignmentReviewers] = useState<
     Record<string, IStaff | null>
   >({});
+
+  const [newAssignments, setNewAssignments] = useState<IAssignmentInBooking[]>(
+    []
+  );
+
   const [availableStaffInSlot, setAvailableStaffInSlot] = useState<IStaff[]>(
     []
   );
@@ -79,12 +85,40 @@ export const ExceptionModal: React.FC = () => {
   const staffData = typeStaffAssignment === "TRUCK" ? driverData : porterData;
   const isLoading = isLoadingDriver || isLoadingPorter;
 
-  const remainingStaffCount =
-    staffData?.data?.assignmentInBooking!.length! -
-    staffData?.data?.assignmentInBooking!.filter(staff => staff.status === 'FAILED').length!;
-  // console.log(remainingStaffCount)
+  const addNewAssignment = () => {
+    const newId = Date.now() + Math.floor(Math.random() * 1000);
+
+    const newAssignment: IAssignmentInBooking = {
+      id: newId,
+      bookingId: assignment?.bookingId,
+      staffType: typeStaffAssignment === "TRUCK" ? "DRIVER" : "PORTER",
+      status: "FAILED",
+      isResponsible: false,
+    };
+
+    // Add the new assignment to the list of assignments
+    setNewAssignments((prev) => [...prev, newAssignment]);
+  };
+
+
+  const hasExistingAssignments =
+    staffData?.data?.assignmentInBooking!.length! > 0;
+  const remainingStaffCount = hasExistingAssignments
+    ? staffData?.data?.assignmentInBooking!.length! -
+      staffData?.data?.assignmentInBooking!.filter(
+        (staff) => staff.status === "FAILED"
+      ).length!
+    : 0;
+
+  const maxNewAssignments =
+    staffData?.data?.bookingNeedStaffs! -
+    (hasExistingAssignments ? remainingStaffCount : 0);
+
+  const isCreateNewAssignments = newAssignments.length >= maxNewAssignments;
+
   // check valid to show button to confirm to resolve report
-  const canResolveReport = staffData?.data?.bookingNeedStaffs! <= remainingStaffCount;
+  const canResolveReport =
+    staffData?.data?.bookingNeedStaffs! <= remainingStaffCount;
   // console.log(canResolveReport)
 
   const handleCompleteReport = async () => {
@@ -92,7 +126,9 @@ export const ExceptionModal: React.FC = () => {
       setIsSubmitting(true);
       startTransition(async () => {
         try {
-          const result = await completeReportAvailable(assignment?.id.toString()!);
+          const result = await completeReportAvailable(
+            assignment?.id.toString()!
+          );
           if (!result.success) {
             toast.error(result.error);
             return;
@@ -106,7 +142,7 @@ export const ExceptionModal: React.FC = () => {
         }
       });
     }
-  }
+  };
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -142,6 +178,11 @@ export const ExceptionModal: React.FC = () => {
       const sourceAssignmentId = Object.entries(assignmentReviewers).find(
         ([_, staff]) => staff?.id === draggedStaffData.id
       )?.[0];
+
+      // Check if the target assignment is a new one
+      const isNewAssignment = newAssignments.some(
+        (assignment) => assignment.id === parseInt(targetAssignmentId)
+      );
 
       if (targetAssignmentId === sourceAssignmentId) {
         // Dropped on the same assignment, no changes needed
@@ -179,6 +220,16 @@ export const ExceptionModal: React.FC = () => {
         [targetAssignmentId]: draggedStaffData,
         [sourceAssignmentId!]: null,
       }));
+
+      if (isNewAssignment) {
+        setNewAssignments((prev) =>
+          prev.map((assignment) =>
+            assignment.id === parseInt(targetAssignmentId)
+              ? { ...assignment, assignedStaff: draggedStaffData }
+              : assignment
+          )
+        );
+      }
 
       // Add the previously assigned staff back to the appropriate available list
       if (sourceAssignmentId) {
@@ -231,6 +282,14 @@ export const ExceptionModal: React.FC = () => {
       [assignmentId]: null,
     }));
 
+    setNewAssignments((prev) =>
+      prev.map((assignment) =>
+        assignment.id === parseInt(assignmentId)
+          ? { ...assignment, assignedStaff: null }
+          : assignment
+      )
+    );
+
     // Đưa nhân viên trở lại danh sách phù hợp
     if (staffData?.data?.staffInSlot?.some((s) => s.id === staff.id)) {
       // Nếu nhân viên thuộc danh sách staffInSlot ban đầu
@@ -264,6 +323,7 @@ export const ExceptionModal: React.FC = () => {
     if (!isOpenModal) {
       setAssignmentReviewers({});
       setAvailableStaffInSlot([]);
+      setNewAssignments([]);
       setAvailableOtherStaffs([]);
       setActiveId(null);
       setDraggedStaff(null);
@@ -274,6 +334,7 @@ export const ExceptionModal: React.FC = () => {
     // Reset lại tất cả các state liên quan
     setActiveId(null);
     setDraggedStaff(null);
+    setNewAssignments([]);
     setAssignmentReviewers({});
     setAvailableStaffInSlot([]);
     setAvailableOtherStaffs([]);
@@ -341,6 +402,30 @@ export const ExceptionModal: React.FC = () => {
                 onConfirm={handleConfirmAssignment}
               />
             ))}
+
+            {newAssignments.map((assignment) => (
+              <AssignmentSection
+                key={assignment.id}
+                assignment={assignment}
+                setNewAssignments={setNewAssignments}
+                enalble={canResolveReport}
+                setLoadingKey={setLoadingKey}
+                assignedStaff={assignmentReviewers[assignment.id!] || null}
+                onUnassign={handleUnassign}
+                onConfirm={handleConfirmAssignment}
+                isCreateNew={true}
+              />
+            ))}
+
+            {!isCreateNewAssignments && (
+              <Button
+                onClick={addNewAssignment}
+                variant="action"
+                className="mb-4"
+              >
+                Thêm vùng chứa nhân viên
+              </Button>
+            )}
           </div>
 
           {/* Right Column - Available Staff */}
@@ -395,8 +480,9 @@ export const ExceptionModal: React.FC = () => {
                 <Package2 className="h-5 w-5" />
               )}
               <DialogTitle className="text-2xl font-semibold">
-                Kiểm tra {typeStaffAssignment === "TRUCK" ? "tài xế" : "bốc vác"}{" "}
-                gặp vấn đề
+                Kiểm tra{" "}
+                {typeStaffAssignment === "TRUCK" ? "tài xế" : "bốc vác"} gặp vấn
+                đề
               </DialogTitle>
             </div>
             {canResolveReport && (
@@ -415,7 +501,6 @@ export const ExceptionModal: React.FC = () => {
                 )}
               </Button>
             )}
-
           </div>
           <DialogDescription className="mt-2">
             <span>
