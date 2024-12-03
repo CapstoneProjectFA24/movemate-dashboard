@@ -17,6 +17,7 @@ export type ModalType =
   | "chatWithUserModal"
   | "checkAssignmentModal"
   | "exceptionModal"
+  | "createHouseModal"
 ;
 
 

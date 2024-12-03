@@ -64,7 +64,6 @@ export async function updateTruckCategory(
 ): Promise<Result<void>> {
   noStore();
 
-  console.log(data);
   const result = await apiRequest(() =>
     axiosAuth.put(`${SERVICES_URL.MANAGE_TRUCK_CATEGORY}/${params}`, data)
   );
@@ -79,7 +78,7 @@ export async function updateTruckCategory(
 
 export async function createTruckCategory(data: any): Promise<Result<void>> {
   noStore();
-console.log(data)
+
   const result = await apiRequest(() =>
     axiosAuth.post(SERVICES_URL.MANAGE_TRUCK_CATEGORY, data)
   );

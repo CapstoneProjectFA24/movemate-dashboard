@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { TruckCategoryTable } from "./truck-category-table/truck-category-table";
+import HouseSettings from "./house-setting/house-setting";
 
 interface ServicesSettingsClientWrapper {
   truckData: ApiListResponse<ITruckCategory>;
@@ -166,8 +167,7 @@ export function ServicesSettingsClientWrapper({
                       />
                     }
                   >
-                    {/* <UsersTable data={initialData[tab.value]} /> */}
-                    content house
+                    <HouseSettings data={housesData} />
                   </Suspense>
                 </div>
               </TabsContent>
