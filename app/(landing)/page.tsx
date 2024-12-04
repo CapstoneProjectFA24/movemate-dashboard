@@ -6,8 +6,7 @@ import { Reviews } from "@/components/shared/landing/reviews";
 import { Check, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import Head from 'next/head';
-
+import Head from "next/head";
 
 export default function Home() {
   return (
@@ -159,36 +158,60 @@ export default function Home() {
         </MaxWidthWrapper>
       </section>
 
-      <div className="text-center p-8">
-      <Head>
-        <title>Quy Trình Vận Chuyển</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-      </Head>
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">CHUYỂN NHÀ MOVEMATE GIẢI PHÁP VẬN CHUYỂN RẺ NHẤT THỊ TRƯỜNG</h1>
-      <h2 className="text-2xl font-bold text-red-600 mb-8">QUY TRÌNH VẬN CHUYỂN</h2>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="text-center">
-          <i className="fas fa-file-alt text-6xl text-red-600 mb-4"></i>
-          <h3 className="text-xl font-bold mb-2">BƯỚC 1: TIẾP NHẬN THÔNG TIN KHÁCH HÀNG</h3>
-          <p>Nhân viên tư vấn sẽ trao đổi với khách hàng để nắm bắt thông tin cá nhân, địa điểm chuyển đi và chuyển đến, số lượng hàng hóa, thời gian, khả năng chi để lên kế hoạch chi tiết.</p>
-        </div>
-        <div className="text-center">
-          <i className="fas fa-users text-6xl text-red-600 mb-4"></i>
-          <h3 className="text-xl font-bold mb-2">BƯỚC 2: KHẢO SÁT BÁO GIÁ & KÝ HỢP ĐỒNG</h3>
-          <p>Đội ngũ chuyên viên công ty đến hiện trường để khảo sát trực tiếp địa hình, khối lượng đồ dùng, báo giá chính xác cho khách hàng và tiến hành ký hợp đồng dịch vụ vận chuyển.</p>
-        </div>
-        <div className="text-center">
-          <i className="fas fa-truck-moving text-6xl text-red-600 mb-4"></i>
-          <h3 className="text-xl font-bold mb-2">BƯỚC 3: TRIỂN KHAI DỊCH VỤ VẬN CHUYỂN</h3>
-          <p>Nhân viên vận chuyển thực hiện công việc theo đúng tiến độ, thời gian đã thỏa thuận với Quý khách. Triển khai các hạng mục một cách nhanh chóng, đảm bảo an toàn, hạn chế tối đa rủi ro.</p>
-        </div>
-        <div className="text-center">
-          <i className="fas fa-hand-holding-usd text-6xl text-red-600 mb-4"></i>
-          <h3 className="text-xl font-bold mb-2">BƯỚC 4: NGHIỆM THU & THANH TOÁN</h3>
-          <p>Khi công việc vận chuyển hoàn thành, khách hàng và nhân viên công ty sẽ nghiệm thu, bàn giao công trình. Cuối cùng, hai bên sẽ tiến hành thanh lý hợp đồng dịch vụ vận chuyển.</p>
+      <div className="text-center p-8 grainy-dark dark:bg-gray-700 bg-slate-100">
+        <h2 className="order-1 mt-2 tracking-tight text-center text-balance !leading-tight font-bold text-3xl md:text-4xl text-gray-900 dark:text-gray-100">
+          CHUYỂN NHÀ MOVEMATE GIẢI PHÁP VẬN CHUYỂN RẺ NHẤT THỊ TRƯỜNG
+        </h2>
+        <h2 className="text-2xl font-bold text-orange-600 mb-8">
+          QUY TRÌNH VẬN CHUYỂN
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="text-center">
+            <i className="fas fa-file-alt text-6xl text-red-600 mb-4"></i>
+            <h3 className="text-xl font-bold mb-2">
+              BƯỚC 1: TIẾP NHẬN THÔNG TIN KHÁCH HÀNG
+            </h3>
+            <p>
+              Nhân viên tư vấn sẽ trao đổi với khách hàng để nắm bắt thông tin
+              cá nhân, địa điểm chuyển đi và chuyển đến, số lượng hàng hóa, thời
+              gian, khả năng chi để lên kế hoạch chi tiết.
+            </p>
+          </div>
+          <div className="text-center">
+            <i className="fas fa-users text-6xl text-red-600 mb-4"></i>
+            <h3 className="text-xl font-bold mb-2">
+              BƯỚC 2: KHẢO SÁT BÁO GIÁ & KÝ HỢP ĐỒNG
+            </h3>
+            <p>
+              Đội ngũ chuyên viên công ty đến hiện trường để khảo sát trực tiếp
+              địa hình, khối lượng đồ dùng, báo giá chính xác cho khách hàng và
+              tiến hành ký hợp đồng dịch vụ vận chuyển.
+            </p>
+          </div>
+          <div className="text-center">
+            <i className="fas fa-truck-moving text-6xl text-red-600 mb-4"></i>
+            <h3 className="text-xl font-bold mb-2">
+              BƯỚC 3: TRIỂN KHAI DỊCH VỤ VẬN CHUYỂN
+            </h3>
+            <p>
+              Nhân viên vận chuyển thực hiện công việc theo đúng tiến độ, thời
+              gian đã thỏa thuận với Quý khách. Triển khai các hạng mục một cách
+              nhanh chóng, đảm bảo an toàn, hạn chế tối đa rủi ro.
+            </p>
+          </div>
+          <div className="text-center">
+            <i className="fas fa-hand-holding-usd text-6xl text-red-600 mb-4"></i>
+            <h3 className="text-xl font-bold mb-2">
+              BƯỚC 4: NGHIỆM THU & THANH TOÁN
+            </h3>
+            <p>
+              Khi công việc vận chuyển hoàn thành, khách hàng và nhân viên công
+              ty sẽ nghiệm thu, bàn giao công trình. Cuối cùng, hai bên sẽ tiến
+              hành thanh lý hợp đồng dịch vụ vận chuyển.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
       {/* About the Project Section */}
       <section className="bg-slate-100 grainy-dark py-24 dark:bg-gray-700">
         <MaxWidthWrapper className="flex flex-col items-center gap-16 sm:gap-32">
@@ -207,8 +230,6 @@ export default function Home() {
               className="w-24 order-0 lg:order-2"
             />
           </div>
-          
-
 
           <div className="mx-auto grid max-w-2xl grid-cols-1 px-4 lg:mx-0 lg:max-w-none lg:grid-cols-2 gap-y-16">
             <div className="flex flex-auto flex-col gap-4 lg:pr-8 xl:pr-20">
