@@ -19,5 +19,6 @@ export const breadcrumbTranslations: { [key: string]: string } = {
   fee: "Quản lý phí",
   create_fees: "Tạo mới phí",
   services_setting: "Quản lý các loại setting",
-  create_truck_category: "Tạo mới loại xe"
+  create_truck_category: "Tạo mới loại xe",
+  promotions: "Danh sách khuyến mãi",
 };
