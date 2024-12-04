@@ -45,7 +45,7 @@ MoveMate là ứng dụng giúp bạn dễ dàng dọn dẹp và vận chuyển 
 
 ### Yêu Cầu
 
-- Node.js v14 hoặc mới hơn
+- nextjs v14 hoặc mới hơn
 - npm hoặc yarn
 - Tài khoản Firebase
 
@@ -69,7 +69,6 @@ NODE_ENV=
 CLOUDINARY_URL=
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
 
-# NEXT_AUTH
 NEXTAUTH_SECRET= 
 
 GOOGLE_CLIENT_ID=
@@ -82,7 +81,7 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
-Truy cập vào http://localhost:3000 để xem ứng dụng.
+Truy cập vào https://movemate-dashboard.vercel.app/ để xem ứng dụng.
 
 📝 Hướng Dẫn Sử Dụng
 Đăng Ký / Đăng Nhập: Tạo tài khoản hoặc đăng nhập vào MoveMate.
