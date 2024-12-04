@@ -93,7 +93,7 @@ export function ManageShiftGroupClientWrapper({
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
-        className="w-64 min-h-screen "
+        className="w-66 min-h-screen mt-6 "
       >
         <Card>
           <CardContent>
@@ -104,9 +104,17 @@ export function ManageShiftGroupClientWrapper({
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="flex items-center px-4 py-3 rounded-md text-left   "
+                    className={`flex items-start justify-start px-4 py-3 rounded-md text-left hover:bg-orange-400 focus:bg-orange-400 ${
+                      activeTab === tab.value
+                        ? "bg-orange-400 font-medium"
+                        : "font-normal"
+                    }`}
                   >
-                    <Icon className={`mr-3 h-5 w-5 ${tab.color}`} />
+                    <Icon
+                      className={`mr-3 h-5 w-5 ${
+                        activeTab === tab.value ? tab.color : "text-gray-500"
+                      }`}
+                    />
                     <span className="text-sm font-medium">{tab.label}</span>
                   </TabsTrigger>
                 );
@@ -123,7 +131,7 @@ export function ManageShiftGroupClientWrapper({
             <Tabs value={activeTab} onValueChange={handleTabChange}>
               <TabsContent
                 value={TABS_VALUE.SHIFT}
-                className="m-0 min-h-[500px]"
+                className="m-0 min-h-[320px]"
               >
                 <div className="p-4">
                   <Suspense
@@ -143,7 +151,7 @@ export function ManageShiftGroupClientWrapper({
                       />
                     }
                   >
-                    <MangageShift />
+                    <MangageShift shiftData={shiftData} />
                   </Suspense>
                 </div>
               </TabsContent>

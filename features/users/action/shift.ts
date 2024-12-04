@@ -25,6 +25,37 @@ export async function getShift(): Promise<ApiListResponse<IShift>> {
   }
   return result.data;
 }
+
+export async function createShift(data: any): Promise<Result<void>> {
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.post(`${MANAGE_SCHEDULE_URL.SCHEDULEWORKINGS}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/users/manage_shift`);
+
+  return { success: true, data: undefined };
+}
+
+export async function deleteShift(params: string): Promise<Result<void>>{
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.delete(`${MANAGE_SCHEDULE_URL.SCHEDULEWORKINGS}/${params}`)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/users/manage_shift`);
+
+  return { success: true, data: undefined };
+}
+
 // export async function getHousesSearchParams(
 //   searchParams: SearchParams
 // ): Promise<ApiListResponse<IHouse>> {
