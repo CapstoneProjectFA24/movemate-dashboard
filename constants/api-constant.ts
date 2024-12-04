@@ -37,3 +37,9 @@ export const FEE_URL = {
   GET_FEES : "/fees/system",
   FEES: "/FEES"
 }
+
+
+export const MANAGE_SCHEDULE_URL = {
+  SCHEDULEWORKINGS : "/scheduleworkings",
+  GROUP: "/groups"
+}

@@ -10,8 +10,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import { Clock, CalendarIcon, Trash2, Plus } from "lucide-react";
+import { Clock, Trash2, Plus } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import {
@@ -21,19 +20,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
 
 interface Shift {
   id: number;
   shiftName: string;
-  workDates: Date[];
   startTime: string | null;
   endTime: string | null;
 }
@@ -143,9 +135,8 @@ const TimePickerDialog = ({
   );
 };
 
-const ServiceSchedule: React.FC = () => {
+const MangageShift: React.FC = () => {
   const [shiftName, setShiftName] = useState("");
-  const [workDates, setWorkDates] = useState<Date[]>([]);
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -153,21 +144,19 @@ const ServiceSchedule: React.FC = () => {
     {
       id: 1,
       shiftName: "Ca sáng",
-      workDates: [new Date()],
       startTime: "08:00",
       endTime: "12:00",
     },
     {
       id: 2,
       shiftName: "Ca chiều",
-      workDates: [new Date()],
       startTime: "13:00",
       endTime: "17:00",
     },
   ]);
 
   const handleSave = () => {
-    if (!shiftName || workDates.length === 0 || !startTime || !endTime) {
+    if (!shiftName || !startTime || !endTime) {
       setError("Vui lòng điền đầy đủ thông tin ca làm việc.");
       return;
     }
@@ -175,14 +164,12 @@ const ServiceSchedule: React.FC = () => {
     const newShift: Shift = {
       id: Date.now(),
       shiftName,
-      workDates,
       startTime,
       endTime,
     };
 
     setShifts((prev) => [...prev, newShift]);
     setShiftName("");
-    setWorkDates([]);
     setStartTime(null);
     setEndTime(null);
     setError(null);
@@ -190,34 +177,6 @@ const ServiceSchedule: React.FC = () => {
 
   const handleDelete = (id: number) => {
     setShifts((prev) => prev.filter((shift) => shift.id !== id));
-  };
-
-  const handleDateSelect = (dates: Date[] | undefined) => {
-    setWorkDates(dates || []);
-  };
-
-  const formatSelectedDates = (dates: Date[]) => {
-    if (dates.length === 0) return "Chọn ngày";
-    if (dates.length === 1) {
-      return format(dates[0], "dd/MM/yyyy", { locale: vi });
-    }
-    return `${format(dates[0], "dd/MM/yyyy", { locale: vi })} - ${format(
-      dates[dates.length - 1],
-      "dd/MM/yyyy",
-      { locale: vi }
-    )}`;
-  };
-
-  const formatDateRange = (dates: Date[]) => {
-    if (dates.length === 0) return "";
-    if (dates.length === 1) {
-      return format(dates[0], "dd/MM/yyyy", { locale: vi });
-    }
-    return `${format(dates[0], "dd/MM/yyyy", { locale: vi })} - ${format(
-      dates[dates.length - 1],
-      "dd/MM/yyyy",
-      { locale: vi }
-    )}`;
   };
 
   return (
@@ -251,37 +210,6 @@ const ServiceSchedule: React.FC = () => {
                 onChange={(e) => setShiftName(e.target.value)}
                 className="focus:ring-2 focus:ring-orange-500"
               />
-            </div>
-
-            {/* Ngày làm việc với Calendar của Shadcn */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Ngày làm việc
-              </label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !workDates && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formatSelectedDates(workDates)}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    initialFocus
-                    mode="multiple"
-                    selected={workDates}
-                    onSelect={handleDateSelect}
-                    numberOfMonths={1}
-                    locale={vi}
-                  />
-                </PopoverContent>
-              </Popover>
             </div>
 
             {/* Thời gian */}
@@ -338,10 +266,6 @@ const ServiceSchedule: React.FC = () => {
                       </h3>
                       <div className="space-y-2">
                         <p className="text-sm text-gray-600 flex items-center gap-2">
-                          <CalendarIcon className="w-4 h-4" />
-                          <span>{formatDateRange(shift.workDates)}</span>
-                        </p>
-                        <p className="text-sm text-gray-600 flex items-center gap-2">
                           <Clock className="w-4 h-4" />
                           <span>
                             {shift.startTime} - {shift.endTime}
@@ -367,4 +291,4 @@ const ServiceSchedule: React.FC = () => {
   );
 };
 
-export default ServiceSchedule;
+export default MangageShift;

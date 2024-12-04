@@ -23,10 +23,10 @@ export async function getCheckAvailableDriver(
     `${ASSIGNMENT_URL.CHECK_DRIVER_ASSIGNMENT}/${params}`
   );
   if (!result.success) {
-    console.error(
-      "Failed to fetch CHECK_DRIVER_ASSIGNMENT by ID:",
-      result.error
-    );
+    // console.error(
+    //   "Failed to fetch CHECK_DRIVER_ASSIGNMENT by ID:",
+    //   result.error
+    // );
     return { data: null };
   }
 
@@ -41,10 +41,10 @@ export async function getCheckAvailablePorter(
     `${ASSIGNMENT_URL.CHECK_PORTER_ASSIGNMENT}/${params}`
   );
   if (!result.success) {
-    console.error(
-      "Failed to fetch CHECK_PORTER_ASSIGNMENT by ID:",
-      result.error
-    );
+    // console.error(
+    //   "Failed to fetch CHECK_PORTER_ASSIGNMENT by ID:",
+    //   result.error
+    // );
     return { data: null };
   }
 
