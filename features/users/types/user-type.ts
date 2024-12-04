@@ -7,6 +7,7 @@ export type IUser = {
   email: string;
   isDeleted: boolean;
   avatarUrl?: string;
+  groupId?:string
 };
 
 export enum UserRole {

@@ -5,6 +5,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -14,6 +19,7 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { useModal } from "@/hooks/use-modal";
 import { useGetOrCreateStaffConversation } from "@/features/chat-realtime/react-query/query";
 import { useSession } from "next-auth/react";
+import { useGetGroup } from "@/features/users/react-query/query";
 
 interface ActionMenuProps {
   row: Row<IUser>;
@@ -22,8 +28,10 @@ interface ActionMenuProps {
 const ActionMenu = ({ row }: ActionMenuProps) => {
   const { onOpen } = useModal();
   const { data: session } = useSession();
-  
-  const { mutateAsync: getOrCreateConversation} =
+
+  //   const { data: groups, isLoading } = useGetGroup();
+  // console.log(groups)
+  const { mutateAsync: getOrCreateConversation } =
     useGetOrCreateStaffConversation(
       session?.user.id.toString()!,
       session?.user.roleName.toLowerCase()!,
@@ -31,18 +39,14 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
       row.original.roleName.toLowerCase()
     );
 
-  const handleContact =  () => {
-     getOrCreateConversation();
+  const handleContact = () => {
+    getOrCreateConversation();
 
     onOpen("chatWithStaffModal", { user: row.original });
   };
 
   const handleView = () => {
     console.log("View user details:", row.original);
-  };
-
-  const handleEdit = () => {
-    console.log("Edit user:", row.original);
   };
 
   const handleDelete = () => {
@@ -74,22 +78,42 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          // onSelect={handleContact}
           onClick={handleContact}
-          // onClick={() => onOpen("chatWithStaffModal", {user: row.original})}
           className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
         >
           <Contact className="mr-2 h-4 w-4 text-green-500" />
           <span>Liên hệ</span>
         </DropdownMenuItem>
 
-        <DropdownMenuItem
-          onSelect={handleEdit}
-          className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
-        >
-          <Edit className="mr-2 h-4 w-4 text-yellow-500" />
-          <span>Chỉnh sửa</span>
-        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Phân tổ</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuRadioGroup value={row.original.groupId}>
+              {["1", "2"].map((group) => {
+                return (
+                  <DropdownMenuRadioItem
+                    key={group}
+                    value={group}
+                    className="capitalize"
+                  >
+                    {group}
+                  </DropdownMenuRadioItem>
+                );
+              })}
+              {/* {groups?.data.map((group) => {
+                return (
+                  <DropdownMenuRadioItem
+                    key={group.id.toString()}
+                    value={group.id.toString()}
+                    className="capitalize"
+                  >
+                    {group.name}
+                  </DropdownMenuRadioItem>
+                );
+              })} */}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
 
         <DropdownMenuItem
           onSelect={handleDelete}

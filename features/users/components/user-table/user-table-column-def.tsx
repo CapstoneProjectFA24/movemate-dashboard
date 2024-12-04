@@ -12,6 +12,7 @@ import phoneColumn from "./column/phone-column";
 import roleNameColumn from "./column/role-column";
 
 import actionColumn from "./column/action-column";
+import groupIdColumn from "./column/groupid-column";
 
 export function fetchUserTableColumnDefs(): ColumnDef<IUser, unknown>[] {
   return [
@@ -21,6 +22,7 @@ export function fetchUserTableColumnDefs(): ColumnDef<IUser, unknown>[] {
     nameColumn,
     emailColumn,
     phoneColumn,
+    groupIdColumn,
     roleNameColumn,
     actionColumn,
   ];

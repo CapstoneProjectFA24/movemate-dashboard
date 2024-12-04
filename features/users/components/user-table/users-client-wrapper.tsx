@@ -109,40 +109,45 @@ export function UsersClientWrapper({ initialData }: UsersClientWrapperProps) {
 
   return (
     <div className="container mx-auto  min-h-screen">
-      <div className="flex gap-6">
-      <div className="w-1/3 space-y-8">
-      <Card className="bg-gradient-to-r from-primary-500 to-secondary-500 text-primary-foreground">
-        <CardHeader className="pb-4 space-y-2">
-          <CardTitle className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Quản lý Nhân viên
-          </CardTitle>
-          <p className="text-lg md:text-xl">
-            {currentTab?.description}
-          </p>
-        </CardHeader>
-      </Card>
-      <Card>
-        <CardContent className="space-y-6">
-          {stats.map((stat, index) => (
-            <div key={index} className="flex justify-between items-center py-4 border-b last:border-b-0">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">{stat.label}</p>
-                <div className="text-3xl md:text-4xl font-extrabold">
-                  {stat.value}
+      <div className="flex gap-6 flex-col ">
+        <div className=" space-y-8">
+          <Card className="bg-gradient-to-r from-primary-500 to-secondary-500 text-primary-foreground">
+            <CardHeader className="pb-4 space-y-2">
+              <CardTitle className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                Quản lý Nhân viên
+              </CardTitle>
+              <p className="text-lg md:text-xl">{currentTab?.description}</p>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardContent className="grid grid-cols-3 gap-4">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center py-4 border-b last:border-b-0"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground mb-1">
+                      {stat.label}
+                    </p>
+                    <div className="text-3xl md:text-4xl font-extrabold">
+                      {stat.value}
+                    </div>
+                  </div>
+                  <div className="bg-primary-100 dark:bg-primary-900/20 rounded-xl p-2">
+                    {currentTab && (
+                      <currentTab.icon
+                        className={`h-6 w-6 ${currentTab.color}`}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="bg-primary-100 dark:bg-primary-900/20 rounded-xl p-2">
-                {currentTab && (
-                  <currentTab.icon className={`h-6 w-6 ${currentTab.color}`}/>
-                )}
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
 
-        <div className="w-2/3">
+        <div className="">
           <Card className="h-full">
             <CardContent className="p-0">
               <Tabs
