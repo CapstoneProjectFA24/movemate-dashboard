@@ -1,4 +1,3 @@
-import ServiceShift from "@/components/modals/manage-shift";
 import React, { Suspense } from "react";
 import { Shell } from "@/components/shared/custom-ui/shell";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
