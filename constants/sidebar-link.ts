@@ -58,6 +58,12 @@ export const routes: Route[] = [
         icon: FaUserPen,
         activeIcon: FaUserCheck,
       },
+      {
+        label: "Quản lý ca làm việc",
+        href: "/dashboard/users/manage_shift",
+        icon: FaCalendarPlus,
+        activeIcon: FaCalendarPlus,
+      },
     ],
   },
   {
@@ -126,12 +132,7 @@ export const routes: Route[] = [
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
       },
-      {
-        label: "Tạo ca làm việc",
-        href: "/dashboard/schedule/create_shift",
-        icon: FaCalendarPlus,
-        activeIcon: FaCalendarPlus,
-      },
+
       {
         label: "Tạo tổ",
         href: "/dashboard/schedule/create_team",
