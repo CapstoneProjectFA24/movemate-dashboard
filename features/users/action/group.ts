@@ -23,66 +23,51 @@ export async function getGroup(): Promise<ApiListResponse<IGroup>> {
   }
   return result.data;
 }
-// export async function getHousesSearchParams(
-//   searchParams: SearchParams
-// ): Promise<ApiListResponse<IHouse>> {
-//   noStore();
 
-//   const result = await fetchListData<IHouse>(
-//     SERVICES_URL.GET_HOUSE_TYPE,
-//     searchParams
-//   );
-//   if (!result.success) {
-//     console.error("Failed to fetch housetypes:", result.error);
-//     return { data: [], pageCount: 0, error: result.error };
-//   }
-//   return result.data;
-// }
+export async function updateGroup(
+  data: any,
+  params: string
+): Promise<Result<void>> {
+  noStore();
 
-// export async function updateHouses(
-//   data: any,
-//   params: string
-// ): Promise<Result<void>> {
-//   noStore();
+  const result = await apiRequest(() =>
+    axiosAuth.put(`${MANAGE_SCHEDULE_URL.GROUP}/${params}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
 
-//   const result = await apiRequest(() =>
-//     axiosAuth.put(`${SERVICES_URL.GET_HOUSE_TYPE}/${params}`, data)
-//   );
-//   if (!result.success) {
-//     return { success: false, error: result.error };
-//   }
+  revalidatePath(`/dashboard/users/manage_shift`);
 
-//   revalidatePath(`/dashboard/services_setting`);
+  return { success: true, data: undefined };
+}
 
-//   return { success: true, data: undefined };
-// }
+export async function createGroup(data: any): Promise<Result<void>> {
+  noStore();
 
-// export async function createHouses(data: any): Promise<Result<void>> {
-//   noStore();
+  const result = await apiRequest(() =>
+    axiosAuth.post(`${MANAGE_SCHEDULE_URL.GROUP}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
 
-//   const result = await apiRequest(() =>
-//     axiosAuth.post(`${SERVICES_URL.GET_HOUSE_TYPE}`, data)
-//   );
-//   if (!result.success) {
-//     return { success: false, error: result.error };
-//   }
+  revalidatePath(`/dashboard/users/manage_shift`);
 
-//   revalidatePath(`/dashboard/services_setting`);
+  return { success: true, data: undefined };
+}
 
-//   return { success: true, data: undefined };
-// }
+export async function deleteGroup(params: string): Promise<Result<void>> {
+  noStore();
 
-// export async function deleteHouse(params: string): Promise<Result<void>>{
-//   noStore();
+  const result = await apiRequest(() =>
+    axiosAuth.delete(`${MANAGE_SCHEDULE_URL.GROUP}/${params}`)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
 
-//   const result = await apiRequest(() =>
-//     axiosAuth.delete(`${SERVICES_URL.GET_HOUSE_TYPE}/${params}`)
-//   );
-//   if (!result.success) {
-//     return { success: false, error: result.error };
-//   }
+  revalidatePath(`/dashboard/users/manage_shift`);
 
-//   revalidatePath(`/dashboard/services_setting`);
-
-//   return { success: true, data: undefined };
-// }
+  return { success: true, data: undefined };
+}

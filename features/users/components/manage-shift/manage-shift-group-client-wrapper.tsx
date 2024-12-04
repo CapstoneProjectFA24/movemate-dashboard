@@ -16,6 +16,7 @@ import { House, LucideIcon, Truck } from "lucide-react";
 import { IShift } from "../../types/shift-type";
 import { IGroup } from "../../types/group-type";
 import MangageShift from "./manage-shift";
+import ManageGroup from "./manage-group";
 
 interface ManageShiftGroupClientWrapperProps {
   shiftData: ApiListResponse<IShift>;
@@ -177,7 +178,7 @@ export function ManageShiftGroupClientWrapper({
                       />
                     }
                   >
-                    <div>Content for Group Management here</div>
+                    <ManageGroup groupData={groupData} />
                   </Suspense>
                 </div>
               </TabsContent>
