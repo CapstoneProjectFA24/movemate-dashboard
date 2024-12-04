@@ -33,6 +33,10 @@ import {
 // import { useRouter } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { IFee } from "@/features/fee/types/fee-type";
+import { useState, useTransition } from "react";
+import AlertModal from "@/components/modals/alert-modal";
+import { deleteFee } from "@/features/fee/actions/delete-fee";
+import { toast } from "sonner";
 const statusOptions = [
   {
     value: "active",
@@ -55,56 +59,76 @@ interface ActionMenuProps {
 const ActionMenu = ({ row }: ActionMenuProps) => {
   const currentStatus = row.original.isActived ? "active" : "inactive";
   const router = useRouter();
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          aria-label="Open menu"
-          variant="ghost"
-          className="flex size-8 p-0 data-[state=open]:bg-muted"
-        >
-          <DotsHorizontalIcon className="size-4" aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem
-          onClick={() => {
-            router.push(`/dashboard/fee/${row.original.id}`);
-          }}
-        >
-          <span>Chi tiết</span>
-          <Edit className="ml-auto h-4 w-4" />
-        </DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <div className="flex items-center">
-              <span>Chuyển trạng thái</span>
-            </div>
-          </DropdownMenuSubTrigger>
-        </DropdownMenuSub>
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            // startTransition(() => {
-            //   row.toggleSelected(false);
-            //   toast.promise(
-            //     deleteAuction(row.original.auctionId.toString()),
-            //     {
-            //       loading: "Deleting...",
-            //       success: () => "Auction deleted successfully.",
-            //       // error: (err: unknown) => catchError(err),
-            //       error: () => "Dellete error",
-            //     }
-            //   );
-            // });
-          }}
-        >
-          Xóa
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      startTransition(async () => {
+        const result = await deleteFee(row.original.id.toString()!);
+
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          toast.success("Xóa thành công.");
+          router.push(`/dashboard/fee`);
+        }
+      });
+    } catch (error: any) {
+      toast.error("Đã có lỗi.");
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
+  return (
+    <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        variant="danger"
+        onConfirm={onDelete}
+        loading={loading}
+        title="Xóa loại phí"
+        description="Bạn có chắc chắn muốn xóa loại phí này không?"
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            aria-label="Open menu"
+            variant="ghost"
+            className="flex size-8 p-0 data-[state=open]:bg-muted"
+          >
+            <DotsHorizontalIcon className="size-4" aria-hidden="true" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[160px]">
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(`/dashboard/fee/${row.original.id}`);
+            }}
+          >
+            <span>Chi tiết</span>
+            <Edit className="ml-auto h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <div className="flex items-center">
+                <span>Chuyển trạng thái</span>
+              </div>
+            </DropdownMenuSubTrigger>
+          </DropdownMenuSub>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setOpen(true)}>
+            Xóa
+            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };
 
