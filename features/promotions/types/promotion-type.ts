@@ -11,4 +11,4 @@ export type IPromotion = {
   requireMin?: number;
   discountMin?: number;
   // vouchers : list...
-};
+} | null;
