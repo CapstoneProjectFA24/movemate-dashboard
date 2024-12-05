@@ -19,6 +19,7 @@ export const BOOKING_URL = {
   UPDATE_DETAILS_STATUS: "/bookingdetails/reviewer/update-status",
   UPDATE_BOOKING_STATUS: "/bookings/reviewer/update-booking",
   UPDATE_BOOKING_SCHEDULE: "/bookings/reviewer/review-at",
+  REFUND: "/bookingtrackers"
 };
 
 
