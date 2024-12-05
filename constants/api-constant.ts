@@ -43,3 +43,8 @@ export const MANAGE_SCHEDULE_URL = {
   SCHEDULEWORKINGS : "/scheduleworkings",
   GROUP: "/groups"
 }
+
+
+export const PROMOTION = {
+  PROMOTIONS: "/promotions"
+}

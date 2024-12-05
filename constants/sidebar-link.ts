@@ -25,6 +25,7 @@ import { Settings, User, BadgePlus, FileCog } from "lucide-react";
 import { FaMailchimp, FaUserPen } from "react-icons/fa6";
 import { TbBrandBooking } from "react-icons/tb";
 import { UserRole } from "@/lib/enums/user-role-enum";
+import { FaGifts } from "react-icons/fa";
 import { MdSettings, MdSettingsApplications } from "react-icons/md";
 export interface Route {
   label: string;
@@ -132,13 +133,6 @@ export const routes: Route[] = [
         icon: FaRegListAlt,
         activeIcon: FaListAlt,
       },
-
-      {
-        label: "Tạo tổ",
-        href: "/dashboard/schedule/create_team",
-        icon: FaUserPlus,
-        activeIcon: FaUserPlus,
-      },
     ],
   },
   {
@@ -146,6 +140,13 @@ export const routes: Route[] = [
     icon: GrTransaction,
     activeIcon: GrTransaction,
     href: "/dashboard/transactions",
+    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+  },
+  {
+    label: "Danh sách khuyến mãi",
+    icon: FaGifts,
+    activeIcon: FaGifts,
+    href: "/dashboard/promotions",
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
   {
