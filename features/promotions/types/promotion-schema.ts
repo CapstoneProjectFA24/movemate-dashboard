@@ -6,9 +6,7 @@ export const promotionSchema = z
     quantity: z.number(),
     price: z.number(),
     description: z.string(),
-    startDate: z.date().refine((date) => date !== null && date >= new Date(), {
-      message: "Vui lòng không chọn ngày trong quá khứ",
-    }),
+    startDate: z.date(),
 
     endDate: z.date(),
     endDateInValid: z.any().nullish(),
