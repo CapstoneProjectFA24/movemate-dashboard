@@ -64,7 +64,7 @@ export function PromotionsTable({ promotionsPromise }: PromotionsTableProps) {
         columns={columns}
         searchableColumns={searchableColumns}
         filterableColumns={filterableColumns}
-        newRowLink="/dashboard/services/create_service"
+        newRowLink="/dashboard/promotions/create_promotion"
         columnLabels={labels}
       />
     </div>

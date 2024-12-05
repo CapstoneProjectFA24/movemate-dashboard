@@ -1,6 +1,9 @@
 "use client";
-import { ITruckCategory } from "@/features/services/types/services-type";
-import React, { useState, useTransition } from "react";
+import {
+  IService,
+  ITruckCategory,
+} from "@/features/services/types/services-type";
+import React, { useEffect, useState, useTransition } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import FormFieldCustom from "@/components/form/form-field";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,10 +33,10 @@ import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import {
-  createTruckCategory,
-  deleteTruckCategory,
-  updateTruckCategory,
-} from "@/features/services/action/truck-category";
+  createPromotion,
+  deletePromtion,
+  updatePromotion,
+} from "@/features/promotions/actions/promotions";
 import AlertModal from "@/components/modals/alert-modal";
 import { Input } from "@/components/ui/input";
 import { IPromotion } from "../../types/promotion-type";
@@ -43,12 +52,20 @@ import { adjustTimeZoneOffset } from "@/hooks/use-countdown-time";
 export type PromotionFormValue = z.infer<typeof promotionSchema>;
 interface PromotionFormProps {
   initialData: IPromotion | null;
+  services: IService[] | null;
+}
+interface FilteredService {
+  id: number;
+  name: string;
 }
 
-const PromotionForm = ({ initialData }: PromotionFormProps) => {
+const PromotionForm = ({ initialData, services }: PromotionFormProps) => {
   const params = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [filteredServices, setFilteredServices] = useState<FilteredService[]>(
+    []
+  );
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const title = initialData ? "Chỉnh sửa khuyến mãi" : "Tạo mới khuyến mãi";
@@ -89,68 +106,85 @@ const PromotionForm = ({ initialData }: PromotionFormProps) => {
     defaultValues,
   });
 
+  useEffect(() => {
+    const filteredChildrenServices = services?.reduce<FilteredService[]>(
+      (acc, service) => {
+        acc.push(
+          ...service.inverseParentService.map((child) => ({
+            id: child.id,
+            name: child.name,
+          }))
+        );
+        return acc;
+      },
+      []
+    );
+    setFilteredServices(filteredChildrenServices!);
+  }, [services]);
+
   const onSubmit = async (data: PromotionFormValue) => {
     const startDateFormat = adjustTimeZoneOffset(data.startDate, 7);
     const endDateFormat = adjustTimeZoneOffset(data.endDate, 7);
     const value = {
       ...data,
+      isPublic: true,
       startDate: startDateFormat,
       endDate: endDateFormat,
     };
-    console.log(value);
-    // try {
-    //   if (initialData) {
-    //     startTransition(async () => {
-    //       const result = await updateTruckCategory(
-    //         data,
-    //         params.truckCategoryId.toString()
-    //       );
-    //       if (!result.success) {
-    //         toast.error(result.error);
-    //       } else {
-    //         toast.success(toastMessage);
-    //       }
-    //     });
-    //   } else {
-    //     startTransition(async () => {
-    //       const result = await createTruckCategory(data);
-    //       if (!result.success) {
-    //         toast.error(result.error);
-    //       } else {
-    //         toast.success(toastMessage);
-    //       }
-    //     });
-    //     form.reset();
-    //   }
-    // } catch (error: any) {
-    //   toast.error("Đã có lỗi.", error);
-    // } finally {
-    //   setLoading(false);
-    // }
+    // console.log(value);
+    try {
+      if (initialData) {
+        startTransition(async () => {
+          const result = await updatePromotion(
+            data,
+            params.promotionId.toString()
+          );
+          if (!result.success) {
+            toast.error(result.error);
+          } else {
+            toast.success(toastMessage);
+          }
+        });
+      } else {
+        startTransition(async () => {
+          const result = await createPromotion(data);
+          if (!result.success) {
+            toast.error(result.error);
+          } else {
+            toast.success(toastMessage);
+          }
+        });
+        form.reset();
+      }
+    } catch (error: any) {
+      toast.error("Đã có lỗi.", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onDelete = async () => {
-    // if (initialData)
-    //   try {
-    //     setLoading(true);
-    //     startTransition(async () => {
-    //       const result = await deleteTruckCategory(
-    //         params.truckCategoryId.toString()
-    //       );
-    //       if (!result.success) {
-    //         toast.error(result.error);
-    //       } else {
-    //         toast.success("Xóa thành công.");
-    //         router.push(`/dashboard/services_setting`);
-    //       }
-    //     });
-    //   } catch (error: any) {
-    //     toast.error("Đã có lỗi.");
-    //   } finally {
-    //     setLoading(false);
-    //     setOpen(false);
-    //   }
-    // else return;
+    if (initialData)
+      try {
+        setLoading(true);
+        startTransition(async () => {
+          const result = await deletePromtion(
+            params.promotionId.toString()
+          );
+          if (!result.success) {
+            toast.error(result.error);
+          } else {
+            toast.success("Xóa thành công.");
+            router.push(`/dashboard/promotions`);
+          }
+        });
+      } catch (error: any) {
+        toast.error("Đã có lỗi.");
+      } finally {
+        setLoading(false);
+        setOpen(false);
+      }
+    else return;
   };
 
   const isLoading = form.formState.isSubmitting;
@@ -255,7 +289,42 @@ const PromotionForm = ({ initialData }: PromotionFormProps) => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 space-x-4 p-4">
+                <div className="grid grid-cols-3 space-x-4 p-4">
+                  <FormField
+                    control={form.control}
+                    name="serviceId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Dịch vụ</FormLabel>
+                        <Select
+                          onValueChange={(value) =>
+                            field.onChange(Number(value))
+                          }
+                          defaultValue={field.value?.toString()}
+                          value={
+                            field.value === 0 ? "" : field.value?.toString()
+                          }
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Chọn dịch vụ" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {filteredServices?.map((service) => (
+                              <SelectItem
+                                key={service.id}
+                                value={service.id.toString()}
+                              >
+                                {service.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
                     control={form.control}
                     name="quantity"
@@ -300,18 +369,6 @@ const PromotionForm = ({ initialData }: PromotionFormProps) => {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 space-x-4 p-4">
-                  <FormFieldCustom
-                    control={form.control}
-                    name="serviceId"
-                    label="Tên dịch vụ"
-                    placeholder="Nhập tên dịch vụ..."
-                    min={1}
-                    // disabled={loading || !canReview}
-                    className="w-full"
-                  />
-                </div>
-
                 <FormField
                   control={form.control}
                   name="description"
@@ -320,7 +377,7 @@ const PromotionForm = ({ initialData }: PromotionFormProps) => {
                       <FormLabel>Mô tả</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Mô tả chi tiết về loại xe"
+                          placeholder="Mô tả chi tiết về khuyến mãi"
                           className="h-32"
                           {...field}
                         />
