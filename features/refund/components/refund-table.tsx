@@ -23,6 +23,7 @@ import { Clock, PlusCircle } from "lucide-react";
 import { fetchRefundTableColumnDefs } from "./refund-table-column-def";
 import { IRefund } from "../types/refund-type";
 import { getRefunds } from "../actions/refund";
+import { RefundTypeName, StatusTrackerTypeName } from "../enums/refund-enums";
 
 interface RefundTableProps {
   refundPromise: ReturnType<typeof getRefunds>;
@@ -38,9 +39,31 @@ export function RefundTable({ refundPromise }: RefundTableProps) {
 
   const labels = generateColumnLabels(columns);
 
-  const searchableColumns: DataTableSearchableColumn<IRefund>[] = [];
+  const searchableColumns: DataTableSearchableColumn<IRefund>[] = [
+    {
+      id: "owner",
+      title: "Tìm kiếm",
+    },
+  ];
 
-  const filterableColumns: DataTableFilterableColumn<IRefund>[] = [];
+  const filterableColumns: DataTableFilterableColumn<IRefund>[] = [
+    {
+      id: "type",
+      title: "Loại yêu cầu",
+      options: Object.entries(RefundTypeName).map(([value, label]) => ({
+        label,
+        value,
+      })),
+    },
+    {
+      id: "status",
+      title: "Trạng thái",
+      options: Object.entries(StatusTrackerTypeName).map(([value, label]) => ({
+        label,
+        value,
+      })),
+    },
+  ];
 
   const { dataTable } = useDataTable({
     data,
@@ -59,21 +82,6 @@ export function RefundTable({ refundPromise }: RefundTableProps) {
             Tổng số yêu cầu đang chờ xử lý: {data.length}
           </p>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Yêu Cầu Chưa Phân Công
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-          </CardContent>
-        </Card>
-
-       
       </div>
 
       <Card className="flex-1">
