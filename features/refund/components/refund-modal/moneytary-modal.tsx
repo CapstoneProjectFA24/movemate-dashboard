@@ -11,7 +11,6 @@ import {
   XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/ui/modal";
 import { BsPatchQuestion } from "react-icons/bs";
 import { IRefund } from "../../types/refund-type";
 import { Row } from "@tanstack/react-table";
@@ -36,8 +35,6 @@ import { checkWalletMoney } from "@/features/transactions/action/wallet";
 import { toast } from "sonner";
 import InfoMoneytaryContent from "./moneytary-children-modal/info-moneytary";
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import InspectionMoneytaryContent from "./moneytary-children-modal/inspection-moneytary";
 import { Textarea } from "@/components/ui/textarea";
 import { moneytaryMoney } from "../../actions/refund";
@@ -103,12 +100,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
   let isMaximumWithoutInsurance = null;
 
   const moneytarySchema = z.object({
-    realAmount: z
-      .number()
-      .max(
-        row.original.estimatedAmount,
-        "Số tiền nhập không được vượt quá số tiền ước tính"
-      ),
+    realAmount: z.number(),
     image: z.string().nullable(),
   });
 
@@ -139,18 +131,23 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
 
   const onBack = () => {
     setStep((value) => value - 1);
+    setError("")
   };
 
   const onNext = () => {
-    checkWalletTransition(async () => {
-      const result = await checkWalletMoney(realAmount);
+    if (refundOption === "Wallet") {
+      checkWalletTransition(async () => {
+        const result = await checkWalletMoney(realAmount);
 
-      if (!result.success) {
-        toast.error(result.error);
-      } else {
-        setStep((value) => value + 1);
-      }
-    });
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          setStep((value) => value + 1);
+        }
+      });
+    } else {
+      setStep((value) => value + 1);
+    }
   };
 
   const onSubmit = () => {
@@ -175,7 +172,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
             toast.error(result.error);
           } else {
             toast.success("Xác nhận thành công.");
-            form.reset()
+            form.reset();
             onClose();
           }
         });
@@ -201,7 +198,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
             toast.error(result.error);
           } else {
             toast.success("Xác nhận thành công.");
-            form.reset()
+            form.reset();
             onClose();
           }
         });
@@ -226,8 +223,8 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
       });
     }
 
-    onConfirm()
-    setStep(0)
+    onConfirm();
+    setStep(0);
   };
 
   const actionLabel = useMemo(() => {
