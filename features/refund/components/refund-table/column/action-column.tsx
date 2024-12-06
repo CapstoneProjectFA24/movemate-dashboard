@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { RefundType } from "@/features/refund/enums/refund-enums";
 import RefundModal from "../../refund-modal/refund-modal";
 import { refundMoney } from "@/features/refund/actions/refund";
+import MoneytaryModal from "../../refund-modal/moneytary-modal";
 
 interface ActionMenuProps {
   row: Row<IRefund>;
@@ -31,20 +32,14 @@ interface ActionMenuProps {
 const ActionMenu = ({ row }: ActionMenuProps) => {
   const { onOpen } = useModal();
   const [open, setOpen] = useState(false);
+  const [moneytaryOpen, setMoneytaryOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   //   const { data: groups, isLoading } = useGetGroup();
   // console.log(groups)
 
   const isRefund = row.original.type === RefundType.REFUND;
-
-  const handleView = () => {
-    console.log("View user details:", row.original);
-  };
-
-  const handleDelete = () => {
-    console.log("Delete user:", row.original);
-  };
+  const isMoneytary = row.original.type === RefundType.MONETARY;
 
   const handleRefund = async () => {
     try {
@@ -73,6 +68,17 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
     }
   };
 
+  const hanldeMoneytary = async () => {
+    try {
+      setLoading(true);
+    } catch {
+      toast.error("Đã có lỗi.");
+    } finally {
+      setLoading(false);
+      setMoneytaryOpen(false);
+    }
+  };
+
   return (
     <>
       <RefundModal
@@ -81,6 +87,16 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         row={row}
         variant="success"
         onConfirm={handleRefund}
+        loading={loading}
+        title="Đã kiểm tra xog"
+        description="Bạn có chắc chắn muốn hoàn tiền cho đơn này không?"
+      />
+      <MoneytaryModal
+        isOpen={moneytaryOpen}
+        onClose={() => setMoneytaryOpen(false)}
+        row={row}
+        variant="success"
+        onConfirm={hanldeMoneytary}
         loading={loading}
         title="Đã kiểm tra xog"
         description="Bạn có chắc chắn muốn hoàn tiền cho đơn này không?"
@@ -100,14 +116,6 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
           align="end"
           className="w-[180px] border shadow-md rounded-md"
         >
-          {/* <DropdownMenuItem
-            onSelect={handleView}
-            className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
-          >
-            <Eye className="mr-2 h-4 w-4 text-blue-500" />
-            <span>Xem chi tiết</span>
-          </DropdownMenuItem> */}
-
           {isRefund && (
             <DropdownMenuItem
               onClick={() => setOpen(true)}
@@ -117,14 +125,15 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
               <span>Hoàn tiền ngay</span>
             </DropdownMenuItem>
           )}
-
-          <DropdownMenuItem
-            onSelect={handleDelete}
-            className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50 text-destructive focus:text-destructive-foreground"
-          >
-            <Trash2 className="mr-2 h-4 w-4 text-red-500" />
-            <span>Xóa</span>
-          </DropdownMenuItem>
+          {isMoneytary && (
+            <DropdownMenuItem
+              onClick={() => setMoneytaryOpen(true)}
+              className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
+            >
+              <Eye className="mr-2 h-4 w-4 text-blue-500" />
+              <span>Đánh giá bồi thường</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

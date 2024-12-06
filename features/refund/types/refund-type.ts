@@ -2,6 +2,7 @@ export type IRefund = {
   id: number;
   bookingId: number;
   type: string;
+  title: string;
   time: string;
   status: string;
   bookingStatus: string;
@@ -16,6 +17,8 @@ export type IRefund = {
   description: string;
   failedReason: string;
   owner: IOwner;
+  isInsurance: boolean;
+  assignments: IAssignments[];
   trackerSources: ITrackerSource[];
 };
 
@@ -33,3 +36,10 @@ export type ITrackerSource = {
   resourceCode: string;
   type: string;
 };
+
+export type IAssignments = {
+  id: number,
+  userId: number,
+  staffType: string,
+  isResponsible: boolean
+}

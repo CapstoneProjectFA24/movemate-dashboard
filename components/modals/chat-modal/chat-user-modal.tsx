@@ -38,13 +38,13 @@ export const ChatUserModal = () => {
   const isOpenModal = isOpen && type === "chatWithUserModal";
 
   const { data: user, isLoading: userLoading } = useGetUserById(
-    data.booking?.userId?.toString()!
+    data.booking?.userId?.toString()! || data.bookingId!
   );
-
+ 
   const { data: session } = useSession();
 
-  const userId = data.booking?.userId;
-  const bookingId = data.booking?.id;
+  const userId = data.booking?.userId || data.userId;
+  const bookingId = data.booking?.id || data.bookingId;
 
   const currentUserId = session?.user.id;
   const currentUserRole = session?.user.roleName.toLowerCase();
