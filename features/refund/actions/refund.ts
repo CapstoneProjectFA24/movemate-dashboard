@@ -14,6 +14,7 @@ import { SearchParams } from "@/types/table";
 import { auth } from "@/lib/next-auth/auth";
 import { BOOKING_URL } from "@/constants/api-constant";
 import { IRefund } from "../types/refund-type";
+import { axiosAuth } from "@/lib/api/api-interceptor/api";
 
 export async function getRefunds(
   searchParams: SearchParams
@@ -27,4 +28,22 @@ export async function getRefunds(
   }
 
   return result.data;
+}
+
+export async function refundMoney(
+  data: any,
+  params: string
+): Promise<Result<void>> {
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.put(`${BOOKING_URL.REFUND}/refund/${params}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/refund`);
+
+  return { success: true, data: undefined };
 }

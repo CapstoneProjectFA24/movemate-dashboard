@@ -1,6 +1,6 @@
 import { Row, Table } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { IRefund } from "../../types/refund-type";
+import { IRefund } from "../../../types/refund-type";
 
 export const selectColumn = {
   id: "select",
