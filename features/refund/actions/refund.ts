@@ -47,3 +47,23 @@ export async function refundMoney(
 
   return { success: true, data: undefined };
 }
+
+
+
+export async function moneytaryMoney(
+  data: any,
+  params: string
+): Promise<Result<void>> {
+  noStore();
+console.log(data)
+  const result = await apiRequest(() =>
+    axiosAuth.put(`${BOOKING_URL.MONEYTARY}/${params}`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/refund`);
+
+  return { success: true, data: undefined };
+}

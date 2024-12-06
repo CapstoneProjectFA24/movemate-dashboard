@@ -24,6 +24,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 import { formatter } from "@/lib/utils";
 import { checkWalletMoney } from "@/features/transactions/action/wallet";
 import { toast } from "sonner";
@@ -32,6 +39,23 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import InspectionMoneytaryContent from "./moneytary-children-modal/inspection-moneytary";
+import { Textarea } from "@/components/ui/textarea";
+import { moneytaryMoney } from "../../actions/refund";
+import FailedReasonForm from "./moneytary-children-modal/failed-form";
+import { Input } from "@/components/ui/input";
+import { FileUpload } from "@/components/image-uploadthing/file-upload";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useFormField,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 interface MoneytaryModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -60,31 +84,73 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
   title = "Xác nhận",
   description = "Bạn có chắc chắn muốn thực hiện hành động này?",
   variant = "warning",
-  confirmLabel = "Tiếp tục",
+  confirmLabel = "Xác nhận",
   cancelLabel = "Hủy",
   row,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [step, setStep] = useState(STEPS.INFO_MONEYTARY);
+  const [isPending, startTransition] = useTransition();
+  const [checkWalletIsPending, checkWalletTransition] = useTransition();
 
   const [isChooseRefund, setIsChooseRefund] = useState(false);
+  const [failedReason, setFailedReason] = useState<string>("");
+  const [error, setError] = useState("");
+  const [refundOption, setRefundOption] = useState<"Wallet" | "Other">(
+    "Wallet"
+  );
 
-  //   status booing Tracker :   WAITING -> AVAILABLE -> NOTAVAILABLE
+  let isMaximumWithoutInsurance = null;
+
+  const moneytarySchema = z.object({
+    realAmount: z
+      .number()
+      .max(
+        row.original.estimatedAmount,
+        "Số tiền nhập không được vượt quá số tiền ước tính"
+      ),
+    image: z.string().nullable(),
+  });
+
+  const form = useForm<z.infer<typeof moneytarySchema>>({
+    resolver: zodResolver(moneytarySchema),
+    defaultValues: {
+      realAmount: 0,
+      image: "",
+    },
+  });
+
+  const { watch, setValue, formState } = form;
+  const realAmount = watch("realAmount");
+  const image = watch("image");
+  const { errors } = formState;
+  if (!row.original.isInsurance) {
+    isMaximumWithoutInsurance = 20000000;
+  }
+  const isRealAmountInvalid =
+    (isMaximumWithoutInsurance && realAmount > isMaximumWithoutInsurance) ||
+    !!errors.realAmount;
+
+  useEffect(() => {
+    if (isRealAmountInvalid) {
+      setError("Số tiền không khả dụng");
+    }
+  }, [isRealAmountInvalid]);
 
   const onBack = () => {
     setStep((value) => value - 1);
   };
 
   const onNext = () => {
-    //     checkWalletTransition(async () => {
-    //       const result = await checkWalletMoney(row.original.estimatedAmount);
+    checkWalletTransition(async () => {
+      const result = await checkWalletMoney(realAmount);
 
-    //       if (!result.success) {
-    //         toast.error(result.error);
-    //       } else {
-    //     }
-    // });
-    setStep((value) => value + 1);
+      if (!result.success) {
+        toast.error(result.error);
+      } else {
+        setStep((value) => value + 1);
+      }
+    });
   };
 
   const onSubmit = () => {
@@ -92,8 +158,76 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
       return onNext();
     }
 
-    // onConfirm();
-    // onClose();
+    if (isChooseRefund) {
+      if (refundOption === "Wallet") {
+        const dataToSend = {
+          isCompensation: isChooseRefund,
+          realAmount: realAmount,
+          paymentMethod: refundOption,
+        };
+
+        startTransition(async () => {
+          const result = await moneytaryMoney(
+            dataToSend,
+            row.original.id.toString()
+          );
+          if (!result.success) {
+            toast.error(result.error);
+          } else {
+            toast.success("Xác nhận thành công.");
+            form.reset()
+            onClose();
+          }
+        });
+      } else if (refundOption === "Other") {
+        const dataToSend = {
+          isCompensation: isChooseRefund,
+          realAmount: realAmount,
+          paymentMethod: refundOption,
+          resourceList: [
+            {
+              type: "CONFIRM",
+              resourceUrl: image,
+              resourceCode: "code",
+            },
+          ],
+        };
+        startTransition(async () => {
+          const result = await moneytaryMoney(
+            dataToSend,
+            row.original.id.toString()
+          );
+          if (!result.success) {
+            toast.error(result.error);
+          } else {
+            toast.success("Xác nhận thành công.");
+            form.reset()
+            onClose();
+          }
+        });
+      }
+    } else {
+      startTransition(async () => {
+        const dataToSend = {
+          failedReason: failedReason,
+          isCompensation: isChooseRefund,
+        };
+
+        const result = await moneytaryMoney(
+          dataToSend,
+          row.original.id.toString()
+        );
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          toast.success("Xác nhận thành công.");
+          onClose();
+        }
+      });
+    }
+
+    onConfirm()
+    setStep(0)
   };
 
   const actionLabel = useMemo(() => {
@@ -107,7 +241,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
       case STEPS.CONFIRM_MONEYTARY:
         return "Xác nhận";
       default:
-        return ";";
+        return "";
     }
   }, [step]);
 
@@ -163,7 +297,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
         <InspectionMoneytaryContent
           row={row}
           onBack={onBack}
-          onClose = {onClose}
+          onClose={onClose}
           onSubmit={onSubmit}
           loading={loading}
           actionLabel={actionLabel}
@@ -176,9 +310,131 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
       bodyContent = (
         <div>
           {isChooseRefund ? (
-            <div>Bồi thường form</div>
+            <div className="p-8 rounded-xl shadow-lg bg-white dark:bg-muted/40 border border-gray-200 dark:border-gray-700">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+                  Bồi thường khách hàng
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Nhập thông tin bồi thường và cách xử lý
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <Form {...form}>
+                  <form className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Cách bồi thường
+                      </label>
+                      <Select
+                        defaultValue={refundOption}
+                        value={refundOption}
+                        onValueChange={(option) =>
+                          setRefundOption(option as "Wallet" | "Other")
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Chọn cách bồi thường" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Wallet">
+                            <span className="flex items-center">
+                              <CircleCheckBig className="w-5 h-5 mr-2 text-green-500" />
+                              Ví của hệ thống
+                            </span>
+                          </SelectItem>
+                          <SelectItem value="Other">
+                            <span className="flex items-center">
+                              <AlertCircle className="w-5 h-5 mr-2 text-yellow-500" />
+                              Cách khác
+                            </span>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Real Amount Input */}
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="realAmount"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel> Nhập số tiền bồi thường</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(parseFloat(e.target.value))
+                                }
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-500">
+                              {error}
+                            </FormMessage>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    {refundOption === "Other" && (
+                      <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel> Tải lên file chứng minh</FormLabel>
+                            <FormControl>
+                              <FileUpload
+                                endpoint="serverImage"
+                                value={field.value!}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+                  </form>
+                </Form>
+              </div>
+
+              <div className="mt-6 flex justify-end space-x-4">
+                {secondaryActionLabel && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      onBack();
+                      form.reset();
+                    }}
+                    className="text-gray-600 dark:text-gray-300"
+                    disabled={loading}
+                  >
+                    {secondaryActionLabel}
+                  </Button>
+                )}
+                <Button
+                  onClick={onSubmit}
+                  disabled={loading || isRealAmountInvalid}
+                >
+                  {actionLabel}
+                </Button>
+              </div>
+            </div>
           ) : (
-            <div>Hoàn tiền form</div>
+            <FailedReasonForm
+              onBack={onBack}
+              onSubmit={onSubmit}
+              setFailedReason={setFailedReason}
+              failedReason={failedReason}
+              loading={loading}
+              actionLabel={actionLabel}
+              secondaryActionLabel={secondaryActionLabel!}
+            />
           )}
         </div>
       );
@@ -186,30 +442,67 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
 
     case STEPS.CONFIRM_MONEYTARY:
       bodyContent = (
-        <div className="flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl items-center p-6 text-center border">
-          {icon}
-          <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
-          <p className="mt-2 text-sm ">{description}</p>
+        <div>
+          {isChooseRefund ? (
+            <div className="flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl items-center p-6 text-center border">
+              {icon}
+              <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
+              <p className="mt-2 text-sm ">
+                Số tiền bồi thường cho khách: {realAmount}
+              </p>
+              <p className="mt-2 text-sm ">{description}</p>
 
-          <div className="mt-8 w-full space-x-3 flex items-center justify-center">
-            {secondaryActionLabel && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onBack}
-                disabled={loading}
-              >
-                {secondaryActionLabel}
-              </Button>
-            )}
-            <Button
-              disabled={loading}
-              onClick={onSubmit}
-              className={`min-w-[100px] ${confirmButtonClass}`}
-            >
-              {confirmLabel}
-            </Button>
-          </div>
+              <div className="mt-8 w-full space-x-3 flex items-center justify-center">
+                {secondaryActionLabel && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onBack}
+                    disabled={loading}
+                  >
+                    {secondaryActionLabel}
+                  </Button>
+                )}
+                <Button
+                  disabled={loading}
+                  onClick={onSubmit}
+                  className={`min-w-[100px] ${confirmButtonClass}`}
+                >
+                  {confirmLabel}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl items-center p-6 text-center border">
+              <BsPatchQuestion className="w-12 h-12 text-amber-500" />
+              <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
+              <p className="mt-2 text-sm ">
+                Lý do từ chối của bạn là:{" "}
+                {failedReason || "Không có lý do được cung cấp"}
+              </p>
+              <p className="mt-2 text-sm ">{description}</p>
+
+              <div className="mt-8 w-full space-x-3 flex items-center justify-center">
+                {secondaryActionLabel && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onBack}
+                    disabled={loading}
+                  >
+                    {secondaryActionLabel}
+                  </Button>
+                )}
+                <Button
+                  disabled={loading}
+                  onClick={onSubmit}
+                  className={`min-w-[100px] bg-amber-600 hover:bg-amber-700 text-white `}
+                >
+                  {confirmLabel}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       );
       break;
