@@ -35,6 +35,8 @@ export interface ModalData{
   // user
   user?: IUser;
   staff?: IStaff;
+  bookingId?: string;
+  userId?: string;
 }
 
 interface ModalStore {
