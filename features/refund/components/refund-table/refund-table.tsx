@@ -21,9 +21,9 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table/data-table";
 import { Clock, PlusCircle } from "lucide-react";
 import { fetchRefundTableColumnDefs } from "./refund-table-column-def";
-import { IRefund } from "../types/refund-type";
-import { getRefunds } from "../actions/refund";
-import { RefundTypeName, StatusTrackerTypeName } from "../enums/refund-enums";
+import { IRefund } from "../../types/refund-type";
+import { getRefunds } from "../../actions/refund";
+import { RefundTypeName, StatusTrackerTypeName } from "../../enums/refund-enums";
 
 interface RefundTableProps {
   refundPromise: ReturnType<typeof getRefunds>;

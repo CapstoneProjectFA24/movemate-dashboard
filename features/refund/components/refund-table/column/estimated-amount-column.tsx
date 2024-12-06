@@ -1,7 +1,7 @@
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Row, type Column } from "@tanstack/react-table";
 import { formatter } from "@/lib/utils";
-import { IRefund } from "../../types/refund-type";
+import { IRefund } from "../../../types/refund-type";
 
 export const estimatedAmountColumn = {
   accessorKey: "estimatedAmount",

@@ -3,7 +3,7 @@ import { SearchParams } from "@/types/table";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Shell } from "@/components/shared/custom-ui/shell";
 import { getRefunds } from "@/features/refund/actions/refund";
-import { RefundTable } from "@/features/refund/components/refund-table";
+import { RefundTable } from "@/features/refund/components/refund-table/refund-table";
 export interface IndexPageProps {
   searchParams: SearchParams;
 }

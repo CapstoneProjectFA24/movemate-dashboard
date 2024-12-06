@@ -1,7 +1,7 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { IRefund } from "../types/refund-type";
+import { IRefund } from "../../types/refund-type";
 import selectColumn from "./column/select-column";
 import idColumn from "./column/id-column";
 import bookingIdColumn from "./column/bookingId-column";
@@ -16,7 +16,7 @@ export function fetchRefundTableColumnDefs(): ColumnDef<IRefund, unknown>[] {
   return [
     selectColumn,
     idColumn,
-    bookingIdColumn,
+    // bookingIdColumn,
     typeColum,
     estimatedAmountColumn,
     ownerColumn,

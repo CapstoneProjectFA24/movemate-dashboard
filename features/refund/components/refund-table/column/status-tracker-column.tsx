@@ -3,8 +3,8 @@ import { Row, type Column } from "@tanstack/react-table";
 import {
   StatusTrackerType,
   StatusTrackerTypeName,
-} from "../../enums/refund-enums";
-import { IRefund } from "../../types/refund-type";
+} from "../../../enums/refund-enums";
+import { IRefund } from "../../../types/refund-type";
 import { Check, AlertOctagon, Clock } from "lucide-react";
 
 const statusTrackerColumn = {
