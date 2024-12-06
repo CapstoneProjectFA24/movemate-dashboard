@@ -55,7 +55,7 @@ export async function moneytaryMoney(
   params: string
 ): Promise<Result<void>> {
   noStore();
-
+console.log(data)
   const result = await apiRequest(() =>
     axiosAuth.put(`${BOOKING_URL.MONEYTARY}/${params}`, data)
   );
