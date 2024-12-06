@@ -32,6 +32,9 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import InspectionMoneytaryContent from "./moneytary-children-modal/inspection-moneytary";
+import { Textarea } from "@/components/ui/textarea";
+import { moneytaryMoney } from "../../actions/refund";
+import FailedReasonForm from "./moneytary-children-modal/failed-form";
 interface MoneytaryModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -60,16 +63,16 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
   title = "Xác nhận",
   description = "Bạn có chắc chắn muốn thực hiện hành động này?",
   variant = "warning",
-  confirmLabel = "Tiếp tục",
+  confirmLabel = "Xác nhận",
   cancelLabel = "Hủy",
   row,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [step, setStep] = useState(STEPS.INFO_MONEYTARY);
+  const [isPending, startTransition] = useTransition();
 
   const [isChooseRefund, setIsChooseRefund] = useState(false);
-
-  //   status booing Tracker :   WAITING -> AVAILABLE -> NOTAVAILABLE
+  const [failedReason, setFailedReason] = useState("");
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -92,8 +95,27 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
       return onNext();
     }
 
-    // onConfirm();
-    // onClose();
+    if (isChooseRefund) {
+    } else {
+      startTransition(async () => {
+        const dataToSend = {
+          failedReason: failedReason,
+          isCompensation: isChooseRefund,
+        };
+
+        const result = await moneytaryMoney(
+          dataToSend,
+          row.original.id.toString()
+        );
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          toast.success("Xác nhận thành công.");
+        }
+      });
+    }
+
+    onClose();
   };
 
   const actionLabel = useMemo(() => {
@@ -163,7 +185,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
         <InspectionMoneytaryContent
           row={row}
           onBack={onBack}
-          onClose = {onClose}
+          onClose={onClose}
           onSubmit={onSubmit}
           loading={loading}
           actionLabel={actionLabel}
@@ -178,7 +200,15 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
           {isChooseRefund ? (
             <div>Bồi thường form</div>
           ) : (
-            <div>Hoàn tiền form</div>
+            <FailedReasonForm
+              onBack={onBack}
+              onSubmit={onSubmit}
+              setFailedReason={setFailedReason}
+              failedReason={failedReason}
+              loading={loading}
+              actionLabel={actionLabel}
+              secondaryActionLabel={secondaryActionLabel!}
+            />
           )}
         </div>
       );
@@ -186,30 +216,64 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
 
     case STEPS.CONFIRM_MONEYTARY:
       bodyContent = (
-        <div className="flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl items-center p-6 text-center border">
-          {icon}
-          <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
-          <p className="mt-2 text-sm ">{description}</p>
+        <div>
+          {isChooseRefund ? (
+            <div className="flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl items-center p-6 text-center border">
+              {icon}
+              <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
+              <p className="mt-2 text-sm ">{description}</p>
 
-          <div className="mt-8 w-full space-x-3 flex items-center justify-center">
-            {secondaryActionLabel && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onBack}
-                disabled={loading}
-              >
-                {secondaryActionLabel}
-              </Button>
-            )}
-            <Button
-              disabled={loading}
-              onClick={onSubmit}
-              className={`min-w-[100px] ${confirmButtonClass}`}
-            >
-              {confirmLabel}
-            </Button>
-          </div>
+              <div className="mt-8 w-full space-x-3 flex items-center justify-center">
+                {secondaryActionLabel && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onBack}
+                    disabled={loading}
+                  >
+                    {secondaryActionLabel}
+                  </Button>
+                )}
+                <Button
+                  disabled={loading}
+                  onClick={onSubmit}
+                  className={`min-w-[100px] ${confirmButtonClass}`}
+                >
+                  {confirmLabel}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl items-center p-6 text-center border">
+              <BsPatchQuestion className="w-12 h-12 text-amber-500" />
+              <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
+              <p className="mt-2 text-sm ">
+                Lý do từ chối của bạn là:{" "}
+                {failedReason || "Không có lý do được cung cấp"}
+              </p>
+              <p className="mt-2 text-sm ">{description}</p>
+
+              <div className="mt-8 w-full space-x-3 flex items-center justify-center">
+                {secondaryActionLabel && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onBack}
+                    disabled={loading}
+                  >
+                    {secondaryActionLabel}
+                  </Button>
+                )}
+                <Button
+                  disabled={loading}
+                  onClick={onSubmit}
+                  className={`min-w-[100px] bg-amber-600 hover:bg-amber-700 text-white `}
+                >
+                  {confirmLabel}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       );
       break;

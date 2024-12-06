@@ -99,7 +99,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         onConfirm={hanldeMoneytary}
         loading={loading}
         title="Đã kiểm tra xog"
-        description="Bạn có chắc chắn muốn hoàn tiền cho đơn này không?"
+        description="Xác nhận để kết thúc quá trình kiểm định?"
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
