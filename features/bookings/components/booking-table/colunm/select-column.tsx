@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useRouter } from "nextjs-toploader/app";
 
 export const selectColumn = {
   id: "select",
@@ -15,12 +16,14 @@ export const selectColumn = {
     const bookingDetails = row.original.bookingDetails;
     const bookingTrackers = row.original.bookingTrackers;
 
+    const router = useRouter();
+
     const isHaveIncident = bookingDetails?.some(
       (i) => i.status !== "AVAILABLE"
     );
-    const isRefundAndMoneytary = bookingTrackers?.some(
-      (i) => i.type === "REFUND" || i.type === "MONETARY"
-    );
+    const isRefundAndMoneytary =
+      bookingTrackers?.some((i) => ["REFUND", "MONETARY"].includes(i.type!)) ??
+      false;
 
     return (
       <TooltipProvider>
@@ -39,15 +42,15 @@ export const selectColumn = {
               />
             )}
           </TooltipTrigger>
-          {isHaveIncident && !isRefundAndMoneytary  && (
+          {isHaveIncident && !isRefundAndMoneytary && (
             <TooltipContent>
               Có sự cố với booking này vui lòng giải quyết sự cố.
             </TooltipContent>
           )}
           {isRefundAndMoneytary && (
-             <TooltipContent>
-          Đơn đánh muốn hoàn tiền hoặc bồi thường
-           </TooltipContent>
+            <TooltipContent>
+              Đơn đánh muốn hoàn tiền hoặc bồi thường
+            </TooltipContent>
           )}
         </Tooltip>
       </TooltipProvider>
