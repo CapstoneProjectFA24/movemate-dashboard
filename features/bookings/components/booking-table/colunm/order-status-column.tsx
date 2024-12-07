@@ -10,9 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import {
-  BookingStatus,
-} from "@/features/bookings/hooks/use-booking-status";
+import { BookingStatus } from "@/features/bookings/hooks/use-booking-status";
 
 type OrderStatus =
   | BookingStatus.PENDING
@@ -35,8 +33,11 @@ type OrderStatus =
 
 type ReviewOnlineStatus = "true" | "false";
 
-export const OrderStatusMap: Record<ReviewOnlineStatus, Record<OrderStatus, string>> = {
-  "true": {
+export const OrderStatusMap: Record<
+  ReviewOnlineStatus,
+  Record<OrderStatus, string>
+> = {
+  true: {
     [BookingStatus.PENDING]: "Đơn mới",
     [BookingStatus.ASSIGNED]: "Đơn mới",
     [BookingStatus.REVIEWING]: "Đơn mới",
@@ -55,7 +56,7 @@ export const OrderStatusMap: Record<ReviewOnlineStatus, Record<OrderStatus, stri
     NEW: "Đơn mới",
     ADVANCE: "Đã cọc",
   },
-  "false": {
+  false: {
     [BookingStatus.PENDING]: "Đơn mới",
     [BookingStatus.ASSIGNED]: "Đơn mới",
     [BookingStatus.WAITING]: "Đơn mới",
@@ -77,7 +78,10 @@ export const OrderStatusMap: Record<ReviewOnlineStatus, Record<OrderStatus, stri
 };
 
 // Helper function to get group from status
-const getOrderStatusGroup = (status: OrderStatus, isReviewOnline: boolean): string => {
+const getOrderStatusGroup = (
+  status: OrderStatus,
+  isReviewOnline: boolean
+): string => {
   return OrderStatusMap[isReviewOnline ? "true" : "false"][status] || status;
 };
 // Column definitions
@@ -88,8 +92,8 @@ export const orderStatusColumn = {
     <DataTableColumnHeader column={column} title="Trạng thái đơn hàng" />
   ),
   cell: ({ row }: { row: Row<IBooking> }) => {
-    const status = row.getValue("status") as OrderStatus;
-    const isReviewOnline = row.getValue("isReviewOnline") as boolean;
+    const status = row.original.status as OrderStatus;
+    const isReviewOnline = row.original.isReviewOnline as boolean;
     if (!status) return null;
 
     const statusGroup = getOrderStatusGroup(status, isReviewOnline);
