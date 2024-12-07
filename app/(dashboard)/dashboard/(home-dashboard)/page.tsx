@@ -8,12 +8,18 @@ import {
   ClipboardList,
   BarChart3,
   Activity,
+  Clock,
+  Calendar,
 } from "lucide-react";
 
 import LeftStatistic from "./_components/left-statistic";
-import { getStatisTicBooking, getStatisTicTransationCustom } from "@/features/statistic/action/statistic";
+import {
+  getStatisTicBooking,
+  getStatisTicTransationCustom,
+} from "@/features/statistic/action/statistic";
 import StatisticTransactionLineChart from "./_components/statistic-transaction-line-chart";
 import { StatisticbookingPineChart } from "./_components/statistic-booking-pine-chart";
+import StatisticBooking from "./_components/statistic-booking";
 export interface SearchParamFilterDashboard {
   shard?: string;
   type?: string;
@@ -25,10 +31,11 @@ const Dashboard = async ({
 }: {
   searchParams: SearchParamFilterDashboard;
 }) => {
-  const [statisticTransactionLineData,statisticBookingData ] = await Promise.all([
-    getStatisTicTransationCustom(),
-    getStatisTicBooking(searchParams)
-  ]);
+  const [statisticTransactionLineData, statisticBookingData] =
+    await Promise.all([
+      getStatisTicTransationCustom(),
+      getStatisTicBooking(searchParams),
+    ]);
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex flex-col lg:flex-row gap-6 p-6">
@@ -69,27 +76,18 @@ const Dashboard = async ({
           <Card className="hover:shadow-lg transition-shadow duration-200">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
-              <BarChart3 className="h-5 w-5 text-green-500" />
+                <BarChart3 className="h-5 w-5 text-green-500" />
                 <span>Thống kê đặt chỗ</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="h-80">
-              {/* Donut Chart Component */}
-              <StatisticbookingPineChart data={statisticBookingData.data}/>
+              <StatisticbookingPineChart data={statisticBookingData.data} />
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow duration-200">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center space-x-2">
-                <Truck className="h-5 w-5 text-blue-500" />
-                <span>Phân Loại Xe</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="h-72">
-              {/* Pie Chart Component */}
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 gap-2">
+          <StatisticBooking  data={statisticBookingData.data}/>
+          </div>
         </div>
 
         {/* Bottom Row - Three Small Cards */}
