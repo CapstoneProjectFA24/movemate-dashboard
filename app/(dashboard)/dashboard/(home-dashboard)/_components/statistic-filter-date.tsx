@@ -46,6 +46,7 @@ const StatisticFilterDate = ({
 }: {
   searchParams: SearchParamFilterDashboard;
 }) => {
+  console.log(searchParams)
   const router = useRouter();
   const searchParamsObj = useSearchParams();
 

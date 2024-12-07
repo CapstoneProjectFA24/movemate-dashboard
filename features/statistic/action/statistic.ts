@@ -18,15 +18,33 @@ import { IStatisticTruckCategory } from "../types/statistic-truckcategory-type";
 import { IStatisticUser } from "../types/statistic-user-type";
 import { IStatisticGroup } from "../types/statistic-group-type";
 import { IStatisticPromtion } from "../types/statistic-promotions-type";
-
+export interface SearchParamFilterDashboard {
+  shard?: string;
+  type?: string;
+}
 // list và có thể có query
-export async function getStatisTicTransation(): Promise<
+export async function getStatisTicTransation(
+  searchParams: SearchParamFilterDashboard
+): Promise<ApiListResponse<IStatisticTransaction>> {
+  noStore();
+
+  const result = await fetchListData<IStatisticTransaction>(
+    `${BASIC_URL.STATISTIC}/transactions`,
+    searchParams
+  );
+  if (!result.success) {
+    console.error("Failed to fetch IStatisticTransaction:", result.error);
+    return { data: [], pageCount: 0, error: result.error };
+  }
+  return result.data;
+}
+export async function getStatisTicTransationCustom(): Promise<
   ApiListResponse<IStatisticTransaction>
 > {
   noStore();
 
   const result = await fetchListData<IStatisticTransaction>(
-    `${BASIC_URL.STATISTIC}/transactions`
+    `${BASIC_URL.STATISTIC}/transactions?shard=202406-202412&isSummary=false`
   );
   if (!result.success) {
     console.error("Failed to fetch IStatisticTransaction:", result.error);
