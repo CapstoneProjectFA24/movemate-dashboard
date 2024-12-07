@@ -2,7 +2,7 @@
 
 MoveMate là ứng dụng giúp bạn dễ dàng dọn dẹp và vận chuyển nhà một cách hiệu quả và tiện lợi. Với giao diện thân thiện và các tính năng mạnh mẽ, MoveMate hỗ trợ bạn quản lý quá trình dọn dẹp và chuyển nhà từ A đến Z.
 
-![MoveMate Banner](https://your-image-link.com/banner.png)
+![MoveMate Banner]([https://your-image-link.com/banner.png](https://res.cloudinary.com/dkpnkjnxs/image/upload/v1732365346/movemate_logo_esm5fx.png))
 
 ## 📦 Tính Năng
 
