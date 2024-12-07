@@ -1,28 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useState, useTransition } from "react";
-import {
-  AlertCircle,
-  CheckCircle2,
-  CircleCheckBig,
-  Info,
-  Loader,
-  MessageCircle,
-  XCircle,
-} from "lucide-react";
+import { AlertCircle, CheckCircle2, CircleCheckBig } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BsPatchQuestion } from "react-icons/bs";
 import { IRefund } from "../../types/refund-type";
 import { Row } from "@tanstack/react-table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import {
   Select,
   SelectTrigger,
@@ -30,13 +14,10 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { formatter } from "@/lib/utils";
 import { checkWalletMoney } from "@/features/transactions/action/wallet";
 import { toast } from "sonner";
 import InfoMoneytaryContent from "./moneytary-children-modal/info-moneytary";
-import Image from "next/image";
 import InspectionMoneytaryContent from "./moneytary-children-modal/inspection-moneytary";
-import { Textarea } from "@/components/ui/textarea";
 import { moneytaryMoney } from "../../actions/refund";
 import FailedReasonForm from "./moneytary-children-modal/failed-form";
 import { Input } from "@/components/ui/input";
@@ -49,7 +30,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  useFormField,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -131,7 +111,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
 
   const onBack = () => {
     setStep((value) => value - 1);
-    setError("")
+    setError("");
   };
 
   const onNext = () => {
