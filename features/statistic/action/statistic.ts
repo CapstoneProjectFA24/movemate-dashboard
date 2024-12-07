@@ -53,13 +53,14 @@ export async function getStatisTicTransationCustom(): Promise<
   return result.data;
 }
 
-export async function getStatisTicBooking(): Promise<
-  ApiListResponse<IStatisticBooking>
-> {
+export async function getStatisTicBooking(
+  searchParams: SearchParamFilterDashboard
+): Promise<ApiListResponse<IStatisticBooking>> {
   noStore();
 
   const result = await fetchListData<IStatisticBooking>(
-    `${BASIC_URL.STATISTIC}/bookings`
+    `${BASIC_URL.STATISTIC}/bookings`,
+    searchParams
   );
   if (!result.success) {
     console.error("Failed to fetch IStatisticBooking:", result.error);
