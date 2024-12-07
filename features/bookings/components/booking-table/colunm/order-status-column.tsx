@@ -22,7 +22,7 @@ type OrderStatus =
   | BookingStatus.COMING
   | BookingStatus.CONFIRMED
   | BookingStatus.WAITING
-  | BookingStatus.REFUNDED
+  | BookingStatus.REFUNDING
   | BookingStatus.CANCELLED
   | BookingStatus.COMPLETED
   | "COMPENSATION"
@@ -47,7 +47,7 @@ export const OrderStatusMap: Record<
     [BookingStatus.COMING]: "Đã cọc",
     [BookingStatus.CONFIRMED]: "Đã cọc",
     [BookingStatus.WAITING]: "Đơn mới",
-    [BookingStatus.REFUNDED]: "Hoàn tiền",
+    [BookingStatus.REFUNDING]: "Hoàn tiền",
     [BookingStatus.CANCELLED]: "Đã hủy",
     [BookingStatus.COMPLETED]: "Đã thanh toán",
     COMPENSATION: "Hoàn tiền",
@@ -66,7 +66,7 @@ export const OrderStatusMap: Record<
     [BookingStatus.CONFIRMED]: "Đã cọc",
     [BookingStatus.REVIEWING]: "Đã cọc",
     [BookingStatus.REVIEWED]: "Đã cọc",
-    [BookingStatus.REFUNDED]: "Hoàn tiền",
+    [BookingStatus.REFUNDING]: "Hoàn tiền",
     [BookingStatus.CANCELLED]: "Đã hủy",
     [BookingStatus.COMPLETED]: "Đã thanh toán",
     COMPENSATION: "Hoàn tiền",
