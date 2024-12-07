@@ -63,23 +63,27 @@ cd movemate
 ### Bước 3: Cấu Hình 
 
 NEXT_PUBLIC_API_URL=
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL= http://localhost:3000
 NODE_ENV=
 
 CLOUDINARY_URL=
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
+UPLOADTHING_TOKEN=
 
 NEXTAUTH_SECRET= 
 
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_FIREBASE_API_KEY= your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN= your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID= your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET= your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID= your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID= your_app_id
 
 Truy cập vào https://movemate-dashboard.vercel.app/ để xem ứng dụng.
 
@@ -93,6 +97,6 @@ Theo Dõi Tiến Độ: Xem trạng thái các nhiệm vụ và điều chỉnh 
 MoveMate được phát hành dưới MIT License.
 
 📫 Liên Hệ
-Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ với chúng tôi qua email: vinhntse2002@example.com
+Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ với chúng tôi qua email: vinhntse2002@gmail.com
 
 
