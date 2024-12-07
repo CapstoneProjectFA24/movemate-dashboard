@@ -14,7 +14,7 @@ export enum BookingStatus {
   DELIVERED = "DELIVERED",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
-  REFUNDED = "REFUNDED",
+  REFUNDING = "REFUNDING",
   CONFIRMED = "CONFIRMED",
 }
 
@@ -275,7 +275,7 @@ export const useBookingStatus = (
       case BookingStatus.CANCELLED:
         statusMessage = "Đã hủy";
         break;
-      case BookingStatus.REFUNDED:
+      case BookingStatus.REFUNDING:
         statusMessage = "Đã hoàn tiền";
         break;
       default:
