@@ -48,12 +48,13 @@ const InspectionMoneytaryContent = ({
     );
 
   const handleContact = () => {
-    getOrCreateConversation();
     onClose();
+    getOrCreateConversation();
     onOpen("chatWithUserModal", {
-      bookingId: row.original.bookingId.toString()!,
-      userId: row.original.owner.id.toString()!,
+      bookingId: row.original.bookingId!,
+      userId: row.original.owner.id!,
     });
+
   };
 
   return (

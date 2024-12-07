@@ -17,11 +17,11 @@ import { BASIC_URL } from "@/constants/api-constant";
 
 export async function checkWalletMoney(data: any): Promise<Result<void>> {
     noStore();
-    console.log("go here",data)    
+    // console.log("go here",data)    
     const result = await apiRequest(() =>
       axiosAuth.post(`${BASIC_URL.WALLETS}?amount=${data}`)
     );
-    console.log(result)   
+  
     if (!result.success) {
       return { success: false, error: result.error };
     }

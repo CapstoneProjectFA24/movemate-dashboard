@@ -38,7 +38,7 @@ export const ChatUserModal = () => {
   const isOpenModal = isOpen && type === "chatWithUserModal";
 
   const { data: user, isLoading: userLoading } = useGetUserById(
-    data.booking?.userId?.toString()! || data.bookingId!
+    data.booking?.userId?.toString()! || data.userId?.toString()!
   );
  
   const { data: session } = useSession();
