@@ -5,16 +5,18 @@ import { UserRole } from "@/features/users/types/user-type";
 import { UsersClientWrapper } from "@/features/users/components/user-table/users-client-wrapper";
 import { Suspense } from "react";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
+import { getStatisTicUser } from "@/features/statistic/action/statistic";
 
 export interface IndexPageProps {
   searchParams: SearchParams;
 }
 
 const UserPage = async ({ searchParams }: IndexPageProps) => {
-  const [reviewerData, driverData, porterData] = await Promise.all([
+  const [reviewerData, driverData, porterData, statisticUser] = await Promise.all([
     getUsersByRole(searchParams, UserRole.Reviewer),
     getUsersByRole(searchParams, UserRole.Driver),
     getUsersByRole(searchParams, UserRole.Porter),
+    getStatisTicUser()
   ]);
 
   const userData = {
@@ -36,7 +38,7 @@ const UserPage = async ({ searchParams }: IndexPageProps) => {
           />
         }
       >
-        <UsersClientWrapper initialData={userData} />
+        <UsersClientWrapper initialData={userData} statisticUser={statisticUser.data} />
       </Suspense>
     </Shell>
   );

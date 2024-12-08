@@ -11,11 +11,13 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Users, Truck, Briefcase, LucideIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
+import { IStatisticUser } from "@/features/statistic/types/statistic-user-type";
 
 interface UsersClientWrapperProps {
   initialData: {
     [key in UserRole]: ApiListResponse<IUser>;
   };
+  statisticUser: IStatisticUser[];
 }
 
 interface TabConfig {
@@ -50,7 +52,7 @@ const TABS: readonly TabConfig[] = [
   },
 ] as const;
 
-export function UsersClientWrapper({ initialData }: UsersClientWrapperProps) {
+export function UsersClientWrapper({ initialData,statisticUser }: UsersClientWrapperProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const scrollPositionRef = useRef<number>(0);
@@ -89,10 +91,11 @@ export function UsersClientWrapper({ initialData }: UsersClientWrapperProps) {
 
   const getCurrentStats = (role: UserRole) => {
     const data = initialData[role];
+    const roleStats = statisticUser[0].usersByRole.find((s) => s.roleName.toUpperCase() === role);
     return [
       {
         label: "Tổng số nhân viên",
-        value: data.totalItemsCount || 0,
+        value: roleStats?.userCount || 0,
       },
       {
         label: "Đang hoạt động",
