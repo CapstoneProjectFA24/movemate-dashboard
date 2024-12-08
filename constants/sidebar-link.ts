@@ -121,20 +121,20 @@ export const routes: Route[] = [
     // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
   },
 
-  {
-    label: "Quản lý lịch làm việc",
-    icon: FaCalendar,
-    activeIcon: FaCalendarCheck,
-    isParent: true,
-    children: [
-      {
-        label: "Lịch làm việc",
-        href: "/dashboard/schedule/schedule_list",
-        icon: FaRegListAlt,
-        activeIcon: FaListAlt,
-      },
-    ],
-  },
+  // {
+  //   label: "Quản lý lịch làm việc",
+  //   icon: FaCalendar,
+  //   activeIcon: FaCalendarCheck,
+  //   isParent: true,
+  //   children: [
+  //     {
+  //       label: "Lịch làm việc",
+  //       href: "/dashboard/schedule/schedule_list",
+  //       icon: FaRegListAlt,
+  //       activeIcon: FaListAlt,
+  //     },
+  //   ],
+  // },
   {
     label: "Quản lý giao dịch",
     icon: GrTransaction,

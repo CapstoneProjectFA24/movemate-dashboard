@@ -52,6 +52,20 @@ export async function getStatisTicTransationCustom(): Promise<
   }
   return result.data;
 }
+export async function getStatisTicTransationNoSumary(): Promise<
+  ApiListResponse<IStatisticTransaction>
+> {
+  noStore();
+
+  const result = await fetchListData<IStatisticTransaction>(
+    `${BASIC_URL.STATISTIC}/transactions?type=MONTHNOW`
+  );
+  if (!result.success) {
+    console.error("Failed to fetch IStatisticTransaction:", result.error);
+    return { data: [], pageCount: 0, error: result.error };
+  }
+  return result.data;
+}
 
 export async function getStatisTicBooking(
   searchParams: SearchParamFilterDashboard

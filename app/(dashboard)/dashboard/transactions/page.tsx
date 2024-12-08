@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FlexibleDatePicker } from "@/components/data-table/custom-table/date-range-picker";
+import { getStatisTicTransationNoSumary } from "@/features/statistic/action/statistic";
+import StatsTransactionOverview from "./_components/stats-transaction-overview";
 
 interface StatCardProps {
   title: string;
@@ -70,40 +72,12 @@ export interface IndexPageProps {
 
 const TransactionPage = ({ searchParams }: IndexPageProps) => {
   const transactionsPromise = getTransactions(searchParams);
-
+  const transactionStatistic = getStatisTicTransationNoSumary();
   return (
     <div className="space-y-6 p-6">
       {/* Stats Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="Tổng giao dịch"
-          value="2,345"
-          icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />}
-          description="So với tháng trước"
-          trend={{ value: "12%", isPositive: true }}
-        />
-        <StatCard
-          title="Doanh thu"
-          value="$45,231"
-          icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-          description="So với tháng trước"
-          trend={{ value: "8%", isPositive: true }}
-        />
-        <StatCard
-          title="Chi phí"
-          value="$12,234"
-          icon={<LineChart className="h-4 w-4 text-muted-foreground" />}
-          description="So với tháng trước"
-          trend={{ value: "4%", isPositive: false }}
-        />
-        <StatCard
-          title="Lợi nhuận"
-          value="$32,997"
-          icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-          description="So với tháng trước"
-          trend={{ value: "10%", isPositive: true }}
-        />
-      </div>
+
+      <StatsTransactionOverview transactionStatistic={transactionStatistic} />
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="lg:w-3/4">
