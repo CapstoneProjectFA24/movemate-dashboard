@@ -1,5 +1,5 @@
 "use client";
-import React, { useTransition } from "react";
+import React, { useEffect, useTransition } from "react";
 import { Control, useFormContext } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Building2, Calendar, Save } from "lucide-react";
@@ -27,12 +27,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 interface UpdateBasicInfoProps {
   control: Control<any>;
   houseTypes: IHouse[] | null;
   loading: boolean;
   canReview: boolean;
+  onFormChange: (isDirty: boolean) => void;
 }
 
 const AVAILABLE_HOURS = Array.from({ length: 15 }, (_, i) => i + 5);
@@ -43,8 +45,9 @@ const UpdateBasicInfo = ({
   houseTypes,
   loading,
   canReview,
+  onFormChange,
 }: UpdateBasicInfoProps) => {
-  const { getValues, watch, setValue } = useFormContext();
+  const { getValues, watch, setValue, formState, reset } = useFormContext();
   const [isPending, startTransition] = useTransition();
   const params = useParams();
 
@@ -55,9 +58,16 @@ const UpdateBasicInfo = ({
     if (date) {
       const currentDate = bookingDate || new Date();
       date.setHours(currentDate.getHours(), currentDate.getMinutes());
-      setValue("bookingAt", date);
+      setValue("bookingAt", date, {
+        shouldDirty: true,
+        shouldTouch: true,
+      });
     }
   };
+
+  useEffect(() => {
+    onFormChange(formState.isDirty);
+  }, [formState.isDirty, onFormChange]);
 
   const handleTimeChange = (type: "hour" | "minute", value: string) => {
     if (!bookingDate) return;
@@ -71,7 +81,7 @@ const UpdateBasicInfo = ({
       if (type === "hour") {
         const hour = parseInt(value);
         const currentHour = currentDate.getHours();
-        
+
         // Ensure selected hour is not before current hour
         if (hour < currentHour) {
           toast.error(`Giờ phải từ ${currentHour} trở đi`);
@@ -130,6 +140,11 @@ const UpdateBasicInfo = ({
         toast.error(result.error);
         return;
       }
+      reset(getValues(), {
+        keepValues: true,
+        keepDirty: false,
+      });
+      onFormChange(false);
       toast.success("Cập nhật dịch vụ thành công !");
     });
   };
@@ -143,15 +158,24 @@ const UpdateBasicInfo = ({
             Thông tin địa điểm
           </CardTitle>
           {canReview && (
-            <Button
-              disabled={loading || isPending}
-              type="button"
-              onClick={handleUpdateClick}
-              className="bg-primary hover:bg-primary/90 text-white transition-colors duration-200 flex items-center gap-2"
-            >
-              <Save className="h-4 w-4" />
-              {loading || isPending ? "Đang cập nhật..." : "Cập nhật"}
-            </Button>
+            <>
+              {formState.isDirty && (
+                <Badge className="flex flex-col space-y-1" variant="secondary">
+                  <span>Đang có thay đổi !!</span>
+                  Vui lòng bấm xác nhận cập nhật...✍
+                </Badge>
+              )}
+
+              <Button
+                disabled={loading || isPending}
+                type="button"
+                onClick={handleUpdateClick}
+                className="bg-primary hover:bg-primary/90 text-white transition-colors duration-200 flex items-center gap-2"
+              >
+                <Save className="h-4 w-4" />
+                {loading || isPending ? "Đang cập nhật..." : "Cập nhật"}
+              </Button>
+            </>
           )}
         </div>
       </CardHeader>

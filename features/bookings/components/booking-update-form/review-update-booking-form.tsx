@@ -59,6 +59,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
   const [isPending, startTransition] = useTransition();
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [openRollBackModal, setOpenRollBackModal] = useState(false);
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const { onOpen } = useModal();
 
   const {
@@ -162,6 +163,10 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
     }
   };
 
+  const handleFormChange = (isDirty: boolean) => {
+    setIsFormDirty(isDirty);
+  };
+
   const getUpdateButtonLabel = () => {
     if (canConfirmMoving) return "Xác nhận di chuyển";
     if (canConfirmArrival) return "Xác nhận đã đến";
@@ -179,7 +184,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
     (isInProgress && !isCompleted);
 
   const isButtonDisabled =
-    loading || isWaitingCustomer || isWaitingPayment || isCompleted;
+    loading || isWaitingCustomer || isWaitingPayment || isCompleted || isFormDirty;
 
   return (
     <>
@@ -211,6 +216,7 @@ const ReviewUpdateBookingForm = ({ booking, houseTypes }: BookingFormProps) => {
                 houseTypes={houseTypes}
                 loading={loading}
                 canReview={canUpdateServices}
+                onFormChange={handleFormChange}
               />
               <AssignStaff booking={booking} />
             </div>
