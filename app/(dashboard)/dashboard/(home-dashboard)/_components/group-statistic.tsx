@@ -50,8 +50,7 @@ export function StatisticGroup({ data }: StatisticGroupProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple Roles</CardTitle>
-        <CardDescription>Thống kê các vai trò của tổ</CardDescription>
+        <CardTitle>Thống kê số lượng nhân viên theo tổ</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -68,9 +67,12 @@ export function StatisticGroup({ data }: StatisticGroupProps) {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="driver" fill="var(--color-driver)" radius={4} />
-            <Bar dataKey="porter" fill="var(--color-porter)" radius={4} />
-            <Bar dataKey="reviewer" fill="var(--color-reviewer)" radius={4} />
+             <Bar dataKey="driver" fill="hsl(240, 100%, 70%)" radius={4} 
+                 name="Tài xế" /> 
+            <Bar dataKey="porter" fill="hsl(240, 100%, 30%)" radius={4} 
+                 name="Bốc vác" />
+            <Bar dataKey="reviewer" fill="hsl(120, 50%, 75%)" radius={4} 
+                 name="Người đánh giá" /> 
           </BarChart>
         </ChartContainer>
       </CardContent>

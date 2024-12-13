@@ -18,16 +18,26 @@ interface StatisticbookingPineChartProps {
 export function StatisticbookingPineChart({
   data,
 }: StatisticbookingPineChartProps) {
+  const totalInProcessBookings = data[0].totalInProcessBookings;
+  const totalCancelBookings = data[0].totalCancelBookings;
+  const totalBookings = data[0].totalBookings;
+  const totalBookingCompleted = totalBookings - totalCancelBookings - totalInProcessBookings;
+
   const chartData = [
     {
       browser: "totalInProcessBookings",
-      visitors: data[0].totalInProcessBookings,
+      visitors: totalInProcessBookings,
       fill: "var(--color-totalInProcessBookings)",
     },
     {
       browser: "totalCancelBookings",
-      visitors: data[0].totalCancelBookings,
+      visitors: totalCancelBookings,
       fill: "var(--color-totalCancelBookings)",
+    },
+    {
+      browser: "totalBookingCompleted",
+      visitors: totalBookingCompleted,
+      fill: "var(--color-totalBookingCompleted)", 
     },
   ];
 
@@ -37,11 +47,15 @@ export function StatisticbookingPineChart({
     },
     totalInProcessBookings: {
       label: "Tổng đơn thực hiện",
-      color: "hsl(var(--chart-2))",
+      color: "hsl(240, 100%, 70%)",
     },
     totalCancelBookings: {
       label: "Tổng đơn hủy",
-      color: "hsl(var(--chart-3))",
+      color: "hsl(0, 100%, 50%)",
+    },
+    totalBookingCompleted: {
+      label: "Tổng đơn hoàn thành",
+      color: "hsl(120, 100%, 50%)", 
     },
   } satisfies ChartConfig;
 
@@ -109,7 +123,7 @@ export function StatisticbookingPineChart({
       </CardContent>
       <div className="flex flex-col justify-center p-4">
         <div className="flex items-center">
-          <div className="w-4 h-4 bg-green-500 mr-2"></div>
+          <div className="w-4 h-4 bg-blue-500 mr-2"></div>
           <span>
             {chartConfig.totalInProcessBookings.label}:{" "}
             {data[0].totalInProcessBookings}
@@ -120,6 +134,13 @@ export function StatisticbookingPineChart({
           <span>
             {chartConfig.totalCancelBookings.label}:{" "}
             {data[0].totalCancelBookings}
+          </span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-green-500 mr-2"></div> {/* Màu cho tổng đơn hoàn thành */}
+          <span>
+            {chartConfig.totalBookingCompleted.label}:{" "}
+            {totalBookingCompleted}
           </span>
         </div>
       </div>

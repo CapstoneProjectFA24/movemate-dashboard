@@ -117,7 +117,7 @@ const Dashboard = async ({
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <Gift className="h-5 w-5 text-pink-500" />
-                <span>Khuyến Mãi</span>
+                <span>Thống kê các khuyến mãi</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="h-80">
@@ -130,7 +130,7 @@ const Dashboard = async ({
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <BarChart3 className="h-5 w-5 text-green-500" />
-                <span>Xe tải</span>
+                <span>Thống kê các loại xe</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="h-[350px]">
@@ -143,7 +143,7 @@ const Dashboard = async ({
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <ClipboardList className="h-5 w-5 text-yellow-500" />
-                <span>Group</span>
+                <span>Thống kê các tổ</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="h-48">

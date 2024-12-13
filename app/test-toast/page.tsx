@@ -1,34 +1,27 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { CldVideoPlayer } from "next-cloudinary";
-import Image from "next/image";
 import React from "react";
-import { toast } from "sonner";
 
 const HomePage = () => {
   const handleClick = () => {
     console.log("test");
-    toast.error("Đây là một thông báo toast!");
   };
-  return (
-    <div>
-      <h1>Trang Chính</h1>
-      <Button onClick={handleClick}>Hiển thị Toast</Button>
-      <Image src="https://utfs.io/f/yYv3QHy7AjsNUWZ8fGuiAVar1IbnQdiWl8OqP2Z4U05YFBGK" alt="img" width={80} height={80} unoptimized />
-      
-      {/* <CldVideoPlayer
-  id="sea-turtle-color"
-  width="1920"
-  height="1080"
-  src="https://res.cloudinary.com/dkpnkjnxs/video/upload/v1732321402/movemate/videos/rftpo4kfc9dnm6my0wni.mp4"
-  colors={{
-    base: "#0f0",
-    text: "#000",
-    accent: "#fff"
-  }}
-/> */}
 
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-2xl font-bold mb-4">Trang Chính</h1>
+      <Button onClick={handleClick} className="mb-4">Hiển thị Toast</Button>
+
+      {/* Thử hiển thị video */}
+      <div className="w-full max-w-3xl">
+        <video
+          src="https://res.cloudinary.com/dkpnkjnxs/video/upload/v1732321402/movemate/videos/rftpo4kfc9dnm6my0wni.mp4"
+          controls
+          style={{ width: "100%", height: "auto" }}
+        >
+          Trình duyệt của bạn không hỗ trợ video.
+        </video>
+      </div>
     </div>
   );
 };
