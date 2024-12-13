@@ -1,16 +1,16 @@
-export type IStatisticGroup = {
-  totalGroups: number;
-  groups: [];
-};
+export interface IUserByRole {
+  roleName: string;
+  userCount: number;
+}
 
-export type IGroup = {
+export interface IGroup {
   groupId: number;
   groupName: string;
   totalUsers: number;
   usersByRole: IUserByRole[];
-};
+}
 
-export type IUserByRole = {
-  roleName: string;
-  userCount: number;
-};
+export interface IStatisticGroup {
+  totalGroups: number;
+  groups: IGroup[]; 
+}

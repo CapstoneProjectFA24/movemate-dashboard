@@ -19,6 +19,7 @@ export type IStatisticPromtionDetails ={
     promotionId: number,
     promotionName: string,
     totalUsersTakingVouchers: number,
+    quantity : number,
     totalUsedVouchers: number,
     totalAmountUsedPromotions: number,
     totalAmountRunningPromotion: number
