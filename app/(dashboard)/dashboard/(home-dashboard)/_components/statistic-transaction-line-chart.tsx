@@ -18,15 +18,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
+export const formatter = new Intl.NumberFormat('vi-VN', {
+  style : 'currency',
+  currency: 'VND',
+});
 const chartConfig = {
   totalIncome: {
-    label: "Total Income",
-    color: "hsl(var(--chart-1))",
+    label: "Tổng thu nhập",
+    color: "hsl(var(--chart-2))",
   },
   totalCompensation: {
-    label: "Total Compensation",
-    color: "hsl(var(--chart-2))",
+    label: "Tổng bồi thường",
+    color: "hsl(0, 100%, 50%)",
+  },
+  profit: {
+    label: "Lợi nhuận",
+    color: "hsl(240, 100%, 50%)",
   },
 } satisfies ChartConfig;
 
@@ -37,24 +44,31 @@ interface StatisticTransactionLineChartProps {
 const StatisticTransactionLineChart = ({
   data,
 }: StatisticTransactionLineChartProps) => {
+
+  const processedData = data.map(item => ({
+    ...item,
+    shard: `${item.shard.slice(4, 6)}-${item.shard.slice(0, 4)}`,
+    profit: item.totalIncome - item.totalCompensation, 
+  }));
   return (
-    <Card className="h-80">
+    <Card className="h-90">
       <CardContent className="h-[400px]">
         <ChartContainer config={chartConfig}>
-          <LineChart data={data} margin={{ right: 30, left: 20 }}>
+          <LineChart data={processedData } margin={{ right: 30, left: 20 }}>
             <XAxis
               dataKey="shard"
               tickLine={false}
               axisLine={false}
               tickMargin={12}
-              tickFormatter={(value) => value.slice(4)}
+              tickFormatter={(value) => `T${value.slice(0, 2)}`}
             />
             <YAxis
               type="number"
               domain={["dataMin", "dataMax"]}
               tickLine={false}
               axisLine={false}
-              tickMargin={12}
+              tickMargin={4}
+              tickFormatter={(value) => `${formatter.format(value)}`}
             />
             <CartesianGrid vertical={false} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
@@ -69,6 +83,13 @@ const StatisticTransactionLineChart = ({
               type="monotone"
               dataKey="totalCompensation"
               stroke="var(--color-totalCompensation)"
+              strokeWidth={2}
+              dot={false}
+            />
+             <Line
+              type="monotone"
+              dataKey="profit"
+              stroke="var(--color-profit)"
               strokeWidth={2}
               dot={false}
             />

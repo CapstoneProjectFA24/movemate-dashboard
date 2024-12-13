@@ -99,21 +99,6 @@ export async function getStatisTicUser(): Promise<
 }
 
 // object và không cần query
-
-export async function getStatisTicTruckCategory(): Promise<
-  ApiSingleResponse<IStatisticTruckCategory>
-> {
-  noStore();
-
-  const result = await fetchSingleData<IStatisticTruckCategory>(
-    `${BASIC_URL.STATISTIC}/bookings`
-  );
-  if (!result.success) {
-    console.error("Failed to fetch IStatisticTruckCategory:", result.error);
-    return { data: null, error: result.error };
-  }
-  return result.data;
-}
 export async function getStatisTicGroup(): Promise<
   ApiSingleResponse<IStatisticGroup>
 > {
@@ -123,11 +108,26 @@ export async function getStatisTicGroup(): Promise<
     `${BASIC_URL.STATISTIC}/groups`
   );
   if (!result.success) {
-    console.error("Failed to fetch IStatisticGroup:", result.error);
+    console.error("Failed to fetch IStatisticTruckCategory:", result.error);
     return { data: null, error: result.error };
   }
   return result.data;
 }
+export async function getStatisTicTruckCategory(): Promise<
+  ApiSingleResponse<IStatisticTruckCategory>
+> {
+  noStore();
+
+  const result = await fetchSingleData<IStatisticTruckCategory>(
+    `${BASIC_URL.STATISTIC}/truckcategoris`
+  );
+  if (!result.success) {
+    console.error("Failed to fetch IStatisticTruckCategory:", result.error);
+    return { data: null, error: result.error };
+  }
+  return result.data;
+}
+
 
 export async function getStatisTicPromotion(): Promise<
   ApiSingleResponse<IStatisticPromtion>

@@ -8,6 +8,12 @@ export interface SearchParamFilterDashboard {
   isSummary?: boolean;
 }
 
+export const formatter = new Intl.NumberFormat('vi-VN', {
+  
+  currency: 'VND',
+});
+
+
 const LeftStatistic = async ({
   searchParams,
 }: {
@@ -16,6 +22,10 @@ const LeftStatistic = async ({
   const [statisticTransactionData] = await Promise.all([
     getStatisTicTransation(searchParams),
   ]);
+
+  const totalIncome = statisticTransactionData?.data[0].totalIncome || 0;
+  const totalCompensation = statisticTransactionData?.data[0].totalCompensation || 0;
+  const profit = totalIncome - totalCompensation;
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex items-center space-x-2 mb-6">
@@ -33,7 +43,7 @@ const LeftStatistic = async ({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-            {statisticTransactionData?.data[0].totalIncome || 0}
+          {formatter.format(totalIncome)}
             <span className="text-sm ml-2">VND</span>
           </div>
         </CardContent>
@@ -46,7 +56,7 @@ const LeftStatistic = async ({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-red-600 dark:text-red-400">
-            {statisticTransactionData?.data[0].totalCompensation || 0}
+          {formatter.format(totalCompensation)}
             <span className="text-sm ml-2">VND</span>
           </div>
         </CardContent>
@@ -59,8 +69,7 @@ const LeftStatistic = async ({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            {(statisticTransactionData?.data[0].totalIncome || 0) -
-              (statisticTransactionData?.data[0].totalCompensation || 0)}
+          {formatter.format(profit)}
             <span className="text-sm ml-2">VND</span>
           </div>
         </CardContent>
