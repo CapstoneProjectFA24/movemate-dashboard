@@ -9,7 +9,7 @@ interface TransactionLayoutProps {
 
 const TransactionLayout = ({ children }: TransactionLayoutProps) => {
   return (
-    <div className="container py-6 space-y-6">
+    <div className="container py-6 space-y-6 ">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="flex items-center space-x-2">
           <h1 className="text-2xl font-bold tracking-tight">
@@ -33,7 +33,7 @@ const TransactionLayout = ({ children }: TransactionLayoutProps) => {
       </div>
 
       <Card className="bg-gray-100 dark:bg-muted/40 p-4 md:p-6 rounded-lg shadow-sm">
-        {children}
+        <div className="overflow-auto flex-grow">{children}</div>
       </Card>
     </div>
   );
