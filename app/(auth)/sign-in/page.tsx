@@ -29,7 +29,7 @@ const LoginPage = () => {
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   const LoginSchema = z.object({
-    email: z.string().email(),
+    email: z.string(),
     password: z.string(),
   });
 

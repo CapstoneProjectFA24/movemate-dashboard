@@ -51,10 +51,10 @@ export const Sidebar = () => {
             </h1>
           </Link>
 
-          <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
+          {/* <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
             <Bell className="h-4 w-4" />
             <span className="sr-only">Toggle notifications</span>
-          </Button>
+          </Button> */}
         </div>
         <Separator className="my-[7.2px] border-b-2 border-gray-300 dark:border-gray-600" />
         <ScrollArea className="flex-1 px-4">
