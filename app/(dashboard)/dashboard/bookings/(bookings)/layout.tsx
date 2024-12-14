@@ -27,7 +27,7 @@ const ReviewerBookingLayout = async ({
         }
       >
         <main className="bg-gray-100 dark:bg-muted/40 min-h-screen p-4 md:p-6 rounded-md min-w-full">
-          {children}
+        <div className="overflow-auto flex-grow">{children}</div>
         </main>
       </Suspense>
     </div>

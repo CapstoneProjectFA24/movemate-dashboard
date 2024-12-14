@@ -8,6 +8,7 @@ import { getFees } from "@/features/fee/actions/fees";
 export interface IndexPageProps {
   searchParams: SearchParams;
 }
+
 const FeePage = ({ searchParams }: IndexPageProps) => {
   const feePromise = getFees(searchParams);
   return (
