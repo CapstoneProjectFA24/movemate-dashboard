@@ -25,6 +25,7 @@ type OrderStatus =
   | BookingStatus.REFUNDING
   | BookingStatus.CANCELLED
   | BookingStatus.COMPLETED
+  | BookingStatus.PAUSED
   | "COMPENSATION"
   | "CANCELED"
   | "PAID"
@@ -50,6 +51,7 @@ export const OrderStatusMap: Record<
     [BookingStatus.REFUNDING]: "Hoàn tiền",
     [BookingStatus.CANCELLED]: "Đã hủy",
     [BookingStatus.COMPLETED]: "Đã thanh toán",
+    [BookingStatus.PAUSED]: "Đang có thay đổi",
     COMPENSATION: "Hoàn tiền",
     CANCELED: "Đã hủy",
     PAID: "Đã thanh toán",
@@ -69,6 +71,7 @@ export const OrderStatusMap: Record<
     [BookingStatus.REFUNDING]: "Hoàn tiền",
     [BookingStatus.CANCELLED]: "Đã hủy",
     [BookingStatus.COMPLETED]: "Đã thanh toán",
+    [BookingStatus.PAUSED]: "Đang có thay đổi",
     COMPENSATION: "Hoàn tiền",
     CANCELED: "Đã hủy",
     PAID: "Đã thanh toán",
