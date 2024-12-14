@@ -41,6 +41,7 @@ import { useParams } from "next/navigation";
 import { updateService } from "../../action/update-service";
 import { toast } from "sonner";
 import { FileUpload } from "@/components/image-uploadthing/file-upload";
+import { CurrencyInput } from "@/components/form/currency-input";
 interface ServiceDetailUpdateFormProps {
   truckCategorys: ITruckCategory[] | null;
   service: IService | null;
@@ -192,12 +193,10 @@ const ServiceDetailUpdateForm = ({
                           <FormItem>
                             <FormLabel>Giá tiền</FormLabel>
                             <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(parseFloat(e.target.value))
-                                }
+                              <CurrencyInput
+                                value={field.value}
+                                onChange={field.onChange}
+                                placeholder="Nhập số tiền"
                               />
                             </FormControl>
                             <FormMessage />

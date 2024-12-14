@@ -33,6 +33,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { updateFee } from "../../actions/update-fee";
 import AlertModal from "@/components/modals/alert-modal";
 import { deleteFee } from "../../actions/delete-fee";
+import { CurrencyInput } from "../../../../components/form/currency-input";
 interface FeeDetailUpdateFormProps {
   services: IService[] | null;
   fee: IFee | null;
@@ -278,12 +279,9 @@ const FeeDetailUpdateForm = ({
                         <FormItem>
                           <FormLabel>Số tiền</FormLabel>
                           <FormControl>
-                            <Input
-                              type="number"
-                              {...field}
-                              onChange={(e) =>
-                                field.onChange(parseFloat(e.target.value) || 0)
-                              } // Chuyển đổi sang số, nếu không phải số thì mặc định là 0
+                            <CurrencyInput
+                              value={field.value}
+                              onChange={field.onChange}
                               placeholder="Nhập số tiền"
                             />
                           </FormControl>

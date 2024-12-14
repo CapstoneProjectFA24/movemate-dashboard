@@ -2,16 +2,13 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, DollarSign, Activity } from "lucide-react";
 import { getStatisTicTransation } from "@/features/statistic/action/statistic";
+import { formatter } from "@/lib/utils";
 export interface SearchParamFilterDashboard {
   shard?: string;
   type?: string;
   isSummary?: boolean;
 }
 
-export const formatter = new Intl.NumberFormat('vi-VN', {
-  
-  currency: 'VND',
-});
 
 
 const LeftStatistic = async ({
@@ -44,7 +41,6 @@ const LeftStatistic = async ({
         <CardContent>
           <div className="text-2xl font-bold text-green-600 dark:text-green-400">
           {formatter.format(totalIncome)}
-            <span className="text-sm ml-2">VND</span>
           </div>
         </CardContent>
       </Card>
@@ -57,7 +53,6 @@ const LeftStatistic = async ({
         <CardContent>
           <div className="text-2xl font-bold text-red-600 dark:text-red-400">
           {formatter.format(totalCompensation)}
-            <span className="text-sm ml-2">VND</span>
           </div>
         </CardContent>
       </Card>
@@ -70,7 +65,6 @@ const LeftStatistic = async ({
         <CardContent>
           <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
           {formatter.format(profit)}
-            <span className="text-sm ml-2">VND</span>
           </div>
         </CardContent>
       </Card>

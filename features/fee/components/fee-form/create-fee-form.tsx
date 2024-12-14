@@ -30,6 +30,7 @@ import { createFee } from "../../actions/create-fee";
 import { toast } from "sonner";
 import { feeSchema, FeeSchemaType } from "../../types/create-fee-schema";
 import { useRouter } from "nextjs-toploader/app";
+import { CurrencyInput } from "@/components/form/currency-input";
 
 interface CreateFeeFormProps {
   services: IService[];
@@ -120,7 +121,6 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
   }, [type, resetField]);
 
   const onSubmit = async (data: z.infer<typeof feeSchema>) => {
-    
     try {
       startTransition(async () => {
         const result = await createFee(data);
@@ -210,12 +210,9 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
                   <FormItem>
                     <FormLabel>Số tiền</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value) || 0)
-                        } // Chuyển đổi sang số, nếu không phải số thì mặc định là 0
+                      <CurrencyInput
+                        value={field.value}
+                        onChange={field.onChange}
                         placeholder="Nhập số tiền"
                       />
                     </FormControl>
