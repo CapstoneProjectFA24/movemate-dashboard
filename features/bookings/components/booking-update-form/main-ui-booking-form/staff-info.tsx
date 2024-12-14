@@ -2,7 +2,21 @@
 import { Assignment } from "@/features/bookings/types/booking-type";
 import { useGetUserById } from "@/features/users/react-query/query";
 import React, { useState, useTransition } from "react";
-import { MessageCircle, Phone, Star, User, UserPlus } from "lucide-react";
+import {
+  MessageCircle,
+  Phone,
+  Star,
+  User,
+  UserPlus,
+  CheckCircle,
+  Clock,
+  Package,
+  Truck,
+  LoaderCircle,
+  XCircle,
+  MapPin,
+  HelpCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal";
 import { useSession } from "next-auth/react";
@@ -18,18 +32,92 @@ interface StaffInfoProps {
   assignment: Assignment;
   groupedAssignments: Record<StaffType, any[]>;
 }
-
+const getStatusDetails = (status: string) => {
+  switch (status?.toUpperCase()) {
+    case "WAITING":
+      return {
+        icon: <Clock className="w-4 h-4 mr-1 text-gray-500" />,
+        text: "Chờ xử lý",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "ASSIGNED":
+      return {
+        icon: <CheckCircle className="w-4 h-4 mr-1 text-gray-500" />,
+        text: "Được gán",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "INCOMING":
+      return {
+        icon: <Clock className="w-4 h-4 mr-1 text-blue-500" />,
+        text: "Đang đến",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "PACKING":
+      return {
+        icon: <Package className="w-4 h-4 mr-1 text-purple-500" />,
+        text: "Đang đóng gói",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "ONGOING":
+      return {
+        icon: <Truck className="w-4 h-4 mr-1 text-blue-500" />,
+        text: "Đang vận chuyển",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "DELIVERED":
+      return {
+        icon: <CheckCircle className="w-4 h-4 mr-1 text-gray-500" />,
+        text: "Đã giao hàng",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "UNLOADED":
+      return {
+        icon: <Package className="w-4 h-4 mr-1 text-orange-500" />,
+        text: "Đã dỡ hàng",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "IN_PROGRESS":
+      return {
+        icon: <LoaderCircle className="w-4 h-4 mr-1 text-blue-500" />,
+        text: "Đang thực hiện",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "FAILED":
+      return {
+        icon: <XCircle className="w-4 h-4 mr-1 text-red-500" />,
+        text: "Có sự cố",
+        color: "bg-red-100 text-red-700",
+      };
+    case "ARRIVED":
+      return {
+        icon: <MapPin className="w-4 h-4 mr-1 text-green-500" />,
+        text: "Đã đến nơi",
+        color: "bg-gray-100 text-gray-700",
+      };
+    case "COMPLETED":
+      return {
+        icon: <CheckCircle className="w-4 h-4 mr-1 text-green-500" />,
+        text: "Hoàn thành",
+        color: "bg-gray-100 text-gray-700",
+      };
+    default:
+      return {};
+  }
+};
 const canAssignResponsible = (
   staffType: StaffType,
   groupedAssignments: Record<StaffType, any[]>
 ) => {
   const assignments = groupedAssignments[staffType];
+  return !assignments.some((assignment) => assignment.isResponsible);
+};
 
-  const hasResponsibility = assignments.some(
-    (assignment) => assignment.isResponsible
+const isAssignmentEligible = (assignment: Assignment) => {
+  return (
+    (assignment.staffType === "DRIVER" || assignment.staffType === "PORTER") &&
+    assignment.status?.toUpperCase() !== "FAILED" &&
+    !assignment.isResponsible
   );
-
-  return !hasResponsibility;
 };
 
 const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
@@ -59,10 +147,11 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
     return <div className="text-gray-500">Không tìm thấy nhân viên</div>;
 
   const isAssignmentAllowed =
-    (assignment.staffType === "DRIVER" || assignment.staffType === "PORTER") &&
-    canAssignResponsible(assignment.staffType, groupedAssignments);
+    isAssignmentEligible(assignment) &&
+    canAssignResponsible(assignment.staffType as StaffType, groupedAssignments);
 
-  const isCanChat = (assignment.staffType === "DRIVER" || assignment.staffType === "PORTER")  
+  const isCanChat =
+    assignment.staffType === "DRIVER" || assignment.staffType === "PORTER";
 
   const handleAssignReponsibility = async () => {
     try {
@@ -101,7 +190,13 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
       />
       <div className="flex items-center space-x-3">
         {user.avatarUrl ? (
-          <Image width={40} height={40} src={user.avatarUrl} alt={user.name} className="rounded-full" />
+          <Image
+            width={40}
+            height={40}
+            src={user.avatarUrl}
+            alt={user.name}
+            className="rounded-full"
+          />
         ) : (
           <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
             <User className="w-6 h-6 text-gray-500" />
@@ -118,6 +213,17 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
             <Phone className="w-4 h-4 mr-1" />
             {user.phone || "Chưa cập nhật"}
           </div>
+          {/* Status Display */}
+          <div className="flex items-center mt-1">
+            {getStatusDetails(assignment.status!).icon}
+            <span
+              className={`text-xs px-2 py-0.5 rounded ${
+                getStatusDetails(assignment.status!).color
+              }`}
+            >
+              {getStatusDetails(assignment.status!).text}
+            </span>
+          </div>
         </div>
       </div>
       <div className="flex items-center space-x-2 mt-2">
@@ -131,7 +237,7 @@ const StaffInfo = ({ assignment, groupedAssignments }: StaffInfoProps) => {
             className="flex items-center"
           >
             <UserPlus className="w-4 h-4 mr-2" />
-             {isPending ? "Đang xử lý..." : "Gán trách nhiệm"}
+            {isPending ? "Đang xử lý..." : "Gán trách nhiệm"}
           </Button>
         )}
         {isCanChat && (

@@ -43,6 +43,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
 
         if (!result.success) {
           toast.error(result.error);
+          router.push(`/dashboard/bookings/${row.original.id}`);
           return;
         }
 

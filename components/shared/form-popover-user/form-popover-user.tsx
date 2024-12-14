@@ -37,7 +37,7 @@ const FormPopoverUser = ({
   
   const hasManagementAccess = useCallback(() => {
     const role = session?.user?.roleName;
-    return role === "Admin" || role === "Staff" || role === "Reviewer";
+    return role === "Admin" || role === "Manager" || role === "Reviewer";
   }, [session?.user?.roleName]);
 
   useEffect(() => {
