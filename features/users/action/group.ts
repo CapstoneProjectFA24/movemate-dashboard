@@ -57,6 +57,22 @@ export async function createGroup(data: any): Promise<Result<void>> {
   return { success: true, data: undefined };
 }
 
+
+export async function addUserToGroup(data: any): Promise<Result<void>> {
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.put(`${MANAGE_SCHEDULE_URL.GROUP}/add-user`, data)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/users`);
+
+  return { success: true, data: undefined };
+}
+
 export async function deleteGroup(params: string): Promise<Result<void>> {
   noStore();
 
