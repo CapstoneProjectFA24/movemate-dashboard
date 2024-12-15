@@ -19,7 +19,7 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { useModal } from "@/hooks/use-modal";
 import { useGetOrCreateStaffConversation } from "@/features/chat-realtime/react-query/query";
 import { useSession } from "next-auth/react";
-import { useGetGroup } from "@/features/users/react-query/query";
+import GroupSelection from "../group-selection";
 
 interface ActionMenuProps {
   row: Row<IUser>;
@@ -29,8 +29,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
   const { onOpen } = useModal();
   const { data: session } = useSession();
 
-  //   const { data: groups, isLoading } = useGetGroup();
-  // console.log(groups)
+
   const { mutateAsync: getOrCreateConversation } =
     useGetOrCreateStaffConversation(
       session?.user.id.toString()!,
@@ -89,28 +88,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
           <DropdownMenuSubTrigger>Phân tổ</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={row.original.groupId}>
-              {["1", "2"].map((group) => {
-                return (
-                  <DropdownMenuRadioItem
-                    key={group}
-                    value={group}
-                    className="capitalize"
-                  >
-                    {group}
-                  </DropdownMenuRadioItem>
-                );
-              })}
-              {/* {groups?.data.map((group) => {
-                return (
-                  <DropdownMenuRadioItem
-                    key={group.id.toString()}
-                    value={group.id.toString()}
-                    className="capitalize"
-                  >
-                    {group.name}
-                  </DropdownMenuRadioItem>
-                );
-              })} */}
+              <GroupSelection user={row.original} />
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
