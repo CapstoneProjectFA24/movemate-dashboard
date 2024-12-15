@@ -49,24 +49,24 @@ const Dashboard = async ({
     getStatisTicBooking(searchParams),
     getStatisTicPromotion(),
     getStatisTicTruckCategory(),
-    getStatisTicGroup()
+    getStatisTicGroup(),
   ]);
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-2 w-full">
       <div className="flex justify-between items-center pb-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center space-x-3">
-              <BarChart3 className="h-7 w-7 text-orange-600" />
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-                Dashboard
-              </h1>
-            </div>
-            <div>
-              <StatisticFilterDate searchParams={searchParams} />
-            </div>
-          </div>
+        <div className="flex items-center space-x-3">
+          <BarChart3 className="h-7 w-7 text-orange-600" />
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            Dashboard
+          </h1>
+        </div>
+        <div>
+          <StatisticFilterDate searchParams={searchParams} />
+        </div>
+      </div>
       <div className="flex flex-col lg:flex-row gap-8 p-8 bg-gray-100 dark:bg-gray-900">
         {/* Left Section */}
-        <div className="lg:w-3/12 space-y-8">
+        <div className="lg:w-3/12 space-y-8 w-full">
           <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <LeftStatistic searchParams={searchParams} />
           </div>
@@ -84,7 +84,7 @@ const Dashboard = async ({
             </CardHeader>
             <CardContent className="p-6 h-[450px]">
               <StatisticTransactionLineChart
-                data={statisticTransactionLineData.data}             
+                data={statisticTransactionLineData.data}
               />
             </CardContent>
           </Card>
@@ -94,19 +94,19 @@ const Dashboard = async ({
       <div className="mt-2 flex flex-col space-y-4">
         {/* Middle Row - Two Charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="hover:shadow-lg transition-shadow duration-200">
+          <Card className="hover:shadow-lg transition-shadow duration-200 w-full">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center space-x-2">
                 <BarChart3 className="h-5 w-5 text-green-500" />
                 <span>Thống kê đặt chỗ</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-[350px]">
+            <CardContent className="h-[350px] overflow-hidden">
               <StatisticbookingPineChart data={statisticBookingData.data} />
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 gap-2">
+          <div className="w-full">
             <StatisticBooking data={statisticBookingData.data} />
           </div>
         </div>
