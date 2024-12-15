@@ -55,6 +55,7 @@ export const CreateNewServicesBookingModal = () => {
   const typeLabels = {
     [ServiceType.SYSTEM]: "Hệ thống",
     [ServiceType.DISASSEMBLE]: "Tháo lắp",
+    [ServiceType.INSURANCE]: "Bảo hiểm",
     [ServiceType.PORTER]: "Khuân vác",
     [ServiceType.TRUCK]: "Xe tải",
   };
@@ -62,6 +63,7 @@ export const CreateNewServicesBookingModal = () => {
   const typeIcons = {
     [ServiceType.SYSTEM]: <Settings className="w-4 h-4" />,
     [ServiceType.DISASSEMBLE]: <MdBuildCircle className="w-4 h-4" />,
+    [ServiceType.INSURANCE]: <MdBuildCircle className="w-4 h-4" />,
     [ServiceType.PORTER]: <Package2 className="w-4 h-4" />,
     [ServiceType.TRUCK]: <Truck className="w-4 h-4" />,
   };
