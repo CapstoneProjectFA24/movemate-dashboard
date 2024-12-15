@@ -80,7 +80,7 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
       <StatsTransactionOverview transactionStatistic={transactionStatistic} />
 
       <div className="flex flex-col lg:flex-row gap-6">
-        <div className="lg:w-3/4">
+        <div className="lg:w-full">
           <Shell className="h-full gap-y-2">
             <React.Suspense fallback={<Skeleton className="h-7 w-52" />}>
               <FlexibleDatePicker
@@ -100,7 +100,7 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
                   columnCount={5}
                   searchableColumnCount={1}
                   filterableColumnCount={2}
-                  cellWidths={["10rem", "40rem", "12rem", "12rem", "8rem"]}
+                  cellWidths={["15%", "40%", "15%", "15%", "15%"]}
                   shrinkZero
                 />
               }
@@ -108,26 +108,6 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
               <TransactionsTable transactionsPromise={transactionsPromise} />
             </React.Suspense>
           </Shell>
-        </div>
-
-        <div className="lg:w-1/4">
-          <ScrollArea className="h-[calc(100vh-10rem)]">
-            <div className="space-y-6 pr-4">
-              <Tabs defaultValue="overview" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="overview">Tổng quan</TabsTrigger>
-                  <TabsTrigger value="analytics">Phân tích</TabsTrigger>
-                </TabsList>
-                <TabsContent value="overview" className="space-y-4">
-                  <MoneyChart />
-                  <MoneyChart />
-                </TabsContent>
-                <TabsContent value="analytics" className="space-y-4">
-                  <MoneyChart />
-                </TabsContent>
-              </Tabs>
-            </div>
-          </ScrollArea>
         </div>
       </div>
     </div>

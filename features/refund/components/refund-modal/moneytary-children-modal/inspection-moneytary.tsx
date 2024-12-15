@@ -85,21 +85,21 @@ const InspectionMoneytaryContent = ({
           </h4>
           <div className="text-sm text-gray-700 dark:text-gray-400 space-y-1">
             <p>
-              <span className="font-medium">Loại</span>
+              <span className="font-medium">Loại: </span>
               {row.original.title}
             </p>
             <p>
-              Số tiền bồi thường khách hàng yêu cầu:{" "}
+              Số tiền bồi thường khách hàng yêu cầu: {" "}
               <span className="font-medium text-green-500">
                 {formatter.format(row.original.estimatedAmount)}
               </span>
             </p>
             <p>
-              <span className="font-medium">Có bảo hiểm hay không</span>
+              <span className="font-medium">Có bảo hiểm hay không: </span>
               {row.original.isInsurance === true ? "Có" : "Không"}
             </p>
             <p>
-              <span className="font-medium">Mô tả</span>
+              <span className="font-medium">Mô tả: </span>
               {row.original.description}
             </p>
           </div>
@@ -117,7 +117,7 @@ const InspectionMoneytaryContent = ({
                 />
                 <h4 className="font-medium text-sm flex flex-col">
                   <span>{row.original.owner.name}</span>
-                  <span className="text-xs">khách hàng</span>
+                  <span className="text-xs">khách hàng </span>
                 </h4>
               </div>
               <Button
