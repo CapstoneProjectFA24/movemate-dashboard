@@ -88,7 +88,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         variant="success"
         onConfirm={handleRefund}
         loading={loading}
-        title="Đã kiểm tra xog"
+        title="Đã kiểm tra xong"
         description="Bạn có chắc chắn muốn hoàn tiền cho đơn này không?"
       />
       <MoneytaryModal
@@ -98,7 +98,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         variant="success"
         onConfirm={hanldeMoneytary}
         loading={loading}
-        title="Đã kiểm tra xog"
+        title="Đã kiểm tra xong"
         description="Xác nhận để kết thúc quá trình kiểm định?"
       />
       <DropdownMenu>

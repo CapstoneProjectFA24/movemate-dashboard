@@ -18,7 +18,13 @@ export async function getTransactions(
 ): Promise<ApiListResponse<ITransaction>> {
   noStore();
 
-  const result = await fetchListData<ITransaction>(BASIC_URL.GET_TRANSACTIONS, searchParams);
+  // backend lậu chỗ này
+  const modifiedSearchParams = {
+    ...searchParams,
+    userId: 4,
+  };
+
+  const result = await fetchListData<ITransaction>(BASIC_URL.GET_TRANSACTIONS, modifiedSearchParams);
   if (!result.success) {
     console.error("Failed to fetch list transactions:", result.error);
     return { data: [], pageCount: 0, error: result.error };

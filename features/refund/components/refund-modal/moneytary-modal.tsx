@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CurrencyInput } from "@/components/form/currency-input";
 interface MoneytaryModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -338,14 +339,12 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
                         name="realAmount"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel> Nhập số tiền bồi thường</FormLabel>
+                            <FormLabel>Nhập số tiền bồi thường</FormLabel>
                             <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(parseFloat(e.target.value))
-                                }
+                              <CurrencyInput
+                                value={field.value}
+                                onChange={field.onChange}
+                                placeholder="Nhập số tiền"
                               />
                             </FormControl>
                             <FormMessage className="text-red-500">

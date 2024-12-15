@@ -37,7 +37,8 @@ import { Loader } from "lucide-react";
 import { FileUpload } from "@/components/image-uploadthing/file-upload";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { useRouter } from 'nextjs-toploader/app';
+import { useRouter } from "nextjs-toploader/app";
+import { CurrencyInput } from "@/components/form/currency-input";
 // Dynamic import for React Quill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -48,6 +49,7 @@ interface CreateServiceFormProps {
 const serviceTypes = [
   { value: "SYSTEM", label: "Hệ thống" },
   { value: "DISASSEMBLE", label: "Tháo lắp" },
+  { value: "INSURANCE", label: "Bảo hiểm" },
   { value: "PORTER", label: "Bốc vác" },
   { value: "TRUCK", label: "Vận chuyển" },
   { value: "CUSTOM", label: "Tùy chỉnh" },
@@ -80,7 +82,7 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
         } else {
           form.reset();
           toast.success("Cập nhật dịch vụ thành công !");
-          router.push("/dashboard/services")
+          router.push("/dashboard/services");
         }
       });
     } catch (error) {
@@ -206,14 +208,12 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Giá tiền</FormLabel>
+                      <FormLabel>Số tiền</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(parseFloat(e.target.value))
-                          }
+                        <CurrencyInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="Nhập số tiền"
                         />
                       </FormControl>
                       <FormMessage />
@@ -310,22 +310,22 @@ const CreateServiceForm = ({ truckCategorys }: CreateServiceFormProps) => {
                 )}
               </div>
               <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Mô tả</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder="Mô tả chi tiết về dịch vụ"
-                              className="h-32"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mô tả</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Mô tả chi tiết về dịch vụ"
+                        className="h-32"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {/* <FormField
                 control={form.control}
                 name="description"

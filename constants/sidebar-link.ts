@@ -45,6 +45,7 @@ export const routes: Route[] = [
     icon: GoHome,
     activeIcon: GoHomeFill,
     href: "/dashboard",
+    allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER, UserRole.ADMIN],
   },
   {
     label: "Quản lý nhân sự",
@@ -64,6 +65,7 @@ export const routes: Route[] = [
         href: "/dashboard/users/manage_shift",
         icon: FaCalendarPlus,
         activeIcon: FaCalendarPlus,
+        allowsRoles: [UserRole.MANAGER],
       },
     ],
   },
@@ -72,6 +74,7 @@ export const routes: Route[] = [
     icon: MdMiscellaneousServices,
     activeIcon: MdMiscellaneousServices,
     isParent: true,
+    allowsRoles: [UserRole.MANAGER],
     children: [
       {
         label: "Danh sách dịch vụ",
@@ -104,6 +107,7 @@ export const routes: Route[] = [
     icon: TbBrandBooking,
     activeIcon: TbBrandBooking,
     isParent: true,
+    allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
     children: [
       {
         label: "Đơn dọn nhà",
@@ -140,20 +144,21 @@ export const routes: Route[] = [
     icon: GrTransaction,
     activeIcon: GrTransaction,
     href: "/dashboard/transactions",
-    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+    allowsRoles: [UserRole.MANAGER],
   },
   {
     label: "Danh sách khuyến mãi",
     icon: FaGifts,
     activeIcon: FaGifts,
     href: "/dashboard/promotions",
-    // allowsRoles: [UserRole.MANAGER, UserRole.REVIEWER],
+    allowsRoles: [UserRole.MANAGER],
   },
   {
     label: "Quản lý bồi thường",
     icon: FaRegMoneyBillAlt,
     activeIcon: FaMoneyBillAlt,
     href: "/dashboard/refund",
+    allowsRoles: [UserRole.MANAGER],
   },
   {
     label: "Phản hồi",
