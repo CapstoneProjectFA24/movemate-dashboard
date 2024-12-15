@@ -65,6 +65,16 @@ const FeeDetailUpdateForm = ({
       description: z.string(),
       amount: z.number().min(0, "Số tiền không được âm"),
       unit: z.union([z.string(), z.null()]),
+      rangeMax: z
+        .number()
+        .min(0, "Số tiền phải lớn hơn hoặc bằng 0")
+        .nonnegative("Số tiền không thể là số âm")
+        .optional(),
+      rangeMin: z
+        .number()
+        .min(0, "Số tiền phải lớn hơn hoặc bằng 0")
+        .nonnegative("Số tiền không thể là số âm")
+        .optional(),
     };
 
     if (type === FeeType.DRIVER || type === FeeType.PORTER) {
@@ -101,6 +111,8 @@ const FeeDetailUpdateForm = ({
       houseTypeId: fee?.houseTypeId || undefined,
       floorPercentage: fee?.floorPercentage || 0,
       unit: fee?.unit || null,
+      rangeMax: fee?.rangeMax || 0,
+      rangeMin: fee?.rangeMin || 0,
     },
   });
   const { watch, resetField, setValue } = form;
@@ -121,6 +133,9 @@ const FeeDetailUpdateForm = ({
       return services;
     }
   }
+
+  const unit = watch("unit");
+  const showRangeFields = unit === "KM" || unit === "FLOOR";
 
   function getUnitByFeeType(type: string): string | null {
     switch (type) {
@@ -289,6 +304,55 @@ const FeeDetailUpdateForm = ({
                         </FormItem>
                       )}
                     />
+
+                    {showRangeFields && (
+                      <>
+                        <FormField
+                          control={form.control}
+                          name="rangeMin"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phí cho khoảng tối thiểu</FormLabel>
+                              <FormControl>
+                                <Input
+                                  value={field.value}
+                                  type="number"
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      parseFloat(e.target.value) || 0
+                                    )
+                                  }
+                                  placeholder="Nhập "
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="rangeMax"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phí cho khoảng tối đa</FormLabel>
+                              <FormControl>
+                                <Input
+                                  value={field.value}
+                                  type="number"
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      parseFloat(e.target.value) || 0
+                                    )
+                                  }
+                                  placeholder="Nhập "
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </>
+                    )}
                     {isChooseService && (
                       <Card>
                         <CardHeader>

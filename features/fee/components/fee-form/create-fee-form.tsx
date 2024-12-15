@@ -56,6 +56,8 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
       description: "",
       amount: 0,
       floorPercentage: 0,
+      rangeMin: 0,
+      rangeMax: 0,
       serviceId: 0,
       houseTypeId: 0,
     },
@@ -94,6 +96,10 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
         return null;
     }
   }
+  const isRangeVisible = (type: string | undefined) => {
+    const unit = type ? getUnitByFeeType(type) : null;
+    return unit === "KM" || unit === "FLOOR";
+  };
 
   useEffect(() => {
     const filteredParentServices = filterServices(services, type);
@@ -122,17 +128,18 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
 
   const onSubmit = async (data: z.infer<typeof feeSchema>) => {
     try {
-    const result = await createFee(data);
+      const result = await createFee(data);
 
-        if (!result.success) {
-          toast.error(result.error);
-        } else   startTransition(async () => {
-        {
-          form.reset();
-          toast.success("Tạo mới phí dịch vụ thành công !");
-          router.push("/dashboard/fee");
-        }
-      });
+      if (!result.success) {
+        toast.error(result.error);
+      } else
+        startTransition(async () => {
+          {
+            form.reset();
+            toast.success("Tạo mới phí dịch vụ thành công !");
+            router.push("/dashboard/fee");
+          }
+        });
     } catch (error) {
       console.error("có lỗi khi trong quá trình submit form:", error);
     }
@@ -220,6 +227,50 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
                   </FormItem>
                 )}
               />
+              {isRangeVisible(type) && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="rangeMin"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phí cho khoảng tối thiểu</FormLabel>
+                        <FormControl>
+                          <Input
+                            value={field.value}
+                            type="number"
+                            onChange={(e) =>
+                              field.onChange(parseFloat(e.target.value) || 0)
+                            }
+                            placeholder="Nhập "
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="rangeMax"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phí cho khoảng tối đa</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            value={field.value}
+                            onChange={(e) =>
+                              field.onChange(parseFloat(e.target.value) || 0)
+                            }
+                            placeholder="Nhập "
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
             </CardContent>
           </Card>
 
