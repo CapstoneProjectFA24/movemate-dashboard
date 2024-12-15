@@ -95,6 +95,7 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
       dob: "",
       gender: undefined,
       password: undefined,
+      
       truckCategoryId: 0,
       color: "",
       brand: "",

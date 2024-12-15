@@ -69,6 +69,7 @@ export const AssignmentSection: React.FC<AssignmentSectionProps> = ({
     const dataToSend = {
       staffType: assignment.staffType,
       assignToUserId: assignedStaff?.id,
+      needReplaceAssignmentId: userInfo?.data?.id
     };
     console.log(dataToSend);
     startTransition(async () => {

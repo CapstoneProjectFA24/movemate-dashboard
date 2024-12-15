@@ -110,6 +110,14 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
           </Shell>
         </div>
       </div>
+      <div className="flex flex-col lg:flex-row gap-8 p-8 bg-gray-100 dark:bg-gray-900">
+        {/* Left Section */}
+        <div className="lg:w-3/12 space-y-8 w-full">
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            {/* <WalletSys searchParams={searchParams} /> */}
+          </div>
+        </div>
+        </div>
     </div>
   );
 };
