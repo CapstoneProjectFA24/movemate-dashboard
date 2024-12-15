@@ -12,6 +12,7 @@ import { CheckAssignmentModal } from "@/features/bookings/components/modal/check
 import { ExceptionModal } from "@/features/exception/components/modal/exception-modal";
 import { ChatUserModal } from "@/components/modals/chat-modal/chat-user-modal";
 import { CreateHouseModal } from "@/features/services-settings/components/house-setting/house-setting-modal";
+import { AccpetUserModal } from "@/features/users/components/modal/check-accept-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -35,6 +36,7 @@ export const ModalProvider = () => {
       <CheckAssignmentModal/>
       <ExceptionModal/>
       <CreateHouseModal/>
+      <AccpetUserModal/>
     </>
   );
 };

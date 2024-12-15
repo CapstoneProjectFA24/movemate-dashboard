@@ -61,6 +61,12 @@ export const routes: Route[] = [
         activeIcon: FaUserCheck,
       },
       {
+        label: "Xét duyệt nhân viên ",
+        href: "/dashboard/users/accept_employee",
+        icon: FaUserPen,
+        activeIcon: FaUserCheck,
+      },
+      {
         label: "Quản lý ca làm việc",
         href: "/dashboard/users/manage_shift",
         icon: FaCalendarPlus,

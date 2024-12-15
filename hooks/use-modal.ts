@@ -18,6 +18,7 @@ export type ModalType =
   | "checkAssignmentModal"
   | "exceptionModal"
   | "createHouseModal"
+  | "accpetUserModal"
 ;
 
 

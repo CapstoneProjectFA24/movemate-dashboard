@@ -7,7 +7,11 @@ export type IUser = {
   email: string;
   isDeleted: boolean;
   avatarUrl?: string;
-  groupId?:string
+  groupId?: string;
+  dob?: string;
+  isDriver?: boolean;
+  truck?: ITruck;
+  userInfos?: IUserInfos[];
 };
 
 export enum UserRole {
@@ -15,3 +19,23 @@ export enum UserRole {
   Driver = "DRIVER",
   Porter = "PORTER",
 }
+
+export type ITruck = {
+  id: number;
+  userId: number;
+  truckCategoryId: number;
+  model: string;
+  numberPlate: number;
+  capacity: number;
+  isAvailable: boolean;
+  brand: string;
+  color: string;
+  isInsurrance: boolean;
+};
+
+export type IUserInfos = {
+  id: number;
+  userId: number;
+  type: string;
+  imageUrl: string;
+};

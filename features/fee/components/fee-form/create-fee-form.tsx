@@ -122,12 +122,12 @@ const CreateFeeForm = ({ services, house }: CreateFeeFormProps) => {
 
   const onSubmit = async (data: z.infer<typeof feeSchema>) => {
     try {
-      startTransition(async () => {
-        const result = await createFee(data);
+    const result = await createFee(data);
 
         if (!result.success) {
           toast.error(result.error);
-        } else {
+        } else   startTransition(async () => {
+        {
           form.reset();
           toast.success("Tạo mới phí dịch vụ thành công !");
           router.push("/dashboard/fee");
