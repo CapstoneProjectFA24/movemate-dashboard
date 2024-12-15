@@ -12,6 +12,7 @@ import {
   MdLocalShipping,
 } from "react-icons/md";
 import { CheckCircle2, Edit, XCircle } from "lucide-react";
+import { FaUserShield } from "react-icons/fa6";
 
 // Object map type sang icon tương ứng
 const serviceTypeIcons = {
@@ -19,6 +20,8 @@ const serviceTypeIcons = {
   [ServiceType.DISASSEMBLE]: MdBuildCircle,
   [ServiceType.PORTER]: MdPerson,
   [ServiceType.TRUCK]: MdLocalShipping,
+  [ServiceType.INSURANCE]: FaUserShield,
+  
 };
 
 const statusOptions = [

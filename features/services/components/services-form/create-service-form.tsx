@@ -49,6 +49,7 @@ interface CreateServiceFormProps {
 const serviceTypes = [
   { value: "SYSTEM", label: "Hệ thống" },
   { value: "DISASSEMBLE", label: "Tháo lắp" },
+  { value: "INSURANCE", label: "Bảo hiểm" },
   { value: "PORTER", label: "Bốc vác" },
   { value: "TRUCK", label: "Vận chuyển" },
   { value: "CUSTOM", label: "Tùy chỉnh" },

@@ -10,13 +10,15 @@ export enum ServiceType {
   DISASSEMBLE = "DISASSEMBLE",
   PORTER = "PORTER",
   TRUCK = "TRUCK",
+  INSURANCE = "INSURANCE"
 }
-
+import { FaUserShield } from "react-icons/fa6";
 export const ServiceTypeNames = {
   [ServiceType.SYSTEM]: "Hệ thống",
   [ServiceType.DISASSEMBLE]: "Tháo lắp",
   [ServiceType.PORTER]: "Nhân công",
   [ServiceType.TRUCK]: "Vận chuyển",
+  [ServiceType.INSURANCE]: "Bảo hiểm",
 };
 
 export const ServiceTypeIcons = {
@@ -24,4 +26,5 @@ export const ServiceTypeIcons = {
   [ServiceType.DISASSEMBLE]: MdBuildCircle,
   [ServiceType.PORTER]: MdPerson,
   [ServiceType.TRUCK]: MdLocalShipping,
+  [ServiceType.INSURANCE]: FaUserShield,
 };
