@@ -34,6 +34,7 @@ import {
 const serviceTypeIcons = {
   [ServiceType.SYSTEM]: MdSystemUpdateAlt,
   [ServiceType.DISASSEMBLE]: MdBuildCircle,
+  [ServiceType.INSURANCE]: MdBuildCircle,
   [ServiceType.PORTER]: MdPerson,
   [ServiceType.TRUCK]: MdLocalShipping,
 };
