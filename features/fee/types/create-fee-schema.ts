@@ -20,6 +20,16 @@ const baseFeeSchema = z.object({
     .min(0, "Số tiền phải lớn hơn hoặc bằng 0")
     .nonnegative("Số tiền không thể là số âm"),
   unit: z.union([z.string(), z.null()]),
+  rangeMax: z
+    .number()
+    .min(0, "Số tiền phải lớn hơn hoặc bằng 0")
+    .nonnegative("Số tiền không thể là số âm")
+    .optional(),
+  rangeMin: z
+    .number()
+    .min(0, "Số tiền phải lớn hơn hoặc bằng 0")
+    .nonnegative("Số tiền không thể là số âm")
+    .optional(),
 });
 
 // Schema cho các trường serviceId
