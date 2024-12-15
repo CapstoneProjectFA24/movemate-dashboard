@@ -12,16 +12,16 @@ import { useRouter } from "next/navigation";
 export const Navbar = () => {
   const router = useRouter();
   return (
-    <nav className="bg-white dark:bg-muted/40 backdrop-filter backdrop-blur-lg px-6 flex items-center justify-between h-20 border-b-2 my-[1px] border-gray-300 dark:border-gray-600 sticky top-0 z-50">
-      <div className="flex items-center gap-4">
+    <nav className="bg-white dark:bg-muted/40 backdrop-filter backdrop-blur-lg px-3 flex items-center justify-between h-20 border-b-2 my-[1px] border-gray-300 dark:border-gray-600 sticky top-0 z-50">
+      <div className="flex items-center gap-4 w-full">
         <MobileSidebar />
-        <div className="flex-col hidden lg:flex">
+        <div className="flex-col hidden lg:flex overflow-hidden">
           <h1 className="text-2xl font-bold text-black dark:text-white">
             Trang quản lý
           </h1>
-          <p className="text-muted-foreground dark:text-gray-300">
+          <div className="text-center md:text-left text-gray-500 dark:text-gray-300 text-sm md:text-base w-full">
             Chào mừng trở lại, Vinh
-          </p>
+          </div>
         </div>
       </div>
 
