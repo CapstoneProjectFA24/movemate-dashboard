@@ -19,7 +19,8 @@ const ServiceAnalytic = async () => {
           <DottedSeparator direction="vertical" />
         </div>
         <div className="flex items-center flex-1">
-          <AnalyticCard title="Dịch vụ chính" value={data!.parentServices} />
+          <AnalyticCard title="Dịch vụ chính" value={data!.parentServices} />+
+          
           <DottedSeparator direction="vertical" />
         </div>
         <div className="flex items-center flex-1">
