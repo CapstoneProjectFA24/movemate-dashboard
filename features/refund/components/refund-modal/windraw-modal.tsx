@@ -26,6 +26,7 @@ import { formatter } from "@/lib/utils";
 import { checkWalletMoney } from "@/features/transactions/action/wallet";
 import { toast } from "sonner";
 import { IWindraw } from "../../types/windraw-type";
+import { useGetUserById } from "@/features/users/react-query/query";
 
 interface WidthDrawModalProps {
   isOpen: boolean;
@@ -60,6 +61,10 @@ const WidthDrawModal: React.FC<WidthDrawModalProps> = ({
   const [isMounted, setIsMounted] = useState(false);
   const [step, setStep] = useState(STEPS.INFO_REFUND);
   const [checkWalletIsPending, checkWalletTransition] = useTransition();
+
+  const { data: userData, isLoading: userIsLoading } = useGetUserById(
+    row.original.userId.toString()
+  );
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -147,15 +152,22 @@ const WidthDrawModal: React.FC<WidthDrawModalProps> = ({
         </h4>
         <div className="text-sm text-gray-700 dark:text-gray-400 space-y-1">
           <p>
-            <span className="font-medium">Tên:</span> {row.original.bankName}
+            <span className="font-medium">Tên:</span> {userData?.data?.name}
           </p>
           <p>
-            <span className="font-medium">Email:</span>{" "}
+            <span className="font-medium">Email:</span> {userData?.data?.email}
+          </p>
+          <p>
+            <span className="font-medium">Tên ngân hàng:</span>{" "}
             {row.original.bankName}
+          </p>
+          <p>
+            <span className="font-medium">Số thẻ:</span>{" "}
+            {row.original.bankNumber}
           </p>
           <p>
             <span className="font-medium">Số điện thoại:</span>{" "}
-            {row.original.bankName}
+            {userData?.data?.phone}
           </p>
         </div>
       </div>

@@ -22,7 +22,10 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { RefundType } from "@/features/refund/enums/refund-enums";
 import RefundModal from "../../refund-modal/refund-modal";
-import { refundMoney } from "@/features/refund/actions/refund";
+import {
+  acceptWindrawMoney,
+  refundMoney,
+} from "@/features/refund/actions/refund";
 import MoneytaryModal from "../../refund-modal/moneytary-modal";
 import { IWindraw } from "@/features/refund/types/windraw-type";
 import WidthDrawModal from "../../refund-modal/windraw-modal";
@@ -38,44 +41,23 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-
-
-
   const handleRefund = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
 
-      // const data = {
-      //   isRefunded: true,
-      // };
-
-      // startTransition(async () => {
-      //   const result = await refundMoney(
-      //     data,
-      //     row.original.bookingId.toString()
-      //   );
-      //   if (!result.success) {
-      //     toast.error(result.error);
-      //   } else {
-      //     toast.success("Hoàn tiền thành công.");
-      //   }
-      // });
+      startTransition(async () => {
+        const result = await acceptWindrawMoney(row.original.id.toString());
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          toast.success("Xác nhận thành công .");
+        }
+      });
     } catch {
       toast.error("Đã có lỗi.");
     } finally {
       setLoading(false);
       setOpen(false);
-    }
-  };
-
-  const hanldeMoneytary = async () => {
-    try {
-      setLoading(true);
-    } catch {
-      toast.error("Đã có lỗi.");
-    } finally {
-      setLoading(false);
-      setMoneytaryOpen(false);
     }
   };
 
@@ -91,7 +73,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         title="Đã kiểm tra xong"
         description="Bạn có chắc chắn xác nhận cho mã rút tiền này không?"
       />
-   
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -107,14 +89,13 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
           align="end"
           className="w-[180px] border shadow-md rounded-md"
         >
-            <DropdownMenuItem
-              onClick={() => setOpen(true)}
-              className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
-            >
-              <Eye className="mr-2 h-4 w-4 text-blue-500" />
-              <span>Chi tiết</span>
-            </DropdownMenuItem>
-  
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
+          >
+            <Eye className="mr-2 h-4 w-4 text-blue-500" />
+            <span>Chi tiết</span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

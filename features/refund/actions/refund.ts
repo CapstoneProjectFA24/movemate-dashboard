@@ -84,3 +84,21 @@ export async function getWindraw(
 
   return result.data;
 }
+
+
+export async function acceptWindrawMoney(
+  params: string
+): Promise<Result<void>> {
+  noStore();
+
+  const result = await apiRequest(() =>
+    axiosAuth.put(`${BASIC_URL.WALLETS}/accept-withdrawal/${params}`)
+  );
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/dashboard/refund`);
+
+  return { success: true, data: undefined };
+}

@@ -83,9 +83,6 @@ export function WidthdrawTable({ widthDrawData }: WidthdrawTableProps) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-lg font-medium">Yêu Cầu Rút Tiền</h2>
-          <p className="text-gray-500 text-sm">
-            Tổng số yêu cầu đang chờ xử lý: {data.length}
-          </p>
         </div>
       </div>
 
