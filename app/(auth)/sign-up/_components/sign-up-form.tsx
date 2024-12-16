@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -192,6 +192,30 @@ const SignUpForm = ({
     return age > 18 || (age === 18 && monthDiff >= 0);
   };
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    null
+  );
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const {} = useForm();
+
+  const handleSelect = (
+    date: Date | undefined, 
+    field: { onChange: (date: string) => void }
+  ) => {
+    if (date) {
+      setSelectedDate(date);
+      field.onChange(date.toISOString());
+  
+      // Check age
+      if (!isAtLeast18YearsOld(date)) {
+        setErrorMessage("Bạn chưa đủ 18 tuổi.");
+      } else {
+        setErrorMessage("");
+      }
+    }
+  };
+
   const handleFinalSubmit = async (documentData: DocumentFormValues) => {
     try {
       const formattedData = {
@@ -209,23 +233,25 @@ const SignUpForm = ({
         userInfo: updatedUserInfo,
       };
       console.log(finalData);
-      // startTransition(async () => {
-      //   const result = await createAccount(finalData);
+      startTransition(async () => {
+        const result = await createAccount(finalData);
 
-      //   if (!result.success) {
-      //     toast.error(result.error);
-      //   } else {
-      //     personalInfoForm.reset();
-      //     documentForm.reset();
-      //     toast.success("Đăng ký thành công");
-      //     router.push("/sign-in");
-      //   }
-      // });
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          personalInfoForm.reset();
+          documentForm.reset();
+          toast.success("Đăng ký thành công");
+          router.push("/sign-in");
+        }
+      });
     } catch (error) {
       toast.error("Đăng ký thất bại");
       console.error(error);
     }
   };
+
+  
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -297,24 +323,7 @@ const SignUpForm = ({
                 control={personalInfoForm.control}
                 name="dob"
                 render={({ field }) => {
-                  const [selectedDate, setSelectedDate] = useState<Date | null>(
-                    null
-                  );
-                  const [errorMessage, setErrorMessage] = useState<string>("");
 
-                  const handleSelect = (date: Date | undefined) => {
-                    if (date) {
-                      setSelectedDate(date);
-                      field.onChange(date.toISOString());
-
-                      // Kiểm tra tuổi
-                      if (!isAtLeast18YearsOld(date)) {
-                        setErrorMessage("Bạn chưa đủ 18 tuổi.");
-                      } else {
-                        setErrorMessage("");
-                      }
-                    }
-                  };
 
                   return (
                     <FormItem>
@@ -419,7 +428,7 @@ const SignUpForm = ({
                             <Calendar
                               mode="single"
                               selected={selectedDate || undefined}
-                              onSelect={handleSelect}
+                              onSelect={(date) => handleSelect(date, field)}
                               initialFocus
                               month={selectedDate || new Date()}
                               onMonthChange={setSelectedDate}
