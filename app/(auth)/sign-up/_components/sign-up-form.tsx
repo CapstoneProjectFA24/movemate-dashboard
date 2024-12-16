@@ -27,6 +27,18 @@ import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { UploadButton } from "@/lib/uploadthing";
 import { createAccount } from "@/features/auth/auth-action";
 import { useRouter } from "nextjs-toploader/app";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { vi } from "date-fns/locale";
+import { format, getMonth, getYear, setMonth, setYear } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = [
   "image/jpeg",
@@ -75,9 +87,15 @@ type DocumentFormValues = z.infer<typeof documentSchema>;
 
 interface SignUpFormProps {
   truckCategorys: ITruckCategory[] | null;
+  startYear?: number;
+  endYear?: number;
 }
 
-const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
+const SignUpForm = ({
+  truckCategorys,
+  startYear = getYear(new Date()) - 100,
+  endYear = getYear(new Date()) + 100,
+}: SignUpFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
   const [documentFiles, setDocumentFiles] = useState<{
@@ -146,6 +164,34 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
     setCurrentStep((prev) => Math.max(1, prev - 1));
   };
 
+  const [date, setDate] = React.useState<Date>(new Date());
+
+  const months = [
+    "Tháng Một",
+    "Tháng Hai",
+    "Tháng Ba",
+    "Tháng Tư",
+    "Tháng Năm",
+    "Tháng Sáu",
+    "Tháng Bảy",
+    "Tháng Tám",
+    "Tháng Chín",
+    "Tháng Mười",
+    "Tháng Mười Một",
+    "Tháng Mười Hai",
+  ];
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
+
+  const isAtLeast18YearsOld = (dateOfBirth: Date): boolean => {
+    const today = new Date();
+    const age = today.getFullYear() - dateOfBirth.getFullYear();
+    const monthDiff = today.getMonth() - dateOfBirth.getMonth();
+    return age > 18 || (age === 18 && monthDiff >= 0);
+  };
+
   const handleFinalSubmit = async (documentData: DocumentFormValues) => {
     try {
       const formattedData = {
@@ -162,18 +208,19 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
         ...documentData,
         userInfo: updatedUserInfo,
       };
-      startTransition(async () => {
-        const result = await createAccount(finalData);
+      console.log(finalData);
+      // startTransition(async () => {
+      //   const result = await createAccount(finalData);
 
-        if (!result.success) {
-          toast.error(result.error);
-        } else {
-          personalInfoForm.reset();
-          documentForm.reset();
-          toast.success("Đăng ký thành công");
-          router.push("/sign-in");
-        }
-      });
+      //   if (!result.success) {
+      //     toast.error(result.error);
+      //   } else {
+      //     personalInfoForm.reset();
+      //     documentForm.reset();
+      //     toast.success("Đăng ký thành công");
+      //     router.push("/sign-in");
+      //   }
+      // });
     } catch (error) {
       toast.error("Đăng ký thất bại");
       console.error(error);
@@ -184,7 +231,7 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
       case 1:
         return (
           <Form {...personalInfoForm}>
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-900 rounded-lg shadow-lg">
               <FormField
                 control={personalInfoForm.control}
                 name="name"
@@ -197,13 +244,14 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                       <Input
                         {...field}
                         placeholder="Nhập họ và tên"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="email"
@@ -217,13 +265,14 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                         {...field}
                         type="email"
                         placeholder="Nhập email"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="phone"
@@ -236,32 +285,159 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                       <Input
                         {...field}
                         placeholder="Nhập số điện thoại"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="dob"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-slate-200 block mb-2">
-                      Ngày sinh
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="date"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-sm mt-1" />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const [selectedDate, setSelectedDate] = useState<Date | null>(
+                    null
+                  );
+                  const [errorMessage, setErrorMessage] = useState<string>("");
+
+                  const handleSelect = (date: Date | undefined) => {
+                    if (date) {
+                      setSelectedDate(date);
+                      field.onChange(date.toISOString());
+
+                      // Kiểm tra tuổi
+                      if (!isAtLeast18YearsOld(date)) {
+                        setErrorMessage("Bạn chưa đủ 18 tuổi.");
+                      } else {
+                        setErrorMessage("");
+                      }
+                    }
+                  };
+
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-slate-200 block mb-2">
+                        Ngày sinh
+                      </FormLabel>
+                      <FormControl>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[250px] justify-start text-left font-normal",
+                                !selectedDate && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {selectedDate ? (
+                                format(selectedDate, "PPP", { locale: vi })
+                              ) : (
+                                <span>Chọn ngày sinh</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <div className="flex justify-between p-2">
+                              <Select
+                                onValueChange={(month) => {
+                                  if (selectedDate) {
+                                    const newDate = setMonth(
+                                      selectedDate,
+                                      months.indexOf(month)
+                                    );
+                                    setSelectedDate(newDate);
+                                    field.onChange(newDate.toISOString());
+
+                                    // Kiểm tra tuổi
+                                    if (!isAtLeast18YearsOld(newDate)) {
+                                      setErrorMessage("Bạn chưa đủ 18 tuổi.");
+                                    } else {
+                                      setErrorMessage("");
+                                    }
+                                  }
+                                }}
+                                value={
+                                  selectedDate
+                                    ? months[getMonth(selectedDate)]
+                                    : ""
+                                }
+                              >
+                                <SelectTrigger className="w-[110px]">
+                                  <SelectValue placeholder="Tháng" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {months.map((month) => (
+                                    <SelectItem key={month} value={month}>
+                                      {month}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <Select
+                                onValueChange={(year) => {
+                                  if (selectedDate) {
+                                    const newDate = setYear(
+                                      selectedDate,
+                                      parseInt(year)
+                                    );
+                                    setSelectedDate(newDate);
+                                    field.onChange(newDate.toISOString());
+
+                                    // Kiểm tra tuổi
+                                    if (!isAtLeast18YearsOld(newDate)) {
+                                      setErrorMessage("Bạn chưa đủ 18 tuổi.");
+                                    } else {
+                                      setErrorMessage("");
+                                    }
+                                  }
+                                }}
+                                value={
+                                  selectedDate
+                                    ? getYear(selectedDate).toString()
+                                    : ""
+                                }
+                              >
+                                <SelectTrigger className="w-[110px]">
+                                  <SelectValue placeholder="Năm" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {years.map((year) => (
+                                    <SelectItem
+                                      key={year}
+                                      value={year.toString()}
+                                    >
+                                      {year}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <Calendar
+                              mode="single"
+                              selected={selectedDate || undefined}
+                              onSelect={handleSelect}
+                              initialFocus
+                              month={selectedDate || new Date()}
+                              onMonthChange={setSelectedDate}
+                              disabled={(date) => date > new Date()}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      {errorMessage && (
+                        <FormMessage className="text-sm mt-1 text-red-500">
+                          {errorMessage}
+                        </FormMessage>
+                      )}
+                    </FormItem>
+                  );
+                }}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="gender"
@@ -273,7 +449,7 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                     <FormControl>
                       <select
                         {...field}
-                        className="w-full p-2 bg-slate-800 text-slate-100 border border-slate-700 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                        className="w-full p-2 bg-slate-800 text-slate-100 border border-slate-700 rounded-lg focus:ring-2 focus:ring-emerald-500 transition duration-300 ease-in-out hover:border-emerald-400"
                       >
                         <option value="">Chọn giới tính</option>
                         <option value="Male">Nam</option>
@@ -281,10 +457,11 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                         <option value="Other">Khác</option>
                       </select>
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="password"
@@ -299,13 +476,14 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                         type="password"
                         autoComplete="off"
                         placeholder="Nhập mật khẩu"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="truckCategoryId"
@@ -319,7 +497,9 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                       value={field.value?.toString()}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger
+                          className={`bg-slate-800 text-slate-100 border border-slate-700 rounded-lg focus:ring-2 focus:ring-emerald-500`}
+                        >
                           <SelectValue placeholder="Chọn loại xe" />
                         </SelectTrigger>
                       </FormControl>
@@ -330,6 +510,7 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                               <SelectItem
                                 key={category.id}
                                 value={category.id.toString()}
+                                className="text-slate-100" // Đảm bảo màu chữ trong danh sách là trắng
                               >
                                 {category.categoryName}
                               </SelectItem>
@@ -341,6 +522,7 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="brand"
@@ -353,13 +535,14 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                       <Input
                         {...field}
                         placeholder="Nhập nhãn hiệu xe"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="color"
@@ -372,13 +555,14 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                       <Input
                         {...field}
                         placeholder="Nhập màu sắc"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="model"
@@ -390,14 +574,15 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="mẫu xe"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        placeholder="Mẫu xe"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="numberPlate"
@@ -410,13 +595,14 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                       <Input
                         {...field}
                         placeholder="Nhập biển số xe"
-                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100"
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm mt-1" />
+                    <FormMessage className="text-sm mt-1 text-red-500" />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={personalInfoForm.control}
                 name="capacity"
@@ -428,12 +614,22 @@ const SignUpForm = ({ truckCategorys }: SignUpFormProps) => {
                     <FormControl>
                       <Input
                         {...field}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value))
-                        }
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (value === "") {
+                            field.onChange(undefined); // Nếu trống, đặt giá trị là undefined
+                          } else {
+                            field.onChange(parseFloat(value)); // Chỉ parse khi có giá trị
+                          }
+                        }}
+                        className="bg-slate-800 border-slate-700 focus:ring-2 focus:ring-emerald-500 text-slate-100 p-2 rounded-lg transition duration-300 ease-in-out hover:border-emerald-400"
                       />
                     </FormControl>
-                    <FormMessage />
+                    {field.value === undefined && (
+                      <FormMessage className="text-sm mt-1 text-red-500">
+                        Vui lòng điền dung tích xe
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
