@@ -2,7 +2,8 @@ export const BASIC_URL ={
     GET_USERS : '/users',
     GET_TRANSACTIONS: "/transactions",
     WALLETS: "/wallets",
-    STATISTIC:"/statistics/manager"
+    STATISTIC:"/statistics/manager",
+    WITHDRAWAL:"/wallets/withdrawal"
 }
 
 export const SERVICES_URL = {

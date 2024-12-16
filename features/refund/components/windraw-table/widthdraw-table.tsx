@@ -20,50 +20,54 @@ import {
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table/data-table";
 import { Clock, PlusCircle } from "lucide-react";
-import { fetchRefundTableColumnDefs } from "./refund-table-column-def";
+import { fetchWidthdrawTableColumnDefs } from "./widthdraw-table-column-def";
 import { IRefund } from "../../types/refund-type";
 import { getRefunds } from "../../actions/refund";
-import { RefundTypeName, StatusTrackerTypeName } from "../../enums/refund-enums";
+import {
+  RefundTypeName,
+  StatusTrackerTypeName,
+} from "../../enums/refund-enums";
 import { ApiListResponse } from "@/lib/api/api-handler/generic";
+import { IWindraw } from "../../types/windraw-type";
 
-interface RefundTableProps {
-  refundData : ApiListResponse<IRefund>;
+interface WidthdrawTableProps {
+  widthDrawData: ApiListResponse<IWindraw>;
 }
 
-export function RefundTable({ refundData }: RefundTableProps) {
-  const { data, pageCount } = refundData;
+export function WidthdrawTable({ widthDrawData }: WidthdrawTableProps) {
+  const { data, pageCount } = widthDrawData;
 
-  const columns = React.useMemo<ColumnDef<IRefund, unknown>[]>(
-    () => fetchRefundTableColumnDefs(),
+  const columns = React.useMemo<ColumnDef<IWindraw, unknown>[]>(
+    () => fetchWidthdrawTableColumnDefs(),
     []
   );
 
   const labels = generateColumnLabels(columns);
 
-  const searchableColumns: DataTableSearchableColumn<IRefund>[] = [
-    {
-      id: "owner",
-      title: "Tìm kiếm",
-    },
+  const searchableColumns: DataTableSearchableColumn<IWindraw>[] = [
+    // {
+    //   id: "owner",
+    //   title: "Tìm kiếm",
+    // },
   ];
 
-  const filterableColumns: DataTableFilterableColumn<IRefund>[] = [
-    {
-      id: "type",
-      title: "Loại yêu cầu",
-      options: Object.entries(RefundTypeName).map(([value, label]) => ({
-        label,
-        value,
-      })),
-    },
-    {
-      id: "status",
-      title: "Trạng thái",
-      options: Object.entries(StatusTrackerTypeName).map(([value, label]) => ({
-        label,
-        value,
-      })),
-    },
+  const filterableColumns: DataTableFilterableColumn<IWindraw>[] = [
+    // {
+    //   id: "type",
+    //   title: "Loại yêu cầu",
+    //   options: Object.entries(RefundTypeName).map(([value, label]) => ({
+    //     label,
+    //     value,
+    //   })),
+    // },
+    // {
+    //   id: "status",
+    //   title: "Trạng thái",
+    //   options: Object.entries(StatusTrackerTypeName).map(([value, label]) => ({
+    //     label,
+    //     value,
+    //   })),
+    // },
   ];
 
   const { dataTable } = useDataTable({
@@ -78,7 +82,7 @@ export function RefundTable({ refundData }: RefundTableProps) {
     <div className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg font-medium">Yêu Cầu Hoàn Tiền</h2>
+          <h2 className="text-lg font-medium">Yêu Cầu Rút Tiền</h2>
           <p className="text-gray-500 text-sm">
             Tổng số yêu cầu đang chờ xử lý: {data.length}
           </p>
@@ -86,12 +90,6 @@ export function RefundTable({ refundData }: RefundTableProps) {
       </div>
 
       <Card className="flex-1">
-        <CardHeader>
-          <CardTitle>Danh Sách Yêu Cầu</CardTitle>
-          <CardDescription>
-            Các yêu cầu hoàn tiền đang chờ xử lý
-          </CardDescription>
-        </CardHeader>
         <CardContent>
           <DataTable
             dataTable={dataTable}
