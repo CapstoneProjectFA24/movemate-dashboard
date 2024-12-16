@@ -22,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { formatter } from "@/lib/utils";
+import { formatDate, formatter } from "@/lib/utils";
 import { checkWalletMoney } from "@/features/transactions/action/wallet";
 import { toast } from "sonner";
 import { IWindraw } from "../../types/windraw-type";
@@ -193,7 +193,7 @@ const WidthDrawModal: React.FC<WidthDrawModalProps> = ({
         <div className="text-sm text-gray-700 dark:text-gray-400 space-y-1">
           <p>
             <span className="font-medium">Thời gian tạo:</span>{" "}
-            {row.original.date}
+            {formatDate(row.original.date)}
           </p>
           <p>
             <span className="font-medium">Tổng tiền:</span>{" "}

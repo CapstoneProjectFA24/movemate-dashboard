@@ -3,6 +3,7 @@ import { Row, type Column } from "@tanstack/react-table";
 import { IService } from "@/features/services/types/services-type";
 import { IRefund } from "../../../types/refund-type";
 import { IWindraw } from "@/features/refund/types/windraw-type";
+import { formatDate } from "@/lib/utils";
 
 export const timeColumn = {
   accessorKey: "date",
@@ -13,7 +14,7 @@ export const timeColumn = {
     return (
       <div className="flex space-x-2">
         <span className="max-w-[500px] truncate font-medium">
-          {row.getValue("date")}
+          {formatDate(row.getValue("date"))}
         </span>
       </div>
     );
