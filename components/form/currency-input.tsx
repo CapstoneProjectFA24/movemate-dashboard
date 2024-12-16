@@ -26,30 +26,39 @@ export const CurrencyInput = ({
     setDisplayValue(value ? formatter.format(value) : "");
   }, [value]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    
+    // Loại bỏ tất cả ký tự không phải số
+    const rawValue = input.replace(/[^0-9]/g, '');
+    
+    // Nếu không có số, đặt về 0
+    if (rawValue === '') {
+      onChange(0);
+      return;
+    }
+
+    const numberValue = parseInt(rawValue, 10);
+    
+    // Cập nhật giá trị 
+    onChange(numberValue);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Nếu nhấn backspace khi giá trị là format tiền
+    if (e.key === 'Backspace' && displayValue && !displayValue.match(/^[0-9]+$/)) {
+      // Xóa toàn bộ giá trị
+      onChange(0);
+      e.preventDefault();
+    }
+  };
+
   return (
     <Input
       type="text"
       value={displayValue}
-
-      onChange={(e) => {
-        // Chỉ lấy số từ input
-        const rawValue = e.target.value.replace(/[^0-9]/g, '');
-        const numberValue = parseInt(rawValue, 10) || 0;
-        
-        // Cập nhật giá trị thô cho form
-        onChange(numberValue);
-        
-        // Cập nhật giá trị hiển thị đã format
-        setDisplayValue(numberValue === 0 ? '' : formatter.format(numberValue));
-      }}
-      onFocus={(e) => {
-        // Khi focus, hiển thị giá trị số thuần túy
-        setDisplayValue(value === 0 ? '' : value.toString());
-      }}
-      onBlur={(e) => {
-        // Khi blur, format lại giá trị
-        setDisplayValue(value === 0 ? '' : formatter.format(value));
-      }}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
       placeholder={placeholder}
       className={`text-left ${className}`}
     />

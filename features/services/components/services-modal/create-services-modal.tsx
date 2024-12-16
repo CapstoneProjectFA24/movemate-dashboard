@@ -37,6 +37,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/image-uploadthing/file-upload";
 import { toast } from "sonner";
 import { createServices } from "../../action/create-service";
+import { CurrencyInput } from "@/components/form/currency-input";
 
 export const serviceSchema = z
   .object({
@@ -118,7 +119,7 @@ export const CreateServicesModal = () => {
   useEffect(() => {
     if (serviceData?.id) {
       setValue("parentServiceId", serviceData.id);
-      setValue('type', serviceData.type);
+      setValue("type", serviceData.type);
     }
   }, [serviceData, setValue]);
   const typedata = watch("type");
@@ -275,12 +276,10 @@ export const CreateServicesModal = () => {
                   <FormItem>
                     <FormLabel>Giá tiền</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value))
-                        }
+                      <CurrencyInput
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Nhập giá tiền"
                       />
                     </FormControl>
                     <FormMessage />

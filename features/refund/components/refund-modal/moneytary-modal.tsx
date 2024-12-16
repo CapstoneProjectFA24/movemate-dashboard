@@ -34,6 +34,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CurrencyInput } from "@/components/form/currency-input";
+import { formatter } from "@/lib/utils";
 interface MoneytaryModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -424,7 +425,7 @@ const MoneytaryModal: React.FC<MoneytaryModalProps> = ({
               {icon}
               <h2 className="mt-4 text-xl font-semibold ">{title}</h2>
               <p className="mt-2 text-sm ">
-                Số tiền bồi thường cho khách: {realAmount}
+                Số tiền bồi thường cho khách: {formatter.format(realAmount)}
               </p>
               <p className="mt-2 text-sm ">{description}</p>
 
