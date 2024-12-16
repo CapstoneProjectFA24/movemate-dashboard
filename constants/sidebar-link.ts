@@ -95,7 +95,7 @@ export const routes: Route[] = [
         activeIcon: FileCog,
       },
       {
-        label: "Cài đặt chung",
+        label: "Danh sách loại xe/nhà",
         href: "/dashboard/services_setting",
         icon: FileCog,
         activeIcon: FileCog,
@@ -122,7 +122,7 @@ export const routes: Route[] = [
         activeIcon: FaListAlt,
       },
       {
-        label: "Đơn chưa có nhân viên",
+        label: "Bổ sung nhân viên",
         href: "/dashboard/bookings_exception",
         icon: ShieldAlert,
         activeIcon: ShieldAlert,
@@ -166,12 +166,12 @@ export const routes: Route[] = [
     href: "/dashboard/refund",
     allowsRoles: [UserRole.MANAGER],
   },
-  {
-    label: "Phản hồi",
-    icon: FaEnvelope,
-    activeIcon: FaEnvelopeOpen,
-    href: "/dashboard/mail",
-  },
+  // {
+  //   label: "Phản hồi",
+  //   icon: FaEnvelope,
+  //   activeIcon: FaEnvelopeOpen,
+  //   href: "/dashboard/mail",
+  // },
   {
     label: "Cài đặt",
     icon: Settings,
