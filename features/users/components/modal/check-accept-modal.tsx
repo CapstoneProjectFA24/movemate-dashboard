@@ -53,9 +53,9 @@ export const AccpetUserModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-auto p-6 bg-white rounded-lg shadow-lg">
+      <DialogContent className="max-w-2xl h-auto p-6 rounded-lg shadow-lg">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center text-gray-800">
+          <DialogTitle className="text-2xl font-bold text-center">
             Xét duyệt cho tài xế
           </DialogTitle>
         </DialogHeader>
@@ -71,7 +71,7 @@ export const AccpetUserModal = () => {
         ) : (
           <div className="space-y-4">
             {/* Thông tin người dùng */}
-            <div className="rounded-lg border p-4 bg-gray-50">
+            <div className="rounded-lg border p-4 ">
               <h3 className="text-lg font-semibold mb-2">Thông tin người dùng</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <p><strong>Tên:</strong> {userData?.data?.name}</p>
@@ -91,7 +91,7 @@ export const AccpetUserModal = () => {
                   {userData.data.userInfos.map((info) => (
                     <div
                       key={info.id}
-                      className="rounded-lg border p-3 bg-white shadow-md hover:shadow-lg transition-shadow"
+                      className="rounded-lg border p-3 shadow-md hover:shadow-lg transition-shadow"
                     >
                       <h4 className="text-md font-semibold mb-1 text-center">
                       {typeTranslations[info.type as InfoType] || info.type}
