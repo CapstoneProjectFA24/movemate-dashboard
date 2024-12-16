@@ -11,8 +11,8 @@ import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 interface ServiceAnalyticCardProps {
   title: string;
   value: number;
-  variant: "up" | "down";
-  increaseValue: number;
+  variant?: "up" | "down";
+  increaseValue?: number;
 }
 
 const AnalyticCard = ({
@@ -36,7 +36,6 @@ const AnalyticCard = ({
             <span className="truncate text-base">{title}</span>
           </CardDescription>
           <div className="flex items-center gap-x-1">
-            <Icon className={cn(iconColor, "size-4")} />
             <span
               className={cn(increaseValueColor, "truncate text-base font-bold")}
             >

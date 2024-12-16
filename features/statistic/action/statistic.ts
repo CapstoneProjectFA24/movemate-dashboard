@@ -18,6 +18,7 @@ import { IStatisticTruckCategory } from "../types/statistic-truckcategory-type";
 import { IStatisticUser } from "../types/statistic-user-type";
 import { IStatisticGroup } from "../types/statistic-group-type";
 import { IStatisticPromtion } from "../types/statistic-promotions-type";
+import { IStatisticServices } from "../types/statistic-services";
 export interface SearchParamFilterDashboard {
   shard?: string;
   type?: string;
@@ -128,7 +129,6 @@ export async function getStatisTicTruckCategory(): Promise<
   return result.data;
 }
 
-
 export async function getStatisTicPromotion(): Promise<
   ApiSingleResponse<IStatisticPromtion>
 > {
@@ -143,6 +143,23 @@ export async function getStatisTicPromotion(): Promise<
   }
   return result.data;
 }
+
+export async function getStatisTicServices(): Promise<
+  ApiSingleResponse<IStatisticServices>
+> {
+  noStore();
+
+  const result = await fetchSingleData<IStatisticServices>(
+    `${BASIC_URL.STATISTIC}/services`
+  );
+  if (!result.success) {
+    console.error("Failed to fetch IStatisticServices:", result.error);
+    return { data: null, error: result.error };
+  }
+  return result.data;
+}
+
+
 //   export async function getHousesSearchParams(
 //     searchParams: SearchParams
 //   ): Promise<ApiListResponse<IHouse>> {
