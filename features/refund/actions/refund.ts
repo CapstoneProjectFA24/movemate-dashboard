@@ -16,6 +16,7 @@ import { BASIC_URL, BOOKING_URL } from "@/constants/api-constant";
 import { IRefund } from "../types/refund-type";
 import { axiosAuth } from "@/lib/api/api-interceptor/api";
 import { IWindraw } from "../types/windraw-type";
+import { IWallet } from "../types/wallet-type";
 
 export async function getRefunds(
   searchParams: SearchParams
@@ -49,14 +50,12 @@ export async function refundMoney(
   return { success: true, data: undefined };
 }
 
-
-
 export async function moneytaryMoney(
   data: any,
   params: string
 ): Promise<Result<void>> {
   noStore();
-console.log(data)
+  console.log(data);
   const result = await apiRequest(() =>
     axiosAuth.put(`${BOOKING_URL.MONEYTARY}/${params}`, data)
   );
@@ -69,14 +68,15 @@ console.log(data)
   return { success: true, data: undefined };
 }
 
-
-
 export async function getWindraw(
   searchParams: SearchParams
 ): Promise<ApiListResponse<IWindraw>> {
   noStore();
 
-  const result = await fetchListData<IWindraw>(BASIC_URL.WITHDRAWAL, searchParams);
+  const result = await fetchListData<IWindraw>(
+    BASIC_URL.WITHDRAWAL,
+    searchParams
+  );
   if (!result.success) {
     console.error("Failed to fetch list WITHDRAWAL:", result.error);
     return { data: [], pageCount: 0, error: result.error };
@@ -84,7 +84,6 @@ export async function getWindraw(
 
   return result.data;
 }
-
 
 export async function acceptWindrawMoney(
   params: string
@@ -101,4 +100,16 @@ export async function acceptWindrawMoney(
   revalidatePath(`/dashboard/refund`);
 
   return { success: true, data: undefined };
+}
+
+export async function getWallet(): Promise<ApiSingleResponse<IWallet>> {
+  noStore();
+
+  const result = await fetchSingleData<IWallet>(`/wallets/balance`);
+  if (!result.success) {
+    console.error("Failed to fetch list IWallet:", result.error);
+    return { data: null, error: result.error };
+  }
+
+  return result.data;
 }
