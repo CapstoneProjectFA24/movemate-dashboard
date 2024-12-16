@@ -2,68 +2,61 @@ import React from "react";
 import { SearchParams } from "@/types/table";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Shell } from "@/components/shared/custom-ui/shell";
-import { MoneyChart } from "@/features/transactions/components/chart/money-chart";
 import { getTransactions } from "@/features/transactions/action/transactions";
 import { TransactionsTable } from "@/features/transactions/components/transaciton-table/transaction-table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  BarChart3,
-  DollarSign,
-  LineChart,
-} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FlexibleDatePicker } from "@/components/data-table/custom-table/date-range-picker";
 import { getStatisTicTransationNoSumary } from "@/features/statistic/action/statistic";
 import StatsTransactionOverview from "./_components/stats-transaction-overview";
 
-interface StatCardProps {
-  title: string;
-  value: string;
-  icon: React.ReactNode;
-  description: string;
-  trend?: {
-    value: string;
-    isPositive: boolean;
-  };
-}
-
-const StatCard = ({
+// Credit Card Component
+const CreditCard = ({
   title,
   value,
-  icon,
-  description,
-  trend,
-}: StatCardProps) => (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      {icon}
-    </CardHeader>
-    <CardContent>
-      <div className="text-2xl font-bold">{value}</div>
-      <div className="flex items-center space-x-2">
-        {trend && (
-          <span
-            className={`flex items-center text-xs ${
-              trend.isPositive ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {trend.isPositive ? (
-              <ArrowUpIcon className="h-4 w-4" />
-            ) : (
-              <ArrowDownIcon className="h-4 w-4" />
-            )}
-            {trend.value}
-          </span>
-        )}
-        <p className="text-xs text-muted-foreground">{description}</p>
+  cardNumber,
+  cardHolder,
+  expiryDate,
+}: {
+  title: string;
+  value: string;
+  cardNumber: string;
+  cardHolder: string;
+  expiryDate: string;
+}) => (
+  <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-xl shadow-lg w-full max-w-md mx-auto lg:mx-0">
+    {/* Background Pattern */}
+    <div
+      className="absolute inset-0 opacity-30 bg-no-repeat bg-cover bg-center rounded-xl"
+      style={{ backgroundImage: "url('/path-to-design-pattern.svg')" }}
+    ></div>
+
+    {/* Chip Icon */}
+    <div className="absolute top-4 left-4 w-12 h-8 bg-gradient-to-r from-gray-200 to-gray-400 rounded-sm"></div>
+
+    {/* Card Content */}
+    <div className="relative z-10 flex flex-col space-y-6">
+      {/* Title */}
+      <h2 className="text-lg font-bold tracking-wide">{title}</h2>
+
+      {/* Card Number */}
+      <div className="text-lg font-mono tracking-widest">{cardNumber}</div>
+
+      {/* Card Footer */}
+      <div className="flex justify-between text-sm flex-wrap">
+        <div className="mb-2">
+          <p className="text-xs uppercase">Card Holder</p>
+          <p className="font-bold">{cardHolder}</p>
+        </div>
+        <div>
+          <p className="text-xs uppercase">Expiry</p>
+          <p className="font-bold">{expiryDate}</p>
+        </div>
       </div>
-    </CardContent>
-  </Card>
+
+      {/* Value */}
+      <div className="text-4xl font-extrabold mt-4">{value}</div>
+    </div>
+  </div>
 );
 
 export interface IndexPageProps {
@@ -73,14 +66,15 @@ export interface IndexPageProps {
 const TransactionPage = ({ searchParams }: IndexPageProps) => {
   const transactionsPromise = getTransactions(searchParams);
   const transactionStatistic = getStatisTicTransationNoSumary();
+  const totalMoney = "$1,000.00";
+
   return (
     <div className="space-y-6 p-6">
       {/* Stats Overview */}
-
       <StatsTransactionOverview transactionStatistic={transactionStatistic} />
 
       <div className="flex flex-col lg:flex-row gap-6">
-        <div className="lg:w-full">
+        <div className="lg:w-3/4 w-full">
           <Shell className="h-full gap-y-2">
             <React.Suspense fallback={<Skeleton className="h-7 w-52" />}>
               <FlexibleDatePicker
@@ -91,8 +85,6 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
                 align="end"
                 shallow={false}
               />
-              {/* // Date range picker */}
-              {/* <FlexibleDatePicker mode="range" defaultDateRange={{ from: new Date(), to: new Date() }} /> */}
             </React.Suspense>
             <React.Suspense
               fallback={
@@ -109,15 +101,9 @@ const TransactionPage = ({ searchParams }: IndexPageProps) => {
             </React.Suspense>
           </Shell>
         </div>
+
+       
       </div>
-      <div className="flex flex-col lg:flex-row gap-8 p-8 bg-gray-100 dark:bg-gray-900">
-        {/* Left Section */}
-        <div className="lg:w-3/12 space-y-8 w-full">
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            {/* <WalletSys searchParams={searchParams} /> */}
-          </div>
-        </div>
-        </div>
     </div>
   );
 };
