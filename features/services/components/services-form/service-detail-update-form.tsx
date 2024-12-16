@@ -89,331 +89,339 @@ const ServiceDetailUpdateForm = ({
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 ">
       <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="flex flex-col lg:flex-row gap-6 ">
-              {/* Left Column - Main Details */}
-              <div className="lg:w-3/4 space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold">
-                      Hình ảnh dịch vụ
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <FormField
-                      control={form.control}
-                      name="imageUrl"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Hình ảnh</FormLabel>
-                          <FormControl>
-                            <FileUpload
-                              endpoint="serverImage"
-                              value={field.value}
-                              onChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-                {/* Basic Information Card */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold">
-                      Thông tin cơ bản
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-6 md:grid-cols-2">
+              <div className="w-full">
+                {/* Left Column - Main Details */}
+                <div className="lg:w-2/3 space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-xl font-bold">
+                        Hình ảnh dịch vụ
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
                       <FormField
                         control={form.control}
-                        name="name"
+                        name="imageUrl"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Tên dịch vụ</FormLabel>
+                            <FormLabel>Hình ảnh</FormLabel>
                             <FormControl>
-                              <Input
-                                placeholder="Nhập tên dịch vụ"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="type"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Loại dịch vụ</FormLabel>
-                            <Select
-                              disabled={
-                                service!?.inverseParentService.length >= 0
-                              }
-                              onValueChange={(value) => {
-                                field.onChange(value);
-                              }}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Chọn loại dịch vụ" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {serviceTypes.map((type) => (
-                                  <SelectItem
-                                    key={type.value}
-                                    value={type.value}
-                                  >
-                                    {type.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <FormField
-                        control={form.control}
-                        name="amount"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Giá tiền</FormLabel>
-                            <FormControl>
-                              <CurrencyInput
+                              <FileUpload
+                                endpoint="serverImage"
                                 value={field.value}
                                 onChange={field.onChange}
-                                placeholder="Nhập số tiền"
                               />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+                    </CardContent>
+                  </Card>
 
-                      <FormField
-                        control={form.control}
-                        name="discountRate"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Tỷ lệ giảm giá (%)</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(parseFloat(e.target.value))
-                                }
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Mô tả</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder="Mô tả chi tiết về dịch vụ"
-                              className="h-32"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Right Column - Additional Settings */}
-              <div className="lg:w-1/3 space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold">
-                      Cài đặt dịch vụ
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="isActived"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <FormLabel className="text-base">
-                              Trạng thái
-                            </FormLabel>
-                            <FormDescription>
-                              Bật/tắt trạng thái hoạt động
-                            </FormDescription>
-                          </div>
-                          <FormControl>
-                            <Switch
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="isQuantity"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <FormLabel className="text-base">
-                              Tính theo số lượng
-                            </FormLabel>
-                            <FormDescription>
-                              Bật nếu dịch vụ tính theo số lượng
-                            </FormDescription>
-                          </div>
-                          <FormControl>
-                            <Switch
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    {isQuantity && (
-                      <FormField
-                        control={form.control}
-                        name="quantityMax"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Số lượng tối đa</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                placeholder="Nhập số lượng tối đa"
-                                value={field.value || ""}
-                                onChange={(e) =>
-                                  field.onChange(Number(e.target.value))
-                                }
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="flex items-center">
-                        <FaListCheck className="h-5 w-5 mr-2 text-primary mt-1" />
-                        Danh sách các dịch vụ con
+                  {/* Basic Information Card */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-xl font-bold">
+                        Thông tin cơ bản
                       </CardTitle>
-                      <Button
-                        onClick={() =>
-                          onOpen("createServicesModal", {
-                            service: service!,
-                            truckCategorys: truckCategorys!,
-                          })
-                        }
-                        variant="secondary"
-                        type="button"
-                        className="group hover:shadow-md bg-primary/10 hover:bg-primary/50 transition-transform duration-200 transform active:scale-95 rounded-full"
-                      >
-                        <Plus className="h-5 w-5 group-hover:scale-110 transition-transform duration-200 text-primary" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    {service?.inverseParentService!?.length > 0 ? (
-                      <div className="grid gap-4">
-                        {service?.inverseParentService!.map((detail, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center justify-between p-4 rounded-lg bg-muted/40"
-                          >
-                            <div className="flex space-x-2 items-center">
-                              <div>
-                                <Image
-                                  src={detail.imageUrl}
-                                  alt="inverseParentService img"
-                                  width={50}
-                                  height={50}
-                                  className="rounded-lg"
-                                  unoptimized
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-6 md:grid-cols-2">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Tên dịch vụ</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Nhập tên dịch vụ"
+                                  {...field}
                                 />
-                              </div>
-                              <div>
-                                <p className="font-medium text-gray-500">
-                                  Dịch vụ #{detail.id}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                  Tên: {detail.name}
-                                </p>
-                              </div>
-                            </div>
-                            <div>
-                              <Button
-                                size="icon"
-                                variant="outline"
-                                type="button"
-                                className="hover:bg-primary/10"
-                                onClick={() =>
-                                  onOpen("updateServicesModal", {
-                                    service: service!,
-                                    truckCategorys: truckCategorys!,
-                                  })
-                                }
-                              >
-                                <Edit className="h-4 w-4 text-primary" />
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-gray-500 text-center py-4">
-                        Chưa có dịch vụ nào được chọn
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                <div className="flex justify-end gap-4">
-                  <Button variant="outline" type="button" disabled={isLoading}>
-                    Hủy
-                  </Button>
-                  <Button type="submit" className="relative">
-                    {isPending ? (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Loader className="animate-spin h-5 w-5 text-white" />
+                        <FormField
+                          control={form.control}
+                          name="type"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Loại dịch vụ</FormLabel>
+                              <Select
+                                disabled={
+                                  service!?.inverseParentService.length >= 0
+                                }
+                                onValueChange={(value) => {
+                                  field.onChange(value);
+                                }}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Chọn loại dịch vụ" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {serviceTypes.map((type) => (
+                                    <SelectItem
+                                      key={type.value}
+                                      value={type.value}
+                                    >
+                                      {type.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
-                    ) : (
-                      "Lưu thay đổi"
-                    )}
-                  </Button>
+
+                      <div className="grid gap-6 md:grid-cols-2">
+                        <FormField
+                          control={form.control}
+                          name="amount"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Giá tiền</FormLabel>
+                              <FormControl>
+                                <CurrencyInput
+                                  value={field.value}
+                                  onChange={field.onChange}
+                                  placeholder="Nhập số tiền"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="discountRate"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Tỷ lệ giảm giá (%)</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  {...field}
+                                  onChange={(e) =>
+                                    field.onChange(parseFloat(e.target.value))
+                                  }
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Mô tả</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Mô tả chi tiết về dịch vụ"
+                                className="h-32"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Right Column - Additional Settings */}
+                <div className="lg:w-1/3 space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-xl font-bold">
+                        Cài đặt dịch vụ
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="isActived"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                              <FormLabel className="text-base">
+                                Trạng thái
+                              </FormLabel>
+                              <FormDescription>
+                                Bật/tắt trạng thái hoạt động
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="isQuantity"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                              <FormLabel className="text-base">
+                                Tính theo số lượng
+                              </FormLabel>
+                              <FormDescription>
+                                Bật nếu dịch vụ tính theo số lượng
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      {isQuantity && (
+                        <FormField
+                          control={form.control}
+                          name="quantityMax"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Số lượng tối đa</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="Nhập số lượng tối đa"
+                                  value={field.value || ""}
+                                  onChange={(e) =>
+                                    field.onChange(Number(e.target.value))
+                                  }
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center">
+                          <FaListCheck className="h-5 w-5 mr-2 text-primary mt-1" />
+                          Danh sách các dịch vụ con
+                        </CardTitle>
+                        <Button
+                          onClick={() =>
+                            onOpen("createServicesModal", {
+                              service: service!,
+                              truckCategorys: truckCategorys!,
+                            })
+                          }
+                          variant="secondary"
+                          type="button"
+                          className="group hover:shadow-md bg-primary/10 hover:bg-primary/50 transition-transform duration-200 transform active:scale-95 rounded-full"
+                        >
+                          <Plus className="h-5 w-5 group-hover:scale-110 transition-transform duration-200 text-primary" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {service?.inverseParentService!?.length > 0 ? (
+                        <div className="grid gap-4">
+                          {service?.inverseParentService!.map(
+                            (detail, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between p-4 rounded-lg bg-muted/40"
+                              >
+                                <div className="flex space-x-2 items-center">
+                                  <div>
+                                    <Image
+                                      src={detail.imageUrl}
+                                      alt="inverseParentService img"
+                                      width={50}
+                                      height={50}
+                                      className="rounded-lg"
+                                      unoptimized
+                                    />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium text-gray-500">
+                                      Dịch vụ #{detail.id}
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                      Tên: {detail.name}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <Button
+                                    size="icon"
+                                    variant="outline"
+                                    type="button"
+                                    className="hover:bg-primary/10"
+                                    onClick={() =>
+                                      onOpen("updateServicesModal", {
+                                        service: service!,
+                                        truckCategorys: truckCategorys!,
+                                      })
+                                    }
+                                  >
+                                    <Edit className="h-4 w-4 text-primary" />
+                                  </Button>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-gray-500 text-center py-4">
+                          Chưa có dịch vụ nào được chọn
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      variant="outline"
+                      type="button"
+                      disabled={isLoading}
+                    >
+                      Hủy
+                    </Button>
+                    <Button type="submit" className="relative">
+                      {isPending ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Loader className="animate-spin h-5 w-5 text-white" />
+                        </div>
+                      ) : (
+                        "Lưu thay đổi"
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
