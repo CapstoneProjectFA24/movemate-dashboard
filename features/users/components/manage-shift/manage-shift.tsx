@@ -10,30 +10,50 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Clock, Trash2, Plus } from "lucide-react";
+import { Clock, Trash2, Plus, Edit, Users } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ApiListResponse } from "@/lib/api/api-handler/generic";
 import { IShift } from "../../types/shift-type";
 import { TimePickerDialog } from "@/components/modals/time-picker-dialog";
-import { createShift, deleteShift } from "../../action/shift";
+import { createShift, deleteShift, updateShift } from "../../action/shift";
 import { toast } from "sonner";
 import AlertModal from "@/components/modals/alert-modal";
+import { IGroup } from "../../types/group-type";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ManageShiftProps {
   shiftData: ApiListResponse<IShift>;
+  groupData: ApiListResponse<IGroup>;
 }
 
-const MangageShift = ({ shiftData }: ManageShiftProps) => {
+const ManageShift = ({ shiftData, groupData }: ManageShiftProps) => {
   const [shiftName, setShiftName] = useState("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [shiftDelete, setShiftDelete] = useState<IShift | null>(null);
+  const [shiftUpdate, setShiftUpdate] = useState<IShift | null>(null);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+
+  const findGroupForShift = (shift: IShift) => {
+    if (!shift.groupId) return null;
+    return groupData.data.find(
+      (group) => group.id.toString() === shift.groupId?.toString()
+    );
+  };
+
   const handleSave = async () => {
     if (!shiftName || !startTime || !endTime) {
       setError("Vui lòng điền đầy đủ thông tin ca làm việc.");
@@ -61,6 +81,39 @@ const MangageShift = ({ shiftData }: ManageShiftProps) => {
     } catch (error) {
       console.error("Error saving shift:", error);
       toast.error("An error occurred while saving the shift.");
+    }
+  };
+
+  const handleUpdate = async () => {
+    if (!shiftUpdate || !selectedGroupId) {
+      toast.error("Vui lòng chọn ca làm việc và nhóm để cập nhật.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const dataToSend = {
+        groupId: selectedGroupId,
+        scheduleId: shiftUpdate.id.toString(),
+      };
+
+      startTransition(async () => {
+        const result = await updateShift(dataToSend);
+
+        if (!result.success) {
+          toast.error(result.error);
+        } else {
+          toast.success("Cập nhật thành công.");
+          setUpdateOpen(false);
+          setSelectedGroupId(null);
+          setShiftUpdate(null);
+        }
+      });
+    } catch (error) {
+      toast.error("Đã có lỗi xảy ra khi cập nhật.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,6 +150,76 @@ const MangageShift = ({ shiftData }: ManageShiftProps) => {
         title="Xóa ca làm việc"
         description="Bạn có chắc chắn muốn xóa ca làm việc này không?"
       />
+
+      {/* Modal cập nhật nhóm cho ca làm việc */}
+      {shiftUpdate && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center ${
+            updateOpen ? "block" : "hidden"
+          }`}
+        >
+          <div
+            className="fixed inset-0 bg-black/50"
+            onClick={() => setUpdateOpen(false)}
+          />
+          <Card className="relative z-50 w-full max-w-md mx-auto">
+            <CardHeader>
+              <CardTitle>Cập nhật nhóm cho ca làm việc</CardTitle>
+              <CardDescription>
+                Chọn nhóm cho ca làm việc: {shiftUpdate.name}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Select
+                value={
+                  selectedGroupId ||
+                  (shiftUpdate.groupId
+                    ? shiftUpdate.groupId.toString()
+                    : undefined)
+                }
+                onValueChange={setSelectedGroupId}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Chọn nhóm">
+                    {selectedGroupId || shiftUpdate.groupId
+                      ? groupData.data.find(
+                          (group) =>
+                            group.id.toString() ===
+                            (selectedGroupId || shiftUpdate.groupId?.toString())
+                        )?.name
+                      : "Chọn nhóm"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {groupData.data.map((group) => (
+                    <SelectItem key={group.id} value={group.id.toString()}>
+                      {group.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <div className="flex justify-end space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setUpdateOpen(false);
+                    setSelectedGroupId(null);
+                  }}
+                >
+                  Hủy
+                </Button>
+                <Button
+                  onClick={handleUpdate}
+                  disabled={!selectedGroupId || loading}
+                >
+                  Cập nhật
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto p-6 space-y-8">
         <div className="grid md:grid-cols-2 gap-8">
           <Card className="shadow-lg ">
@@ -165,9 +288,9 @@ const MangageShift = ({ shiftData }: ManageShiftProps) => {
             <h2 className="text-2xl font-semibold">Danh sách ca làm việc</h2>
             <ScrollArea className="h-[320px] border border-gray-200 rounded-md shadow-md">
               <div className="space-y-4 p-4">
-                {shiftData.data
-                  // .sort((a, b) => a.id - b.id)
-                  .map((shift) => (
+                {shiftData.data.map((shift) => {
+                  const associatedGroup = findGroupForShift(shift);
+                  return (
                     <Card
                       key={shift.id}
                       className="border border-gray-200 shadow-md hover:shadow-lg transition-shadow duration-200"
@@ -185,22 +308,56 @@ const MangageShift = ({ shiftData }: ManageShiftProps) => {
                                   {shift.startDate} - {shift.endDate}
                                 </span>
                               </p>
+                              {associatedGroup ? (
+                                <p className="text-sm text-gray-500 flex items-center gap-2">
+                                  <Users className="w-4 h-4" />
+                                  <span>{associatedGroup.name}</span>
+                                </p>
+                              ) : shift.groupId ? (
+                                <p className="text-sm text-red-500 flex items-center gap-2">
+                                  <Users className="w-4 h-4" />
+                                  <span>Nhóm không tồn tại</span>
+                                </p>
+                              ) : (
+                                <p className="text-sm text-gray-400 flex items-center gap-2">
+                                  <Users className="w-4 h-4" />
+                                  <span>Chưa được phân nhóm</span>
+                                </p>
+                              )}
                             </div>
                           </div>
-                          <Button
-                            variant="ghost"
-                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                            onClick={() => {
-                              setShiftDelete(shift);
-                              setOpen(true);
-                            }}
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </Button>
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant="ghost"
+                              className="text-orange-500 hover:text-orange-700 hover:bg-blue-50"
+                              onClick={() => {
+                                setShiftUpdate(shift);
+                                setSelectedGroupId(
+                                  shift.groupId
+                                    ? shift.groupId.toString()
+                                    : null
+                                );
+                                setUpdateOpen(true);
+                              }}
+                            >
+                              <Edit className="w-5 h-5" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                              onClick={() => {
+                                setShiftDelete(shift);
+                                setOpen(true);
+                              }}
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                  );
+                })}
               </div>
             </ScrollArea>
           </div>
@@ -210,4 +367,4 @@ const MangageShift = ({ shiftData }: ManageShiftProps) => {
   );
 };
 
-export default MangageShift;
+export default ManageShift;

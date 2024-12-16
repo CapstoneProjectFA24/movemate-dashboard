@@ -152,7 +152,7 @@ export function ManageShiftGroupClientWrapper({
                       />
                     }
                   >
-                    <MangageShift shiftData={shiftData} />
+                    <MangageShift shiftData={shiftData} groupData={groupData} />
                   </Suspense>
                 </div>
               </TabsContent>
