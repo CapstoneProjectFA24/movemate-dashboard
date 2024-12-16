@@ -22,7 +22,7 @@ const LeftStatistic = async ({
     getStatisTicTransation(searchParams),
   ]);
 
-  const totalIncome = statisticTransactionData?.data[0].totalIncome || 0;
+  const totalIncome = statisticTransactionData?.data[0].totalIncome! || 0;
   const totalCompensation = statisticTransactionData?.data[0].totalCompensation || 0;
   const profit = totalIncome - totalCompensation;
 

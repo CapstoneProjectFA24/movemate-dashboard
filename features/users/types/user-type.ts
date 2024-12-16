@@ -5,6 +5,7 @@ export type IUser = {
   name: string;
   phone: number;
   email: string;
+  gender: string;
   isDeleted: boolean;
   avatarUrl?: string;
   groupId?: string;
@@ -13,12 +14,6 @@ export type IUser = {
   truck?: ITruck;
   userInfos?: IUserInfos[];
 };
-
-export enum UserRole {
-  Reviewer = "REVIEWER",
-  Driver = "DRIVER",
-  Porter = "PORTER",
-}
 
 export type ITruck = {
   id: number;
@@ -39,3 +34,9 @@ export type IUserInfos = {
   type: string;
   imageUrl: string;
 };
+
+export enum UserRole {
+  Reviewer = "REVIEWER",
+  Driver = "DRIVER",
+  Porter = "PORTER",
+}
