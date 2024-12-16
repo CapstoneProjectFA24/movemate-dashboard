@@ -160,7 +160,7 @@ export const routes: Route[] = [
     allowsRoles: [UserRole.MANAGER],
   },
   {
-    label: "Quản lý bồi thường",
+    label: "Hỗ trợ khách hàng",
     icon: FaRegMoneyBillAlt,
     activeIcon: FaMoneyBillAlt,
     href: "/dashboard/refund",
