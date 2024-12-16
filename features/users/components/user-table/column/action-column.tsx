@@ -68,13 +68,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         align="end"
         className="w-[180px] border shadow-md rounded-md"
       >
-        <DropdownMenuItem
-          onSelect={handleView}
-          className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
-        >
-          <Eye className="mr-2 h-4 w-4 text-blue-500" />
-          <span>Xem chi tiết</span>
-        </DropdownMenuItem>
+
 
         <DropdownMenuItem
           onClick={handleContact}
@@ -85,7 +79,10 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         </DropdownMenuItem>
 
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Phân tổ</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger>
+          <Eye className="mr-2 h-4 w-4 text-blue-500" />
+            <span>Phân tổ</span>
+          </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={row.original.groupId}>
               <GroupSelection user={row.original} />
@@ -93,13 +90,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
 
-        <DropdownMenuItem
-          onSelect={handleDelete}
-          className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50 text-destructive focus:text-destructive-foreground"
-        >
-          <Trash2 className="mr-2 h-4 w-4 text-red-500" />
-          <span>Xóa</span>
-        </DropdownMenuItem>
+
       </DropdownMenuContent>
     </DropdownMenu>
   );
