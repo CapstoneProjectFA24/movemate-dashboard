@@ -3,19 +3,17 @@
 import { getStatisTicTransationNoSumary } from "@/features/statistic/action/statistic";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// Các biểu tượng
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
   BarChart3,
-  DollarSign,
-  LineChart,
 } from "lucide-react";
+import { formatter } from "@/lib/utils";
 
 interface StatCardProps {
   title: string;
   value: string;
-  icon: React.ReactNode;
-  description: string;
+  icon?: React.ReactNode; // Cập nhật để cho phép icon là tùy chọn
+  description?: string; // Cập nhật để cho phép description là tùy chọn
   trend?: {
     value: string;
     isPositive: boolean;
@@ -27,7 +25,6 @@ const StatCard = ({
   value,
   icon,
   description,
-  trend,
 }: StatCardProps) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -36,23 +33,7 @@ const StatCard = ({
     </CardHeader>
     <CardContent>
       <div className="text-2xl font-bold">{value}</div>
-      <div className="flex items-center space-x-2">
-        {trend && (
-          <span
-            className={`flex items-center text-xs ${
-              trend.isPositive ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {trend.isPositive ? (
-              <ArrowUpIcon className="h-4 w-4" />
-            ) : (
-              <ArrowDownIcon className="h-4 w-4" />
-            )}
-            {trend.value}
-          </span>
-        )}
-        <p className="text-xs text-muted-foreground">{description}</p>
-      </div>
+      {description && <div className="text-sm text-gray-500">{description}</div>}
     </CardContent>
   </Card>
 );
@@ -60,39 +41,31 @@ const StatCard = ({
 interface StatsTransactionOverviewProps {
   transactionStatistic: ReturnType<typeof getStatisTicTransationNoSumary>;
 }
+
 const StatsTransactionOverview = ({
   transactionStatistic,
 }: StatsTransactionOverviewProps) => {
   const { data } = React.use(transactionStatistic);
+
+  // Tính toán lợi nhuận
+  const totalIncome = data[0].totalIncome;
+  const totalCompensation = data[0].totalCompensation;
+  const profit = totalIncome - totalCompensation;
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {/* <StatCard
-        title="Tổng giao dịch"
-        value={data[0].totalIncome.toString()}
-        icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />}
-        description="So với tháng trước"
-        trend={{ value: "12%", isPositive: true }}
-      /> */}
       <StatCard
         title="Doanh thu"
-        value={data[0].totalIncome.toString()}
-        icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-        description="So với tháng trước"
-        trend={{ value: "8%", isPositive: true }}
+        value={formatter.format(totalIncome)}
+       
       />
       <StatCard
         title="Chi phí"
-        value={data[0].totalIncome.toString()}
-        icon={<LineChart className="h-4 w-4 text-muted-foreground" />}
-        description="So với tháng trước"
-        trend={{ value: "4%", isPositive: false }}
+        value={formatter.format(totalCompensation)}
       />
       <StatCard
         title="Lợi nhuận"
-        value={data[0].totalIncome.toString()}
-        icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-        description="So với tháng trước"
-        trend={{ value: "10%", isPositive: true }}
+        value={formatter.format(profit)} 
       />
     </div>
   );

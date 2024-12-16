@@ -1,4 +1,5 @@
 import { getWallet } from "@/features/refund/actions/refund";
+import { formatCurrency, formatter } from "@/lib/utils";
 
 const CreditCardDetails = async () => {
   const data = await getWallet();
@@ -10,23 +11,23 @@ const CreditCardDetails = async () => {
       <ul className="space-y-2">
         <li className="flex justify-between">
           <span className="font-medium">Tên chủ thẻ:</span>
-          <span className="text-gray-700">John Doe</span>
+          <span className="text-gray-700">{data.data?.cardHolderName}</span>
         </li>
         <li className="flex justify-between">
           <span className="font-medium">Ngày hết hạn:</span>
-          <span className="text-gray-700">12/25</span>
+          <span className="text-gray-700">{data.data?.expirdAt}</span>
         </li>
         <li className="flex justify-between">
           <span className="font-medium">Mã số thẻ:</span>
-          <span className="text-gray-700">**** **** **** 1234</span>
+          <span className="text-gray-700">{data.data?.bankNumber}</span>
         </li>
         <li className="flex justify-between">
           <span className="font-medium">Tên ngân hàng:</span>
-          <span className="text-gray-700">Ngân Hàng ABC</span>
+          <span className="text-gray-700">{data.data?.bankName}</span>
         </li>
         <li className="flex justify-between">
           <span className="font-medium">Số dư khả dụng:</span>
-          <span className="text-gray-700">$500.00</span>
+          <span className="text-gray-700">{formatCurrency(data.data?.balance) }</span>
         </li>
       </ul>
     </div>

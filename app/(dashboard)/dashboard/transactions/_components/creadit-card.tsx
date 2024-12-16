@@ -1,6 +1,7 @@
 // "use client";
 
 import { getWallet } from "@/features/refund/actions/refund";
+import { formatCurrency } from "@/lib/utils";
 
 const CreditCard = async () => {
 
@@ -21,24 +22,24 @@ const CreditCard = async () => {
 
         {/* Card Number */}
         <div className="text-base sm:text-lg font-mono tracking-widest truncate">
-          **** **** **** 1234
+        {data.data?.bankNumber}
         </div>
 
         {/* Card Footer */}
         <div className="flex justify-between text-xs sm:text-sm flex-wrap">
           <div className="truncate">
             <p className="text-[10px] sm:text-xs uppercase">Card Holder</p>
-            <p className="font-bold truncate">John Doe</p>
+            <p className="font-bold truncate">{data.data?.cardHolderName}</p>
           </div>
           <div className="truncate">
             <p className="text-[10px] sm:text-xs uppercase">Expiry</p>
-            <p className="font-bold truncate">12/25</p>
+            <p className="font-bold truncate">{data.data?.expirdAt}</p>
           </div>
         </div>
 
         {/* Value */}
         <div className="text-2xl sm:text-4xl font-extrabold mt-4 truncate">
-          $1,000.00
+         {formatCurrency(data.data?.balance) }
         </div>
       </div>
     </div>
