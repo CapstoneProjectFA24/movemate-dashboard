@@ -29,7 +29,6 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
   const { onOpen } = useModal();
   const { data: session } = useSession();
 
-
   const { mutateAsync: getOrCreateConversation } =
     useGetOrCreateStaffConversation(
       session?.user.id.toString()!,
@@ -68,8 +67,6 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
         align="end"
         className="w-[180px] border shadow-md rounded-md"
       >
-
-
         <DropdownMenuItem
           onClick={handleContact}
           className="cursor-pointer hover:bg-accent/50 focus:bg-accent/50"
@@ -80,7 +77,7 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
 
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
-          <Eye className="mr-2 h-4 w-4 text-blue-500" />
+            <Eye className="mr-2 h-4 w-4 text-blue-500" />
             <span>Phân tổ</span>
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
@@ -89,8 +86,6 @@ const ActionMenu = ({ row }: ActionMenuProps) => {
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
-
-
       </DropdownMenuContent>
     </DropdownMenu>
   );

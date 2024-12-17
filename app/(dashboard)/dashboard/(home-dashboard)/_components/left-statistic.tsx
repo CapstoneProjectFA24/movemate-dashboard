@@ -9,9 +9,16 @@ export interface SearchParamFilterDashboard {
   isSummary?: boolean;
 }
 
-export const formatter = new Intl.NumberFormat('vi-VN', {
-  currency: 'VND',
-});
+// Updated formatter to keep thousand separators but remove decimal places
+export const formatCurrency = (value: number): string => {
+  // Round to nearest whole number
+  const roundedValue = Math.round(value);
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'decimal',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  }).format(roundedValue);
+};
 
 const LeftStatistic = async ({
   searchParams,
@@ -22,8 +29,8 @@ const LeftStatistic = async ({
     getStatisTicTransation(searchParams),
   ]);
 
-  const totalIncome = statisticTransactionData?.data[0].totalIncome! || 0;
-  const totalCompensation = statisticTransactionData?.data[0].totalCompensation || 0;
+  const totalIncome = statisticTransactionData?.data[0].totalIncome! ?? 0;
+  const totalCompensation = statisticTransactionData?.data[0].totalCompensation ?? 0;
   const profit = totalIncome - totalCompensation;
 
   return (
@@ -43,7 +50,7 @@ const LeftStatistic = async ({
         <CardContent>
           <div className="flex justify-between items-center w-full">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400 overflow-hidden text-ellipsis whitespace-nowrap">
-              {formatter.format(totalIncome)}
+              {formatCurrency(totalIncome)}
             </div>
             <span className="text-sm ml-2 text-green-600 dark:text-green-400 overflow-hidden text-ellipsis whitespace-nowrap">đ</span>
           </div>
@@ -57,7 +64,7 @@ const LeftStatistic = async ({
         <CardContent>
           <div className="flex justify-between items-center w-full">
             <div className="text-2xl font-bold text-red-600 dark:text-red-400 overflow-hidden text-ellipsis whitespace-nowrap">
-              {formatter.format(totalCompensation)}
+              {formatCurrency(totalCompensation)}
             </div>
             <span className="text-sm ml-2 text-red-600 dark:text-red-400 overflow-hidden text-ellipsis whitespace-nowrap">đ</span>
           </div>
@@ -71,7 +78,7 @@ const LeftStatistic = async ({
         <CardContent>
           <div className="flex justify-between items-center w-full">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 overflow-hidden text-ellipsis whitespace-nowrap">
-              {formatter.format(profit)}
+              {formatCurrency(profit)}
             </div>
             <span className="text-sm ml-2 text-blue-600 dark:text-blue-400 overflow-hidden text-ellipsis whitespace-nowrap">đ</span>
           </div>

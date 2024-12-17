@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import StatisticFilterDate from "./_components/statistic-filter-date";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -32,6 +32,13 @@ export interface SearchParamFilterDashboard {
   type?: string;
   isSummary?: boolean;
 }
+const LoadingStatistic = () => (
+  <div className="flex flex-col space-y-2 animate-pulse">
+    {[1, 2, 3].map((item) => (
+      <div key={item} className="h-20 bg-gray-200 rounded-lg"></div>
+    ))}
+  </div>
+);
 
 const Dashboard = async ({
   searchParams,
@@ -68,7 +75,9 @@ const Dashboard = async ({
         {/* Left Section */}
         <div className="lg:w-3/12 space-y-8 w-full">
           <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <LeftStatistic searchParams={searchParams} />
+            <Suspense fallback={<LoadingStatistic />}>
+              <LeftStatistic searchParams={searchParams} />
+            </Suspense>
           </div>
         </div>
 
@@ -79,7 +88,7 @@ const Dashboard = async ({
             <CardHeader className="flex flex-row items-center justify-between border-b border-gray-200 dark:border-gray-700 p-6">
               <CardTitle className="flex items-center space-x-3 text-lg font-semibold text-gray-800 dark:text-gray-100">
                 <Activity className="h-6 w-6 text-purple-500" />
-                <span>Thống Kê Thu Nhập Theo Thời Gian</span>
+                <span>Thống Kê Thu Nhập Trong 6 tháng</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 h-[450px]">

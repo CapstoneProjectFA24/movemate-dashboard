@@ -109,6 +109,20 @@ const BookingDetail = ({ booking, canReview }: BookingDetailProps) => {
                       {formatDate(booking?.bookingAt)}
                     </div>
                   </div>
+                  {booking?.isReviewOnline === false && (
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-2">
+                        Ngày hẹn đánh giá tại nhà cho khách hàng
+                      </div>
+                      <div className="font-medium">
+                        {booking.reviewAt ? (
+                          <div>{formatDate(booking?.reviewAt)}</div>
+                        ) : (
+                          "Chưa tạo lịch hẹn"
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

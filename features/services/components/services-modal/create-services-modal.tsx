@@ -135,6 +135,8 @@ export const CreateServicesModal = () => {
           toast.error(result.error);
         } else {
           toast.success("Cập nhật dịch vụ thành công !");
+          onClose();
+          form.reset();
         }
       });
     } catch (error) {
@@ -144,7 +146,6 @@ export const CreateServicesModal = () => {
   const isLoading = form.formState.isLoading;
 
   const handleClose = () => {
-    form.reset();
     onClose();
   };
   return (

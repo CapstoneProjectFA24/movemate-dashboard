@@ -7,8 +7,11 @@ import { Check, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import { useRouter } from "nextjs-toploader/app";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="bg-slate-50 grainy-light dark:bg-gray-800 dark:text-gray-200">
       <section className="dark:bg-gray-700">
@@ -128,11 +131,12 @@ export default function Home() {
           <section className="bg-orange-600 dark:bg-orange-500 w-full">
             <div className="max-w-7xl mx-auto">
               <div className="w-full">
-                <Link href="/download" passHref>
-                  <button className="w-full px-4 py-3 text-white bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-center text-lg font-bold">
-                    Tải ứng dụng
-                  </button>
-                </Link>
+                <button
+                  onClick={() => router.push("/sign-up")}
+                  className="w-full px-4 py-3 text-white bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-center text-lg font-bold"
+                >
+                  Đăng kí làm nhân viên của chúng tôi
+                </button>
               </div>
             </div>
           </section>

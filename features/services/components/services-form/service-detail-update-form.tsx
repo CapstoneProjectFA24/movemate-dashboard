@@ -350,8 +350,9 @@ const ServiceDetailUpdateForm = ({
                     <CardContent>
                       {service?.inverseParentService!?.length > 0 ? (
                         <div className="grid gap-4">
-                          {service?.inverseParentService!.map(
-                            (detail, index) => (
+                          {service?.inverseParentService
+                            .sort((a, b) => b.id - a.id)!
+                            .map((detail, index) => (
                               <div
                                 key={index}
                                 className="flex items-center justify-between p-4 rounded-lg bg-muted/40"
@@ -393,8 +394,7 @@ const ServiceDetailUpdateForm = ({
                                   </Button>
                                 </div>
                               </div>
-                            )
-                          )}
+                            ))}
                         </div>
                       ) : (
                         <p className="text-gray-500 text-center py-4">

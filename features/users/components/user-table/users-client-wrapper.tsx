@@ -52,7 +52,10 @@ const TABS: readonly TabConfig[] = [
   },
 ] as const;
 
-export function UsersClientWrapper({ initialData,statisticUser }: UsersClientWrapperProps) {
+export function UsersClientWrapper({
+  initialData,
+  statisticUser,
+}: UsersClientWrapperProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const scrollPositionRef = useRef<number>(0);
@@ -91,7 +94,9 @@ export function UsersClientWrapper({ initialData,statisticUser }: UsersClientWra
 
   const getCurrentStats = (role: UserRole) => {
     const data = initialData[role];
-    const roleStats = statisticUser[0].usersByRole.find((s) => s.roleName.toUpperCase() === role);
+    const roleStats = statisticUser[0].usersByRole.find(
+      (s) => s.roleName.toUpperCase() === role
+    );
     return [
       {
         label: "Tổng số nhân viên",
@@ -99,11 +104,17 @@ export function UsersClientWrapper({ initialData,statisticUser }: UsersClientWra
       },
       {
         label: "Đang hoạt động",
-        value: data.data.filter((user) => user.isDeleted === true).length,
+        value:
+          statisticUser[0].usersByRole.find(
+            (s) => s.roleName.toUpperCase() === role
+          )?.totalActiveUsers || 0,
       },
       {
         label: "Không hoạt động",
-        value: data.data.filter((user) => user.isDeleted === false).length,
+        value:
+          statisticUser[0].usersByRole.find(
+            (s) => s.roleName.toUpperCase() === role
+          )?.totalNoActiveUsers || 0,
       },
     ];
   };
@@ -114,7 +125,7 @@ export function UsersClientWrapper({ initialData,statisticUser }: UsersClientWra
     <div className="container mx-auto  min-h-screen">
       <div className="flex gap-6 flex-col ">
         <div className=" space-y-8">
-          <Card className="bg-gradient-to-r from-primary-500 to-secondary-500 text-primary-foreground">
+          <Card className="">
             <CardHeader className="pb-4 space-y-2">
               <CardTitle className="text-3xl md:text-4xl font-extrabold tracking-tight">
                 Quản lý Nhân viên

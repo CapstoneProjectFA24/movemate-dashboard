@@ -1,6 +1,8 @@
 export interface IUserByRole {
   roleName: string;
   userCount: number;
+  totalActiveUsers?: number,
+  totalNoActiveUsers?: number
 }
 
 export interface IGroup {

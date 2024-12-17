@@ -56,7 +56,7 @@ const GroupSelection: React.FC<GroupSelectionProps> = ({ user }) => {
     return (
       <div className="flex items-center space-x-2 text-gray-500">
         <Loader2 className="h-5 w-5 animate-spin" />
-        <span>Đang tải danh sách nhóm...</span>
+        <span>Đang tải danh sách tổ...</span>
       </div>
     );
   }
@@ -65,7 +65,7 @@ const GroupSelection: React.FC<GroupSelectionProps> = ({ user }) => {
     return (
       <div className="flex items-center space-x-2 text-red-500">
         <AlertCircle className="h-5 w-5" />
-        <span>Không thể tải danh sách nhóm</span>
+        <span>Không thể tải danh sách tổ</span>
       </div>
     );
   }
@@ -85,7 +85,7 @@ const GroupSelection: React.FC<GroupSelectionProps> = ({ user }) => {
           <SelectContent>
             {groups.length === 0 ? (
               <div className="p-4 text-center text-gray-500">
-                Không có nhóm nào
+                Không có tổ nào
               </div>
             ) : (
               groups.map((group) => (
@@ -112,23 +112,23 @@ const GroupSelection: React.FC<GroupSelectionProps> = ({ user }) => {
         {selectedGroup && (
           <div className="flex items-center space-x-2">
             <CheckCircle2 className="h-5 w-5 text-green-500" />
-            <span className="text-sm text-gray-600">Đã chọn nhóm</span>
+            <span className="text-sm text-gray-600">Đã chọn tổ</span>
           </div>
         )}
       </div>
 
       {selectedGroup && (
         <div className="mt-2 p-3  rounded-md border">
-          <h4 className="font-semibold mb-2">Thông tin nhóm</h4>
+          <h4 className="font-semibold mb-2">Thông tin tổ</h4>
           <div className="space-y-1">
             {groups.find((g) => g.id.toString() === selectedGroup)?.name && (
               <p>
-                <strong>Tên nhóm:</strong>{" "}
+                <strong>Tên tổ:</strong>{" "}
                 {groups.find((g) => g.id.toString() === selectedGroup)?.name}
               </p>
             )}
             <p>
-              <strong>Mã nhóm:</strong> {selectedGroup}
+              <strong>Mã tổ:</strong> {selectedGroup}
             </p>
           </div>
         </div>
