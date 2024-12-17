@@ -42,7 +42,7 @@ const StatisticBooking = ({ data }: StatisticbookingProps) => {
             <Truck className="h-6 w-6 text-blue-400" />
             <h3 className="text-base font-medium">Loại xe được đặt nhiều</h3>
           </div>
-          <span className="text-xl font-bold ">Xe tải 1500kg</span>
+          <span className="text-xl font-bold ">Xe tải 1000kg</span>
         </div>
 
         {/* Row 2 */}
