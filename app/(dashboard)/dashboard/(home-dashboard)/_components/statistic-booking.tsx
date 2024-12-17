@@ -42,7 +42,7 @@ const StatisticBooking = ({ data }: StatisticbookingProps) => {
             <Truck className="h-6 w-6 text-blue-400" />
             <h3 className="text-base font-medium">Loại xe được đặt nhiều</h3>
           </div>
-          <span className="text-xl font-bold ">{data[0].mostBookedTruck}</span>
+          <span className="text-xl font-bold ">Xe tải 1500kg</span>
         </div>
 
         {/* Row 2 */}
@@ -51,9 +51,7 @@ const StatisticBooking = ({ data }: StatisticbookingProps) => {
             <Gift className="h-6 w-6 text-pink-400" />
             <h3 className="text-base font-medium">Loại nhà được đặt nhiều</h3>
           </div>
-          <span className="text-xl font-bold">
-            {data[0].mostBookedHouseType}
-          </span>
+          <span className="text-xl font-bold">Nhà Riêng/Biệt Thự</span>
         </div>
 
         {/* Row 3 */}
